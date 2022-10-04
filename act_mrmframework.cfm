@@ -31,6 +31,5 @@ sysdt=new Date();
 <CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
 <CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
 <CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
-<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCLOGIN">
 <script>AddOnloadCode("MrmPreprocessForm()");</script>
 <!--- END IMPORT MERIMEN FRAMEWORK --->
