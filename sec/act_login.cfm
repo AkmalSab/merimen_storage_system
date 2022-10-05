@@ -1,5 +1,5 @@
 <!---
-FILENAME : claim/sec/act_login.cfm
+FILENAME : act_login.cfm
 DESCRIPTION :
 
 attributes.USERID
@@ -20,14 +20,6 @@ REVISION HISTORY
 BY          ON          REMARKS
 =========   ==========  ======================================================================================
 --->
-
-
-request.webroot = <cfdump  var="#request.webroot#"> <br>
-Request.webroot = <cfdump  var="#Request.webroot#"> <br>
-REQUEST.WEBROOT = <cfdump  var="#REQUEST.WEBROOT#"> <br>
-Request.MTRDSN = <cfdump  var="#Request.MTRDSN#"> <br>
-
-
 <cfparam name="Attributes.UID" default="">
 <cfparam name="Attributes.SESSIONSTORE" default="0">
 <cfparam name="Attributes.USERID" default="">
@@ -37,7 +29,6 @@ Request.MTRDSN = <cfdump  var="#Request.MTRDSN#"> <br>
 <cfparam name="Attributes.USER" default="0" type="integer">
 <cfparam name="Attributes.ACT" default="" type="string">
 <cfparam name="Attributes.BOX" default="" type="string">
-
 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCDISABLEDIRECT.cfm" Path="#GetCurrentTemplatePath()#">
 <CFIF NOT (ATTRIBUTES.SESSIONSTORE GT 0)>
@@ -82,14 +73,34 @@ Request.MTRDSN = <cfdump  var="#Request.MTRDSN#"> <br>
 <cfmodule TEMPLATE="#request.apppath#services/index.cfm" FUSEBOX=SVCsec FUSEACTION=act_login ATTRIBUTECOLLECTION=#ATTRIBUTES#>
 <CFSET PREFBR=MODRESULT.VARS.PREFBR>
 
-<cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\SETTOKEN.cfm"> <br>
-request.webroot = <cfdump  var="#request.webroot#"> <br>
-Request.webroot = <cfdump  var="#Request.webroot#"> <br>
-REQUEST.WEBROOT = <cfdump  var="#REQUEST.WEBROOT#"> <br>
-Request.MTRDSN = <cfdump  var="#Request.MTRDSN#"> <br>
-Request.LOGPATH = <cfdump  var="#Request.LOGPATH#"> <br>
-Request.apppath = <cfdump  var="#Request.apppath#"> <br>
-<cfabort>
+<!--- Prudential customization --->
+<!--- CST(1342),CST(3062): Prudential wants to have special IAMCSO flag --->
+<CFIF (MODRESULT.VARS.GCOID IS 1342 OR MODRESULT.VARS.GCOID IS 3062)>
+	<CFSET userperm=ArrayToList(MODRESULT.VARS.PLIST,",")>
+	<cfset iamcso=0>
+	<cfif ListFind(userperm,57) GT 0 AND ListFind(userperm,43) GT 0>
+		<cfset iamcso=1>
+		<cfloop list=#userperm# index=a>
+			<cfif NOT(a IS 57 OR a IS 43) AND ListFind(Request.DS.PERMGRP[10].PLIST,a) GT 0>
+				<cfset iamcso=0><cfbreak>
+			</cfif>
+		</cfloop>
+	</cfif>
+	<CFIF iamcso GT 0>
+		<cflock SCOPE="Session" Type="Exclusive" TimeOut=60>
+		<cfset StructInsert(SESSION.VARS,"IAMCSO",iamcso,TRUE)>
+		</cflock>
+	</CFIF>
+</CFIF>
+
+<!---Enforce SSL --->
+<CFIF StructKeyExists(REQUEST.DS,"ENFORCESSL") AND StructKeyExists(SESSION.VARS,"GCOID") AND listfindnocase(REQUEST.DS.ENFORCESSL,SESSION.VARS.GCOID) GT 0>
+	<cflock SCOPE="Session" Type="Exclusive" TimeOut=60>
+	<CFSET StructInsert(SESSION.VARS,"HTTPS",1,true)>
+	</cflock>
+</CFIF>
+
+<cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\SETTOKEN.cfm">
 <CFIF Not(Request.InSession)>
 	<cfthrow TYPE="EX_SECFAILED" ErrorCode="NOLOGIN">
 <CFELSE>

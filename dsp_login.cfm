@@ -27,7 +27,7 @@ BY          ON          REMARKS
   </cflock>
 	<CFSET request.inSession=0>
 </cfif>
-<CFSET APPNAME=Application.ApplicationName>
+<CFSET APPNAME=Application.APPNAME>
 <CFSET APPLOCID=Application.APPLOCID>
 
 <cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\MTRHEADER.cfm" nolayout>
