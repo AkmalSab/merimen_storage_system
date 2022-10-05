@@ -5,4 +5,17 @@
         <cfinclude  template="dsp_login.cfm">
         <cfreturn>
     </cffunction>
+    <cffunction name="dsp_home" hint="Homepage for this module" returntype="any" output="true">
+        <cfargument name="fusebox" required="false" type="string"
+            displayname=""
+            hint="">
+        <cfargument name="Fuseaction" required="false" type="string"
+            displayname=""
+            hint="">
+        <cfargument name="SETLOGIN" required="false" default="" type="string"
+            displayname="Bring user back to his last visited module."
+            hint="">
+        <CFMODULE template="dsp_home.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>

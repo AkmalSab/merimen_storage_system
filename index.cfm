@@ -8,6 +8,9 @@
 	<cfcase VALUE="sec">
 		<cfinclude TEMPLATE="sec/index.cfm">
 	</cfcase>
+	<cfcase VALUE="MTRroot">
+		<cfinvoke component="index" method="dsp_home" ArgumentCollection=#Attributes#>
+	</cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfdefaultcase>
