@@ -1,6 +1,6 @@
 <cfoutput>
 
-<cfapplication NAME="merimen_storage_system" ScriptProtect="ALL" CLIENTMANAGEMENT=No SETCLIENTCOOKIES=No SESSIONMANAGEMENT=Yes>
+<cfapplication NAME="test" ScriptProtect="ALL" CLIENTMANAGEMENT=No SETCLIENTCOOKIES=No SESSIONMANAGEMENT=Yes>
 <cfset DS=StructNew()>
 <cfset APPINST='scorpio'>
 <cfset CURDSN="merimen_storage_system">
@@ -10,26 +10,14 @@
 	<CFQUERY NAME=q_app DATASOURCE=#CURDSN#>
 		SELECT * FROM SYS0001 a WITH (NOLOCK) WHERE a.vaAPPINST='#APPINST#' AND a.siSTATUS=0
 	</CFQUERY>
-
-	<cfif NOT findNoCase("/index.cfm", cgi.script_name)>
-		<cfif StructKeyExists(URL,"CFID")>
-			<CFLOCATION URL="index.cfm?CFID=#url.CFID#&CFTOKEN=#url.CFTOKEN#&USID=#url.USID#&RID=#RandRange(1000000,9999999)#" ADDTOKEN="no">
-		<cfelse>
-			<CFLOCATION url="index.cfm" ADDTOKEN="no">
-		</cfif>
-	</cfif>
 	
 	<cfset count=0>
 	
 	<CFLOOP query=q_app>
 		<CFSET StructInsert(APPLICATION,vaAPPVAR,vaAPPVALUE)>
 	</CFLOOP>
-
-	<cfinclude TEMPLATE="app_globals.cfm">
 	
 	<CFSET APPLICATION.APPINST = APPINST>
-
-	
 	
 	<cfset DS.LOCALES=StructNew()>
 	<cfquery NAME=q_countries DATASOURCE=#CURDSN#>
@@ -116,8 +104,8 @@
 	<cfset Application.Setvars=1>
 	<cfset Application.DS=DS>
 	<cfset Application.APPLOCID=1>
-	<cfset Application.APPLICATIONNAME=APPLICATION.APPFULLNAME>
-	
+	<cfset Application.APPNAME=APPLICATION.APPFULLNAME>
+	<cfset Application.ApplicationName=APPLICATION.APPFULLNAME>
 	<CFIF Not IsDefined("Application.APPPATHcfc")>
 		<CFIF IsDefined("Application.CFPREFIX")>
 			<CFSET APPPATHcfc=Trim(Application.CFPREFIX)&Trim(Application.APPPATH)>
@@ -166,16 +154,14 @@
 <cfset Request.DS.FN.SVCSvrFileDSUpdate()>
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCFORMURL2ATTRIBUTES.cfm" NOFORM=1>
 
-
 <script>
-var request=new Object();
-request.webroot="#Request.Webroot#";
-request.mtoken="#Request.MToken#";
-request.approot="#request.approot#";
-request.mtoken="#request.mtoken#";
-var retryid = 0;
-var userid = '';
+	var request=new Object();
+	request.webroot="/mrmstrgsys/";
+	request.mtoken="#Request.MToken#";
+	request.approot="#request.approot#";
+	request.mtoken="#request.mtoken#";
+	var retryid = 0;
+	var userid = '';
 </script>
-
 
 </cfoutput>
