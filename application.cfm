@@ -144,6 +144,7 @@
 <cfset request.mtoken=murltoken>
 
 <cfset request.MTRDSN=Application.MTRAUDDSN>
+<cfset Application.MTRDSN=Application.MTRAUDDSN>
 <cfset request.SVCDSN=Application.SVCDSN>
 
 <cfset request.logpath= Application.LOGPATH>
@@ -155,8 +156,6 @@
 <cfset request.APPPATHcfc="/">
 
 <cfset Request.DS.FN.SVCSvrFileDSUpdate()>
-
-<!--- <cfdump  var="#Request#"> --->
 
 <cfquery NAME=q_trx DATASOURCE=#CURDSN#>
 	SELECT DB_APP=dbo.fGetDBSettings('APP'),DB_COUNTRY=dbo.fGetDBSettings('COUNTRY'),DB_MODE=dbo.fGetDBSettings('MODE')

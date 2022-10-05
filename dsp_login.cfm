@@ -55,7 +55,7 @@ BY          ON          REMARKS
 								<br>
 								<script>
 									<!--- <CFIF GIARMC>var JSGIARMC = #GIARMC#;</CFIF> --->
-									JSVCDoLogin("#nonce#",5*60*1000,"fusebox=itk&fuseaction=act_login");
+									JSVCDoLogin("#nonce#",5*60*1000,"fusebox=sec&fuseaction=act_login");
 								</script>
 								<br style="line-height:16px">
 								<script>SkinBorderEnd(11);</script>

@@ -5,8 +5,8 @@
 	<cfcase VALUE="homepage">
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfcase>
-	<cfcase VALUE="itk">
-		<cfinclude TEMPLATE="itk/index.cfm">
+	<cfcase VALUE="sec">
+		<cfinclude TEMPLATE="sec/index.cfm">
 	</cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
