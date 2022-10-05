@@ -20,104 +20,26 @@ REVISION HISTORY
 BY          ON          REMARKS
 =========   ==========  ======================================================================================
 --->
-<cfif IsDefined("URL.NEXTLOC")>
-	<cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\SETTOKEN.cfm" NONEXTLOC>
-	<CFLOCATION URL="#URL.NEXTLOC#&#REQUEST.MTOKEN#" ADDTOKEN="no">
-</cfif>
 
-<!--- #25461 START--->
-<cfif IsDefined("SESSION.VARS.GCOID")>
-	<cfif NOT(IsDefined("SESSION.VARS.SETLOGIN") AND SESSION.VARS.SETLOGIN is 9)>
-		<cfif SESSION.VARS.GCOID EQ 706183>
-			<cfquery NAME=upd_setlogin DATASOURCE=#Request.MTRDSN#>
-			UPDATE sec0001 SET siSETLOGIN=9
-			WHERE iCOID=<cfqueryparam value="#session.vars.GCOID#" cfsqltype="CF_SQL_NVARCHAR">
-			and iUSID=<cfqueryparam value="#session.vars.USID#" cfsqltype="CF_SQL_INTEGER">
-			and siROLE=27
-			</cfquery>
-			<cflock SCOPE="SESSION" Type="Exclusive" TimeOut=60>
-				<CFIF NOT StructKeyExists(SESSION.VARS,"SETLOGIN")>
-					<CFSET StructInsert(SESSION.VARS,"SETLOGIN",9)>
-				<CFELSE>
-					<CFSET StructUpdate(SESSION.VARS,"SETLOGIN",9)>
-				</CFIF>
-			</CFLOCK>
-		</cfif>
-	</cfif>
-</cfif>
-<cfif IsDefined("SESSION.VARS.SETLOGIN")>
-	<cfset setlogin=SESSION.VARS.SETLOGIN>
-<cfelse>
-	<cfset setlogin=0>
-</cfif>
+<!--- <cfdump  var="#SESSION#"> --->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merimen Storage System</title>
+	<!--- 	Bootstrap 5 css --->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
 
-<cfif setlogin is 9> <!--- Login to Customer Portal --->
-	<cfquery NAME=q_cls DATASOURCE=#Request.MTRDSN#>
-	SELECT TOP 1 cologo=a.vaLOGO,a.iLOCID,a.iGCOID,a.vaCOLOGICNAME,b.iBNCID,
-	CASE WHEN b.iINSCOID IS NULL THEN b.iCOID ELSE b.iINSCOID END AS iINSCOID
-	FROM sec0005 a WITH (NOLOCK)
-	JOIN BIZ2017 b WITH (NOLOCK) ON a.iCOID=b.iCOID
-	where a.iCOID=a.iGCOID and a.iCOID=<cfqueryparam value="#session.vars.GCOID#" cfsqltype="CF_SQL_NVARCHAR">
-	</cfquery>
-	<cfset langtag = "">
-	<cfif q_cls.recordcount GT 0>
-		<cfoutput query=q_cls>
-		<cfif iLOCID eq 7><cfset langtag = "&lang=ID"></cfif>
-		<CFLOCATION url="#request.webroot#index.cfm?fusebox=MTRcmt&fuseaction=dsp_claimantdtls_corp&INSCOID=#iINSCOID#&BNCID=#iBNCID#&MOBILE=1#langtag#&#Request.MToken#" ADDTOKEN="no">
-		</cfoutput>
-	</cfif>
-</cfif>
-<!--- #25461 END--->
-<cfif IsDefined("SESSION.VARS.ORGTYPE")>
-	<cfset orgtype = SESSION.VARS.ORGTYPE>
-	<cfif orgtype is "R">
-		<cfset Attributes.fusebox="MTRrepairer">
-	<cfelseif orgtype is "I">
-		<cfset Attributes.fusebox="MTRinsurer">
-	<cfelseif orgtype is "A">
-		<cfset Attributes.fusebox="MTRadjuster">
-	<cfelseif orgtype is "D">
-		<cfset Attributes.fusebox="MTRdev">
-	<cfelseif orgtype is "P" OR orgtype is "G" OR orgtype is "GR" or orgtype IS "L" OR orgtype IS "EA">
-		<cfset Attributes.fusebox="MTRother">
-	<cfelseif orgtype is "S">
-		<cfset Attributes.fusebox="MTRsupplier">
-	<cfelseif orgtype is "M">
-		<cfset Attributes.fusebox="MTRcpc">
-	<cfelseif orgtype is "RG">
-		<cfset Attributes.fusebox="MTRregulator">
-	<cfelse>
-		<cfthrow TYPE="EX_SECFAILED" ErrorCode="Unidentified Company Type">
-	</cfif>
-	<cfset Attributes.Fuseaction="dsp_main">
-	<cfparam Name=Attributes.SETLOGIN DEFAULT="">
-	<cfparam Name=Attributes.SETPERSONAL DEFAULT="">
-	<CFIF ISDEFINED("SESSION.VARS.SETPERSONAL") AND ISDEFINED("SESSION.VARS.USID") AND Attributes.SETPERSONAL NEQ "" AND Attributes.SETPERSONAL NEQ SESSION.VARS.SETPERSONAL>
-		<cflock SCOPE=SESSION Type=Exclusive TimeOut=60>
-			<CFSET SESSION.VARS.SETPERSONAL=Attributes.SETPERSONAL>
-		</CFLOCK>
-		<cfset Attributes.Personal=Attributes.SETPERSONAL>
-		<!--- @CFLintIgnore CFQUERYPARAM_REQ --->
-		<CFQUERY NAME=q_trx DATASOURCE=#Application.MTRDSN#>
-		UPDATE SEC0001 SET siSETLOGIN=(siSETLOGIN % 10) + #SESSION.VARS.SETPERSONAL * 1000# WHERE iUSID=<cfqueryparam cfsqltype="cf_sql_integer" value="#session.vars.usid#">
-		</CFQUERY>
-	<CFELSEIF ISDEFINED("SESSION.VARS.SETPERSONAL")>
-		<CFSET Attributes.SETPERSONAL=SESSION.VARS.SETPERSONAL>
-		<cfset Attributes.Personal=SESSION.VARS.SETPERSONAL>
-	</CFIF>
-	<cfmodule TEMPLATE="#request.logpath#index.cfm" AttributeCollection=#Attributes#>
-	<!---cfif IsDefined("Attributes.LASTLOGON")>
-		<cfmodule TEMPLATE="#request.logpath#index.cfm" FUSEBOX=#Attributes.Fusebox# LASTLOGON=#Attributes.LASTLOGON# FUSEACTION=dsp_main SETLOGIN="#Attributes.SETLOGIN#">
-	<cfelse>
-		<cfmodule TEMPLATE="#request.logpath#index.cfm" FUSEBOX=#Attributes.Fusebox# FUSEACTION=dsp_main SETLOGIN="#Attributes.SETLOGIN#">
-	</cfif--->
-	<!--- Sets default language here --->
-	<!---<cfif NOT IsDefined("SESSION.VARS.LANGSET")>
-		<cfset SESSION.VARS.LANGSET=1>
-		<cfif SESSION.VARS.LOCID IS 7><!--- Indonesia --->
-			<cfmodule TEMPLATE="#request.logpath#index.cfm" FUSEBOX=MTRroot FUSEACTION=act_setlanguage LANG=2 REFERRER="#CGI.SCRIPT_NAME#?#CGI.QUERY_STRING#">
-		</cfif>
-	</cfif>--->
-<cfelse>
-	<cfthrow TYPE="EX_SECFAILED" ErrorCode="NOLOGIN">
-</cfif>
+	<!--- 	Logout --->
+    <cfoutput>
+		<a href="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_logout&#request.mtoken#">Log out</a>
+	</cfoutput>
+	<!--- 	Logout --->
+
+	<!--- 	Bootstrap 5 JS --->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

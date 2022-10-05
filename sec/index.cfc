@@ -4,4 +4,8 @@
         <cfargument name="USERID" required="false" default="" type="string" displayname="The UserID last attempted to login" hint="">
         <cfinclude  template="act_login.cfm">
     </cffunction>
+    <cffunction name="act_logout" hint="Logout link" returntype="any" output="true">
+        <CFMODULE template="act_logout.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>
