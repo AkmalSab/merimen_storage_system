@@ -1,5 +1,5 @@
 <!---
-FILENAME : act_login.cfm
+FILENAME : claim/sec/act_login.cfm
 DESCRIPTION :
 
 attributes.USERID

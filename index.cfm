@@ -8,4 +8,7 @@
 	<cfcase VALUE="itk">
 		<cfinclude TEMPLATE="itk/index.cfm">
 	</cfcase>
+	<cfdefaultcase>
+		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
+	</cfdefaultcase>
 </cfswitch>
