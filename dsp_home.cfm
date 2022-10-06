@@ -155,6 +155,7 @@ BY          ON          REMARKS
 				FROM STRG_DATA WITH (NOLOCK)
 				ORDER BY iSTRGID;
 			</cfquery>
+			<!--- Query to fetch main storage data --->
 
 <!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
 			<!--- Query to fetch main storage data --->
