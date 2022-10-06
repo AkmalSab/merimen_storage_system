@@ -21,8 +21,34 @@ BY          ON          REMARKS
 =========   ==========  ======================================================================================
 --->
 
-<!--- <cfdump  var="#SESSION#"> --->
+<!--- <cfdump  var="#Request.MTRDSN#"> --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
+
+	<!---    START IMPORT MERIMEN FRAMEWORK      --->
+	<CFSET DS=StructNew()>
+	<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
+	<CFSET Request.DS=DS>
+	<CFSET Request.DS.FN.SVCSvrFileDSUpdate()>
+	<style>
+	.code {color:blue; font-family: 'courier sans ms'}
+	.quest { color:red;}
+	</style>
+	<!--- Include these using AddFile --->
+	<script>
+		var request=new Object();
+		<CFOUTPUT>
+		request.apppath="#request.apppath#";
+		request.approot="#request.approot#";
+		</CFOUTPUT>
+		sysdt=new Date();
+	</script>
+	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="JQUERY">
+	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
+	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
+	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
+	<script>AddOnloadCode("MrmPreprocessForm()");</script>
+	<!--- END IMPORT MERIMEN FRAMEWORK --->
+
 	<html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -33,99 +59,142 @@ BY          ON          REMARKS
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	</head>
 	<body>
-
 		<div class="container mt-3">
+			<!--- Tabs --->
 			<div class="row">
 				<div class="col">
 					<button type="button" class="btn btn-primary">Create New Item</button>
 					<button type="button" class="btn btn-primary">View Report</button>
+					<button type="button" class="btn btn-primary">Admin</button>
 				</div>
 			</div>
+			<!--- Tabs --->
+
+			<!--- Search criteria line 1 --->
 			<div class="row mt-3">
 				<div class="col">
-					<button type="button" class="btn btn-warning">Storage Type</button>
-					<button type="button" class="btn btn-warning">Item Name</button>
-					<button type="button" class="btn btn-warning">Description</button>
+					<label for="StorageType" class="form-label">Storage Type:</label>
+					<select class="form-select" aria-label="Default select example">
+						<option selected>Open this select menu</option>
+						<option value="1">URL</option>
+						<option value="2">Document</option>
+						<option value="3">PDF</option>
+					</select>
 				</div>
-			</div>
-			<div class="row mt-1">
 				<div class="col">
-					<button type="button" class="btn btn-warning">Created Date From</button>
-					<button type="button" class="btn btn-warning">Created Date To</button>
+					<label for="ItemName" class="form-label">Item Name:</label>
+  					<input type="text" class="form-control" id="ItemName" placeholder="">
+				</div>
+				<div class="col">
+					<label for="Description" class="form-label">Description:</label>
+  					<input type="text" class="form-control" id="Description" placeholder="">
 				</div>
 			</div>
+			<!--- Search criteria line 1 --->
+
+			<!--- Search criteria line 2 --->
 			<div class="row mt-3">
-				<div class="col col-md-4">
-					<input type="text" class="form-control"/>
+				<div class="col">
+					<label for="Creator" class="form-label">Creator:</label>
+					<select class="form-select" aria-label="Default select example">
+						<option selected>Open this select menu</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
 				</div>
+				<div class="col">
+					<label for="Tags" class="form-label">Tags:</label>
+  					<input type="text" class="form-control" id="Tags" placeholder="">
+				</div>
+				<div class="col">
+					<label for="Creator" class="form-label">Rating:</label>
+					<select class="form-select" aria-label="Default select example">
+						<option selected>Open this select menu</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+			</div>
+			<!--- Search criteria line 2 --->
+
+			<!--- Date range --->
+			<div class="row mt-3">
+				<div class="col">
+					<form action="test" method="post" name="testform">
+						<table>
+							<tr>
+								<td class=clsValue1>
+									<label for="DateFrom" class="form-label">Date From:</label>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+								</td>
+								<td class=clsValue1>
+									<label for="DateTo" class="form-label">Date To:</label>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+								</td>
+							</tr>
+						</table>
+						<!---	<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton"> --->
+					</form>
+				</div>
+			</div>
+			<!--- Date range --->
+
+			<div class="row mt-3">
 				<div class="col col-md-4">
 					<button type="button" class="btn btn-secondary">Search</button>
 				</div>
 			</div>
+
+			<!--- Query to fetch main storage data --->
+			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
+				SELECT *
+				FROM STRG_DATA WITH (NOLOCK)
+				ORDER BY iSTRGID;
+			</cfquery>
+
+<!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
+			<!--- Query to fetch main storage data --->
+			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
 					<table class="table table-striped table-hover">
 						<thead>
 							<tr>
-							<th scope="col">Created On</th>
-							<th scope="col">Item Name</th>
-							<th scope="col">Storage Type</th>
-							<th scope="col">Description</th>
+								<th scope="col">Created On</th>
+								<th scope="col">Item Name</th>
+								<th scope="col">Storage Type</th>
+								<th scope="col">Description</th>
+								<th scope="col">Creator - User Name</th>
+								<th scope="col">Rating</th>
+								<th scope="col">Classfied yes/no</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
-							<tr>
-								<th scope="row">05-10-2022 17:08:00</th>
-								<td>Training.pdf</td>
-								<td>Documents</td>
-								<td>Training files for new comers</td>
-							</tr>
+							<cfoutput query="q_main_storage_select_all">
+								<tr>
+									<th scope="row">#DTCREATIONDATE#</th>
+									<td>#VAITEMNAME#</td>
+									<td>#ISTRGTYPEID#</td>
+									<td>#VADESCRIPTION#</td>
+									<td>#VACREATOR#</td>
+									<td>#IRATING#</td>
+									<cfif ICLASSIFIED EQ 0>
+										<td>Anyone</td>
+										<cfelse>
+											<td>Only authorized users</td>
+									</cfif>
+									
+								</tr>		
+							</cfoutput>												
 						</tbody>
 					</table>
 				</div>
 			</div>
+			<!--- Table --->
 
 			<!--- 	Logout --->
 			<cfoutput>
@@ -137,8 +206,6 @@ BY          ON          REMARKS
 			</cfoutput>
 			<!--- 	Logout --->
 		</div>
-
-		
 
 		<!--- 	Bootstrap 5 JS --->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
