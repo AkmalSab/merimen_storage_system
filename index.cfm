@@ -11,6 +11,9 @@
 	<cfcase VALUE="MTRroot">
 		<cfinvoke component="index" method="dsp_home" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase VALUE="strg">
+		<cfinclude TEMPLATE="strg/index.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfdefaultcase>
