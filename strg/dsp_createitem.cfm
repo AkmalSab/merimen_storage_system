@@ -111,8 +111,16 @@ BY          ON          REMARKS
                                     <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
                                 </tr>
                                 <tr class="">
-                                    <th>Input User</th>
-                                    <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
+                                    <th>URL</th>
+                                    <td><input type="text" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
+                                </tr>
+								<tr class="">
+                                    <th>Document</th>
+                                    <td><input type="file" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
+                                </tr>
+								<tr class="">
+                                    <th>Letter</th>
+                                    <td><div id="editorjs"></div></td>
                                 </tr>
                             </form>
                         </tbody>
@@ -122,8 +130,73 @@ BY          ON          REMARKS
 			<!--- Form --->
 		</div>
 
+		<!--- Editor.js --->
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/raw"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+
+
+		<script>
+			const editor = new EditorJS({ 
+				/** 
+				 * Id of Element that should contain the Editor 
+				 */ 
+				holder: 'editorjs', 
+				autofocus: true,
+				tools: {
+					list: {
+						class: List,
+						inlineToolbar: true,
+						config: {
+							defaultStyle: 'unordered'
+						}
+					},
+					header: {
+						class: Header,
+						shortcut: 'CMD+SHIFT+H',
+					},
+					raw: RawTool,
+					image: SimpleImage,
+					image: {
+						class: ImageTool,
+						config: {
+							endpoints: {
+							byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
+							byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+							}
+						}
+					},
+					checklist: {
+						class: Checklist,
+						inlineToolbar: true,
+					},
+					embed: {
+						class: Embed,
+					},
+					quote: {
+						class: Quote,
+						inlineToolbar: true,
+						shortcut: 'CMD+SHIFT+O',
+						config: {
+							quotePlaceholder: 'Enter a quote',
+							captionPlaceholder: 'Quote\'s author',
+						},
+					},
+				}
+			})
+		</script>
+
 		<!--- 	Bootstrap 5 JS --->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		
+		<!--- CKEditor 4 --->
+		<script src="//cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
 	</body>
 	</html>
 <cfelse>
