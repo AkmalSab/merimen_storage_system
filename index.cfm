@@ -14,6 +14,9 @@
 	<cfcase VALUE="strg">
 		<cfinclude TEMPLATE="strg/index.cfm">
 	</cfcase>
+	<cfcase VALUE="rpt">
+		<cfinclude TEMPLATE="report/index.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfdefaultcase>
