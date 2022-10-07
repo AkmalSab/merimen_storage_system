@@ -63,9 +63,11 @@ BY          ON          REMARKS
 			<!--- Tabs --->
 			<div class="row">
 				<div class="col">
-					<button type="button" class="btn btn-primary">Create New Item</button>
-					<button type="button" class="btn btn-primary">View Report</button>
-					<button type="button" class="btn btn-primary">Admin</button>
+					<cfoutput>
+						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Create New Item</a>
+						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">View Report</a>
+						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Admin</a>
+					</cfoutput>					
 				</div>
 			</div>
 			<!--- Tabs --->
