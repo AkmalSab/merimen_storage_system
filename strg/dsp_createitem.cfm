@@ -98,7 +98,7 @@ BY          ON          REMARKS
                                 <tr class="">
                                     <th>Storage Type</th>
                                     <td>
-                                        <select class="form-select" aria-label="Default select example">
+                                        <select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()">
                                             <option value="null" selected>Open this select menu</option>
                                             <cfoutput query="q_storage_type_select_all">                                                    
                                                 <option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>                                                
@@ -110,18 +110,18 @@ BY          ON          REMARKS
                                     <th>Rating</th>
                                     <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
                                 </tr>
-                                <tr class="">
+                                <tr class="" style="display: none;" id="URLtr">
                                     <th>URL</th>
-                                    <td><input type="text" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
+                                    <td><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
                                 </tr>
-								<tr class="">
+								<tr class="" style="display: none;" id="Documenttr">
                                     <th>Document</th>
-                                    <td><input type="file" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
+                                    <td><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
                                 </tr>
-								<tr class="">
+								<tr class="" style="display: none;" id="Lettertr">
                                     <th>Letter</th>
                                     <td>
-										<textarea name="editor1" id="editor1" rows="10" cols="80">
+										<textarea id="Letter" name="Letter" rows="10" cols="80">
 											This is my textarea to be replaced with CKEditor 4.
 										</textarea>
 									</td>
@@ -141,9 +141,33 @@ BY          ON          REMARKS
 		<script src="//cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
 
 		<script>
-                // Replace the <textarea id="editor1"> with a CKEditor 4
+                // Replace the <textarea id="Letter"> with a CKEditor 4
                 // instance, using default configuration.
-                CKEDITOR.replace( 'editor1' );
+                CKEDITOR.replace( 'Letter' );
+
+				function StorageTypeChange() {
+					const StorageType = document.getElementById('StorageType').value;
+					const URL = document.getElementById('URLtr');
+					const Documents = document.getElementById('Documenttr');
+					const Letter = document.getElementById('Lettertr');
+					console.log(StorageType)
+
+					if(StorageType == 1) {
+						URL.style.display = "table-row";
+						Documents.style.display = "none";
+						Letter.style.display = "none";
+					}
+					else if(StorageType == 2) {
+						URL.style.display = "none";
+						Documents.style.display = "table-row";
+						Letter.style.display = "none";
+					}
+					else {
+						URL.style.display = "none";
+						Documents.style.display = "none";
+						Letter.style.display = "table-row";
+					}
+				}
 		</script>
 	</body>
 	</html>
