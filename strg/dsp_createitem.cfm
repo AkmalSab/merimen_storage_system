@@ -24,6 +24,53 @@ BY          ON          REMARKS
 <!--- <cfdump  var="#Request.MTRDSN#"> --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
+	<!--- If the form has submitted --->
+	<cfif structKeyExists(FORM, "ItemName")>
+		<cfdump  var="#FORM#">
+		<cfset datatime = CREATEODBCDATETIME( Now() ) />
+
+		<cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#">
+			insert into STRG_DATA 
+			(
+				iSTRGTYPEID,
+				vaITEMNAME,
+				vaDESCRIPTION, 
+				iDOMAINID,
+				iOBJID,
+				iRATING,
+				iCLASSIFIED,
+				vaREMARKS,
+				vaSTATUS,
+				vaCREATOR,
+				dtCREATIONDATE,
+				iMODIFIEDBY,
+				dtMODIFIEDDATE,
+				vaURLADDRESS,
+				iDOCUMENTID,
+				vaTEXTFIELD
+			)
+			values 
+			( 
+				<cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.STORAGETYPE#">, --iSTRGTYPEID
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#">, --vaITEMNAME
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#">, --vaDESCRIPTION
+				<cfqueryparam cfsqltype="cf_sql_integer" value=33>, --iDOMAINID
+				<cfqueryparam cfsqltype="cf_sql_integer" value=11>, --iOBJID
+				<cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.RATING#">, --iRATING
+				<cfqueryparam cfsqltype="cf_sql_integer" value=0>, --iCLASSIFIED
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#">, --vaREMARKS
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="Active">, --vaSTATUS
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="Akmal">, --vaCREATOR
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtCREATIONDATE
+				<cfqueryparam cfsqltype="cf_sql_integer" value="1">, --iMODIFIEDBY
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtMODIFIEDDATE
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.URL#">, --vaURLADDRESS
+				<cfqueryparam cfsqltype="cf_sql_integer" value="0">, --iDOCUMENTID
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.LETTER#"> --vaTEXTFIELD
+			)
+		</cfquery>
+	</cfif>
+
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
 	<CFSET DS=StructNew()>
 	<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
@@ -86,47 +133,55 @@ BY          ON          REMARKS
 				<div class="col">
 					<table class="table">
                         <tbody>
-                            <form>
-                                <tr class="table-active">
-                                    <th>Item Name</th>
-                                    <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
-                                </tr>
-                                <tr class="">
-                                    <th>Description</th>
-                                    <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
-                                </tr>
-                                <tr class="">
-                                    <th>Storage Type</th>
-                                    <td>
-                                        <select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()">
-                                            <option value="null" selected>Open this select menu</option>
-                                            <cfoutput query="q_storage_type_select_all">                                                    
-                                                <option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>                                                
-                                            </cfoutput>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="">
-                                    <th>Rating</th>
-                                    <td><input type="email" class="form-control" id="exampleFormControlInput1" placeholder=""></td>
-                                </tr>
-                                <tr class="" style="display: none;" id="URLtr">
-                                    <th>URL</th>
-                                    <td><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
-                                </tr>
-								<tr class="" style="display: none;" id="Documenttr">
-                                    <th>Document</th>
-                                    <td><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
-                                </tr>
-								<tr class="" style="display: none;" id="Lettertr">
-                                    <th>Letter</th>
-                                    <td>
-										<textarea id="Letter" name="Letter" rows="10" cols="80">
-											This is my textarea to be replaced with CKEditor 4.
-										</textarea>
-									</td>
-                                </tr>
-                            </form>
+                            <cfoutput>
+								<form action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
+							</cfoutput>
+									<tr class="table-active">
+										<th>Item Name</th>
+										<td><input type="text" class="form-control" id="ItemName" name="ItemName" placeholder=""></td>
+									</tr>
+									<tr class="">
+										<th>Description</th>
+										<td><input type="text" class="form-control" id="Description" name="Description" placeholder=""></td>
+									</tr>
+									<tr class="">
+										<th>Remarks</th>
+										<td><textarea id="Remarks" name="Remarks" rows="10" cols="80"></textarea></td>
+									</tr>
+									<tr class="">
+										<th>Storage Type</th>
+										<td>
+											<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()">
+												<option value="null" selected>Open this select menu</option>
+												<cfoutput query="q_storage_type_select_all">                                                    
+													<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>                                                
+												</cfoutput>
+											</select>
+										</td>
+									</tr>
+									<tr class="">
+										<th>Rating</th>
+										<td><input type="number" class="form-control" id="Rating" name="Rating" placeholder=""></td>
+									</tr>
+									<tr class="" style="display: none;" id="URLtr">
+										<th>URL</th>
+										<td><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
+									</tr>
+									<tr class="" style="display: none;" id="Documenttr">
+										<th>Document</th>
+										<td><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
+									</tr>
+									<tr class="" style="display: none;" id="Lettertr">
+										<th>Letter</th>
+										<td>
+											<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<th>Submit</th>
+										<td><input type="submit" class="btn btn-primary" /></td>
+									</tr>
+								</form>
                         </tbody>
                     </table>
 				</div>
@@ -150,7 +205,6 @@ BY          ON          REMARKS
 					const URL = document.getElementById('URLtr');
 					const Documents = document.getElementById('Documenttr');
 					const Letter = document.getElementById('Lettertr');
-					console.log(StorageType)
 
 					if(StorageType == 1) {
 						URL.style.display = "table-row";

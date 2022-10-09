@@ -19,6 +19,7 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3001;
   SELECT TOP (1000) * from SEC0001; --list of user
+ SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
   SELECT TOP (1000) * from fdoc3003
   SELECT TOP (1000) * from [STRGY_TYPE];
   SELECT TOP (1000) * from [STRG_DATA];
@@ -170,7 +171,7 @@ INSERT INTO [dbo].[STRG_DATA]
            ,[iDOCUMENTID]
            ,[vaTEXTFIELD])
      VALUES
-           (1,
+           (3,
            'homepage url for project',
            'first test',
            33,
@@ -187,3 +188,15 @@ INSERT INTO [dbo].[STRG_DATA]
            null,
            null)
 GO
+
+SELECT TOP 1 COTYPE=1,iUSID,vaUSID,iCOID 
+FROM SEC0001 WITH (NOLOCK) 
+WHERE vaUSID = 'mmadminn' 
+AND iCOID=1 
+AND siSTATUS=0
+UNION
+SELECT TOP 1 COTYPE=2,iUSID,vaUSID,iCOID 
+FROM SEC0001 WITH (NOLOCK) 
+WHERE iUSID=0
+AND siSTATUS=0
+ORDER BY COTYPE ASC
