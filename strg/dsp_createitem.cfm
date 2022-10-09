@@ -26,7 +26,7 @@ BY          ON          REMARKS
 
 	<!--- If the form has submitted --->
 	<cfif structKeyExists(FORM, "ItemName")>
-		<cfdump  var="#FORM#">
+<!--- 		<cfdump  var="#FORM#"> --->
 		<cfset datatime = CREATEODBCDATETIME( Now() ) />
 
 		<cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#" result="result_insert">
@@ -85,7 +85,7 @@ BY          ON          REMARKS
 			WHERE iSTRGID = #URL.id#
 		</cfquery>
 
-		<cfdump  var="#q_main_storage_select_specific#">
+<!--- 		<cfdump  var="#q_main_storage_select_specific#"> --->
 	</cfif>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
@@ -121,7 +121,7 @@ BY          ON          REMARKS
     </cfquery>
     <!--- Query to fetch main storage data --->
 
-<!---     <cfdump  var="#q_storage_type_select_all#"> --->
+<!--- 	<cfdump  var="#q_storage_type_select_all#"> --->
 
 	<html lang="en">
 	<head>
@@ -132,7 +132,7 @@ BY          ON          REMARKS
 		<!--- 	Bootstrap 5 css --->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	</head>
-	<body>
+	<body onload="StorageTypeChange()">
 		<div class="container mt-3">
 			<!--- Tabs --->
 			<div class="row">
@@ -153,38 +153,85 @@ BY          ON          REMARKS
 					<table class="table">
                         <tbody>
                             <cfoutput>
-								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
-							</cfoutput>
+								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">		
+							</cfoutput>					
 									<tr class="table-active">
 										<td class=clsField1>Item Name</td>
-										<td class=clsValue1><input type="text" class="form-control" id="ItemName" name="ItemName" onblur="ObjUpperCase(this)" CHKREQUIRED></td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<input type="text" class="form-control" id="ItemName" name="ItemName" value="#q_main_storage_select_specific.VAITEMNAME#" onblur="ObjUpperCase(this)" CHKREQUIRED>
+													<cfelse>
+														<input type="text" class="form-control" id="ItemName" name="ItemName" onblur="ObjUpperCase(this)" CHKREQUIRED>
+												</cfif>
+											</cfoutput>
+										</td>
 									</tr>
 									<tr class="">
 										<td class=clsField1>Description</td>
-										<td class=clsValue1><input type="text" class="form-control" id="Description" name="Description" onblur="ObjUpperCase(this)" CHKREQUIRED></td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<input type="text" class="form-control" id="Description" name="Description" value="#q_main_storage_select_specific.VADESCRIPTION#" onblur="ObjUpperCase(this)" CHKREQUIRED>
+													<cfelse>
+														<input type="text" class="form-control" id="Description" name="Description" onblur="ObjUpperCase(this)" CHKREQUIRED>
+												</cfif>		
+											</cfoutput>									
+										</td>
 									</tr>
 									<tr class="table-active">
 										<td class=clsField1>Remarks</td>
-										<td class=clsValue1><textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80" onblur="ObjUpperCase(this)" CHKREQUIRED></textarea></td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80" onblur="ObjUpperCase(this)" CHKREQUIRED>#q_main_storage_select_specific.VAREMARKS#</textarea>
+													<cfelse>
+														<textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80" onblur="ObjUpperCase(this)" CHKREQUIRED></textarea>
+												</cfif>
+											</cfoutput>											
+										</td>
 									</tr>
 									<tr class="">
 										<td class=clsField1>Storage Type</td>
 										<td class=clsValue1>
 											<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()" onblur="ObjUpperCase(this)" CHKREQUIRED>
 												<option value="null" selected>Open this select menu</option>
-												<cfoutput query="q_storage_type_select_all">                                                    
-													<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>                                                
+												<cfoutput query="q_storage_type_select_all">   
+													<cfif isDefined('URL.Id')>
+														<cfif q_main_storage_select_specific.ISTRGTYPEID EQ ISTRGTYPEID>
+															<option value="#ISTRGTYPEID#" selected>#VASTRGDESCRIPTION#</option>
+															<cfelse>
+																<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>
+														</cfif>														
+													</cfif>
 												</cfoutput>
 											</select>
 										</td>
 									</tr>
 									<tr class="table-active">
 										<td class=clsField1>Rating</td>
-										<td class=clsValue1><input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED></td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" value="#q_main_storage_select_specific.IRATING#" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+													<cfelse>
+														<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+												</cfif>			
+											</cfoutput>								
+										</td>
 									</tr>
 									<tr class="" style="display: none;" id="URLtr">
 										<td class=clsField1>URL</td>
-										<td class=clsValue1><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
+										<td class=clsValue1>
+											
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<input type="text" class="form-control" id="URL" name="URL" value="#q_main_storage_select_specific.VAURLADDRESS#" placeholder="URL">
+													<cfelse>
+														<input type="text" class="form-control" id="URL" name="URL" placeholder="URL">
+												</cfif>			
+											</cfoutput>
+										</td>
 									</tr>
 									<tr class="" style="display: none;" id="Documenttr">
 										<td class=clsField1>Document</td>
@@ -193,7 +240,14 @@ BY          ON          REMARKS
 									<tr class="" style="display: none;" id="Lettertr">
 										<td class=clsField1>Letter</td>
 										<td class=clsValue1>
-											<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<textarea id="Letter" name="Letter" rows="10" cols="80">#q_main_storage_select_specific.VATEXTFIELD#</textarea>
+													<cfelse>
+														<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
+												</cfif>			
+											</cfoutput>
+											
 										</td>
 									</tr>
 								</form>
