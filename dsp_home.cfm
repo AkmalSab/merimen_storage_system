@@ -179,8 +179,10 @@ BY          ON          REMARKS
 						<tbody>
 							<cfoutput query="q_main_storage_select_all">
 								<tr>
-									<th scope="row">#DTCREATIONDATE#</th>
-									<td>#VAITEMNAME#</td>
+									<th scope="row">#DTCREATIONDATE#</th>									
+									<td>
+										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
+									</td>
 									<td>#ISTRGTYPEID#</td>
 									<td>#VADESCRIPTION#</td>
 									<td>#VACREATOR#</td>
