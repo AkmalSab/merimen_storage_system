@@ -123,9 +123,11 @@ BY          ON          REMARKS
 			<div class="row">
 				<div class="col">
 					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
-					<button type="button" class="btn btn-primary">Set to Outdated</button>
-					<button type="button" class="btn btn-primary">Verify</button>
-                    <button type="button" class="btn btn-primary">Delete</button>
+					<cfif isDefined('URL.Id')>
+						<button type="button" class="btn btn-primary">Set to Outdated</button>
+						<button type="button" class="btn btn-primary">Verify</button>
+						<button type="button" class="btn btn-primary">Delete</button>
+					</cfif>					
 				</div>
 			</div>
 			<!--- Tabs --->
@@ -136,24 +138,24 @@ BY          ON          REMARKS
 					<table class="table">
                         <tbody>
                             <cfoutput>
-								<form id="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
+								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
 							</cfoutput>
 									<tr class="table-active">
-										<th>Item Name</th>
-										<td><input type="text" class="form-control" id="ItemName" name="ItemName" placeholder=""></td>
+										<td class=clsField1>Item Name</td>
+										<td class=clsValue1><input type="text" class="form-control" id="ItemName" name="ItemName" onblur="ObjUpperCase(this)" CHKREQUIRED></td>
 									</tr>
 									<tr class="">
-										<th>Description</th>
-										<td><input type="text" class="form-control" id="Description" name="Description" placeholder=""></td>
+										<td class=clsField1>Description</td>
+										<td class=clsValue1><input type="text" class="form-control" id="Description" name="Description" onblur="ObjUpperCase(this)" CHKREQUIRED></td>
+									</tr>
+									<tr class="table-active">
+										<td class=clsField1>Remarks</td>
+										<td class=clsValue1><textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80" onblur="ObjUpperCase(this)" CHKREQUIRED></textarea></td>
 									</tr>
 									<tr class="">
-										<th>Remarks</th>
-										<td><textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80"></textarea></td>
-									</tr>
-									<tr class="">
-										<th>Storage Type</th>
-										<td>
-											<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()">
+										<td class=clsField1>Storage Type</td>
+										<td class=clsValue1>
+											<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType" onchange="StorageTypeChange()" onblur="ObjUpperCase(this)" CHKREQUIRED>
 												<option value="null" selected>Open this select menu</option>
 												<cfoutput query="q_storage_type_select_all">                                                    
 													<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>                                                
@@ -161,21 +163,21 @@ BY          ON          REMARKS
 											</select>
 										</td>
 									</tr>
-									<tr class="">
-										<th>Rating</th>
-										<td><input type="number" class="form-control" id="Rating" name="Rating" placeholder=""></td>
+									<tr class="table-active">
+										<td class=clsField1>Rating</td>
+										<td class=clsValue1><input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED></td>
 									</tr>
 									<tr class="" style="display: none;" id="URLtr">
-										<th>URL</th>
-										<td><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
+										<td class=clsField1>URL</td>
+										<td class=clsValue1><input type="text" class="form-control" id="URL" name="URL" placeholder="URL"></td>
 									</tr>
 									<tr class="" style="display: none;" id="Documenttr">
-										<th>Document</th>
-										<td><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
+										<td class=clsField1>Document</td>
+										<td class=clsValue1><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
 									</tr>
 									<tr class="" style="display: none;" id="Lettertr">
-										<th>Letter</th>
-										<td>
+										<td class=clsField1>Letter</td>
+										<td class=clsValue1>
 											<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
 										</td>
 									</tr>
@@ -199,7 +201,10 @@ BY          ON          REMARKS
                 CKEDITOR.replace( 'Letter' );
 
 				function submitForm() {
-					document.getElementById("createNewStorageItem").submit();
+					if (FormVerify(document.all('createNewStorageItem'))) {
+                    	alert('Everything OK');
+						document.getElementById("createNewStorageItem").submit();
+					}
 				}
 
 
