@@ -29,7 +29,7 @@ BY          ON          REMARKS
 		<cfdump  var="#FORM#">
 		<cfset datatime = CREATEODBCDATETIME( Now() ) />
 
-		<cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#">
+		<cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#" result="result_insert">
 			insert into STRG_DATA 
 			(
 				iSTRGTYPEID,
@@ -69,6 +69,8 @@ BY          ON          REMARKS
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.LETTER#"> --vaTEXTFIELD
 			)
 		</cfquery>
+
+		<cfset id = result_insert.GENERATEDKEY>
 	</cfif>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
@@ -120,7 +122,7 @@ BY          ON          REMARKS
 			<!--- Tabs --->
 			<div class="row">
 				<div class="col">
-					<button type="button" class="btn btn-primary">Save</button>
+					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 					<button type="button" class="btn btn-primary">Set to Outdated</button>
 					<button type="button" class="btn btn-primary">Verify</button>
                     <button type="button" class="btn btn-primary">Delete</button>
@@ -134,7 +136,7 @@ BY          ON          REMARKS
 					<table class="table">
                         <tbody>
                             <cfoutput>
-								<form action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
+								<form id="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">
 							</cfoutput>
 									<tr class="table-active">
 										<th>Item Name</th>
@@ -146,7 +148,7 @@ BY          ON          REMARKS
 									</tr>
 									<tr class="">
 										<th>Remarks</th>
-										<td><textarea id="Remarks" name="Remarks" rows="10" cols="80"></textarea></td>
+										<td><textarea id="Remarks" name="Remarks" class="form-control" rows="10" cols="80"></textarea></td>
 									</tr>
 									<tr class="">
 										<th>Storage Type</th>
@@ -177,10 +179,6 @@ BY          ON          REMARKS
 											<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
 										</td>
 									</tr>
-									<tr>
-										<th>Submit</th>
-										<td><input type="submit" class="btn btn-primary" /></td>
-									</tr>
 								</form>
                         </tbody>
                     </table>
@@ -199,6 +197,11 @@ BY          ON          REMARKS
                 // Replace the <textarea id="Letter"> with a CKEditor 4
                 // instance, using default configuration.
                 CKEDITOR.replace( 'Letter' );
+
+				function submitForm() {
+					document.getElementById("createNewStorageItem").submit();
+				}
+
 
 				function StorageTypeChange() {
 					const StorageType = document.getElementById('StorageType').value;
