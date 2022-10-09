@@ -71,6 +71,21 @@ BY          ON          REMARKS
 		</cfquery>
 
 		<cfset id = result_insert.GENERATEDKEY>
+
+		<cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
+		
+	</cfif>
+
+	<!--- If the user is viewing current item --->
+	<cfif isDefined('URL.Id')>
+		<!--- Query to fetch specific item --->
+		<cfquery name="q_main_storage_select_specific" datasource="#Request.MTRDSN#">
+			SELECT *
+			FROM STRG_DATA WITH (NOLOCK)
+			WHERE iSTRGID = #URL.id#
+		</cfquery>
+
+		<cfdump  var="#q_main_storage_select_specific#">
 	</cfif>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
