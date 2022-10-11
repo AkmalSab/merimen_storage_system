@@ -139,6 +139,9 @@ BY          ON          REMARKS
 		<title>Merimen Storage System</title>
 		<!--- 	Bootstrap 5 css --->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<!--- Jquery --->
+		<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
 	</head>
 	<body onload="StorageTypeChange()">
 		<div class="container mt-3">
@@ -147,9 +150,9 @@ BY          ON          REMARKS
 				<div class="col">
 					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 					<cfif isDefined('URL.Id')>
-						<button type="button" class="btn btn-primary" onclick="">Set to Outdated</button>
-						<button type="button" class="btn btn-primary" onclick="">Verify</button>
-						<button type="button" class="btn btn-primary" onclick="">Delete</button>
+						<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
+						<button type="button" class="btn btn-primary" onclick="updateStatus('Verify')">Verify</button>
+						<button type="button" class="btn btn-primary" onclick="updateStatus('Delete')">Delete</button>
 					</cfif>					
 				</div>
 			</div>
@@ -277,7 +280,7 @@ BY          ON          REMARKS
 		<script>
                 // Replace the <textarea id="Letter"> with a CKEditor 4
                 // instance, using default configuration.
-                CKEDITOR.replace( 'Letter' );
+                CKEDITOR.replace('Letter');
 
 				function submitForm() {
 					if (FormVerify(document.all('createNewStorageItem'))) {
@@ -307,6 +310,19 @@ BY          ON          REMARKS
 						Documents.style.display = "none";
 						Letter.style.display = "table-row";
 					}
+				}
+
+				function updateStatus(status){
+					// AJAX POST Request
+					$.post("index.cfm?fusebox=strg&fuseaction=act_updatestatus", //url
+					{
+						iSTRGID: <cfoutput>#URL.ID#</cfoutput>, //data
+						Status: status
+					},
+					function(data, status){ //callback
+						var res = JSON.parse(data)
+						console.log(res)
+					});
 				}
 		</script>
 	</body>

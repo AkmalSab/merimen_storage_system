@@ -157,7 +157,6 @@ BY          ON          REMARKS
 			</cfquery>
 			<!--- Query to fetch main storage data --->
 			
-			<cfdump  var="#q_main_storage_select_all#">
 			<!--- Query to fetch main storage data --->
 			<!--- Table --->
 			<div class="row mt-3">
