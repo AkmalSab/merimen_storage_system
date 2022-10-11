@@ -156,8 +156,8 @@ BY          ON          REMARKS
 				ORDER BY iSTRGID;
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-
-<!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
+			
+			<cfdump  var="#q_main_storage_select_all#">
 			<!--- Query to fetch main storage data --->
 			<!--- Table --->
 			<div class="row mt-3">
@@ -172,6 +172,7 @@ BY          ON          REMARKS
 								<th scope="col">Creator - User Name</th>
 								<th scope="col">Rating</th>
 								<th scope="col">Classfied yes/no</th>
+								<th scope="col">Status</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -189,7 +190,8 @@ BY          ON          REMARKS
 										<td>Anyone</td>
 										<cfelse>
 											<td>Only authorized users</td>
-									</cfif>									
+									</cfif>			
+									<td>#VASTATUS#</td>					
 								</tr>		
 							</cfoutput>												
 						</tbody>
