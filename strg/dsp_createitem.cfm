@@ -21,12 +21,11 @@ BY          ON          REMARKS
 =========   ==========  ======================================================================================
 --->
 
-<!--- <cfdump  var="#Request.MTRDSN#"> --->
-<cfif IsDefined("SESSION.VARS.ORGTYPE")>
+<cfif IsDefined("SESSION.sessionid")>
 
 	<!--- If the form has submitted --->
 	<cfif structKeyExists(FORM, "ItemName")>
-<!--- 		<cfdump  var="#FORM#"> --->
+<!--- 		<cfdump  var="#FORM#"><cfabort> --->
 		<cfset datatime = CREATEODBCDATETIME( Now() ) />
 
 		<cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#" result="result_insert">
@@ -72,7 +71,14 @@ BY          ON          REMARKS
 
 		<cfset id = result_insert.GENERATEDKEY>
 
-		<cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
+		<cfparam name="form.FNEXFILE" default="">
+
+		<cfif len(trim(form.FNEXFILE))>
+		<cffile action="upload" fileField="FNEXFILE" destination="C:\Development\mrmstrgsys\docs" nameConflict="makeunique" result="uploadResult">
+		<cfdump  var="#uploadResult#">
+		<p>Thankyou, your file has been uploaded.</p>
+		</cfif>
+<!--- 		<cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#"> --->
 		
 	</cfif>
 
@@ -110,6 +116,8 @@ BY          ON          REMARKS
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
+	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCaddfile.cfm" FNAME="SVCDOC">
+
 	<script>AddOnloadCode("MrmPreprocessForm()");</script>
 	<!--- END IMPORT MERIMEN FRAMEWORK --->
 
@@ -139,9 +147,9 @@ BY          ON          REMARKS
 				<div class="col">
 					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 					<cfif isDefined('URL.Id')>
-						<button type="button" class="btn btn-primary">Set to Outdated</button>
-						<button type="button" class="btn btn-primary">Verify</button>
-						<button type="button" class="btn btn-primary">Delete</button>
+						<button type="button" class="btn btn-primary" onclick="">Set to Outdated</button>
+						<button type="button" class="btn btn-primary" onclick="">Verify</button>
+						<button type="button" class="btn btn-primary" onclick="">Delete</button>
 					</cfif>					
 				</div>
 			</div>
@@ -153,7 +161,7 @@ BY          ON          REMARKS
 					<table class="table">
                         <tbody>
                             <cfoutput>
-								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post">		
+								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#" method="post" enctype="multipart/form-data">		
 							</cfoutput>					
 									<tr class="table-active">
 										<td class=clsField1>Item Name</td>
@@ -204,6 +212,7 @@ BY          ON          REMARKS
 																<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>
 														</cfif>														
 													</cfif>
+													<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>
 												</cfoutput>
 											</select>
 										</td>
@@ -235,7 +244,9 @@ BY          ON          REMARKS
 									</tr>
 									<tr class="" style="display: none;" id="Documenttr">
 										<td class=clsField1>Document</td>
-										<td class=clsValue1><input type="file" class="form-control" id="Document" name="Document" placeholder="Document"></td>
+										<td class=clsValue1>
+											<script>SVCDocSingleDocAttach("Upload Docs","ExFile",1000000,"DOC,DOCX,RTF,TXT,XLS,XLSX,PPT,PPTX,PDF,GIF,JPE,JPEG,JPG,PNG,HTM,HTML,TIF,TIFF",0,1,0);</script>			
+										</td>
 									</tr>
 									<tr class="" style="display: none;" id="Lettertr">
 										<td class=clsField1>Letter</td>
@@ -246,8 +257,7 @@ BY          ON          REMARKS
 													<cfelse>
 														<textarea id="Letter" name="Letter" rows="10" cols="80"></textarea>
 												</cfif>			
-											</cfoutput>
-											
+											</cfoutput>											
 										</td>
 									</tr>
 								</form>
@@ -275,7 +285,6 @@ BY          ON          REMARKS
 						document.getElementById("createNewStorageItem").submit();
 					}
 				}
-
 
 				function StorageTypeChange() {
 					const StorageType = document.getElementById('StorageType').value;

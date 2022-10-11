@@ -20,8 +20,6 @@ REVISION HISTORY
 BY          ON          REMARKS
 =========   ==========  ======================================================================================
 --->
-
-<!--- <cfdump  var="#Request.MTRDSN#"> --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
@@ -181,7 +179,7 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
 									<td>
-										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
+										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#'>#VAITEMNAME#</a>
 									</td>
 									<td>#ISTRGTYPEID#</td>
 									<td>#VADESCRIPTION#</td>
@@ -191,8 +189,7 @@ BY          ON          REMARKS
 										<td>Anyone</td>
 										<cfelse>
 											<td>Only authorized users</td>
-									</cfif>
-									
+									</cfif>									
 								</tr>		
 							</cfoutput>												
 						</tbody>

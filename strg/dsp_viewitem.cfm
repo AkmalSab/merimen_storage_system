@@ -1,1 +1,0 @@
-<h1>dsp_viewitem</h1>
