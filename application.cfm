@@ -167,7 +167,7 @@
 <CFSET Application.DB_MODE=q_trx.DB_MODE>
 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCFORMURL2ATTRIBUTES.cfm" NOFORM=1>
-<cfsilent>
+
 <script>
 var request=new Object();
 request.webroot="#Request.Webroot#";
@@ -177,5 +177,5 @@ request.mtoken="#request.mtoken#";
 var retryid = 0;
 var userid = '';
 </script>
-</cfsilent>
+
 </cfoutput>

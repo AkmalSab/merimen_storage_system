@@ -311,19 +311,6 @@ BY          ON          REMARKS
 						Letter.style.display = "table-row";
 					}
 				}
-
-				function updateStatus(status){
-					// AJAX POST Request
-					$.post("index.cfm?fusebox=strg&fuseaction=act_updatestatus", //url
-					{
-						iSTRGID: <cfoutput>#URL.ID#</cfoutput>, //data
-						Status: status
-					},
-					function(data, status){ //callback
-						var res = JSON.parse(data)
-						console.log(res)
-					});
-				}
 		</script>
 	</body>
 	</html>

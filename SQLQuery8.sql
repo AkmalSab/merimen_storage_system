@@ -17,12 +17,14 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fobj3010 where IDOMAINID = 1 --audit
   SELECT TOP (1000) * from fobj3001 ORDER BY iDOMAINID asc; --list of domain
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
-  SELECT TOP (1000) * from fdoc3001;
+  SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
   SELECT TOP (1000) * from fdoc3003
   SELECT TOP (1000) * from [STRGY_TYPE];
   SELECT TOP (1000) * from [STRG_DATA];
+  SELECT TOP (1000) * from SYS0001;
+
 
   /****** Script for SelectTopNRows command from SSMS  ******/
 SELECT TOP (1000) [vaAPPINST]
