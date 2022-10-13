@@ -99,7 +99,6 @@ BY          ON          REMARKS
 				<div class="col">
 					<cfoutput>
 						<a class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">Return</a>
-						<span>#request.webroot#</span><span>#request.mtoken#</span>
 					</cfoutput>
 					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 					<cfif isDefined('URL.Id')>
