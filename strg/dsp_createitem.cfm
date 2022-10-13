@@ -127,6 +127,10 @@ BY          ON          REMARKS
 													<cfelse>
 														<input type="text" class="form-control" id="ItemName" name="ItemName" onblur="ObjUpperCase(this)" CHKREQUIRED>
 												</cfif>
+												<cfif isDefined('URL.Id')>
+													<input type="hidden" id="editStorage" name="editStorage" value="update"/>
+													<input type="hidden" id="idStorage" name="idStorage" value="#URL.id#"/>
+												</cfif>
 											</cfoutput>
 										</td>
 									</tr>
@@ -163,8 +167,6 @@ BY          ON          REMARKS
 													<cfif isDefined('URL.Id')>
 														<cfif q_main_storage_select_specific.ISTRGTYPEID EQ ISTRGTYPEID>
 															<option value="#ISTRGTYPEID#" selected>#VASTRGDESCRIPTION#</option>
-															<cfelse>
-																<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>
 														</cfif>														
 													</cfif>
 													<option value="#ISTRGTYPEID#">#VASTRGDESCRIPTION#</option>
