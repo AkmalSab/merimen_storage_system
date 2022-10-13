@@ -11,4 +11,8 @@
         <cfmodule template="act_updatestatus.cfm" AttributeCollection=#Arguments#>
         <cfreturn>
     </cffunction>
+    <cffunction name="dsp_viewletter" hint="Homepage for this module" returntype="any" output="true">
+        <cfmodule template="dsp_viewletter.cfm" AttributeCollection=#Arguments#>
+        <cfreturn>
+    </cffunction>
 </cfcomponent>

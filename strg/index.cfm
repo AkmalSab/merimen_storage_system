@@ -6,6 +6,9 @@
     <cfcase VALUE="dsp_createitem">
 		<cfinvoke component="strg.index" method="dsp_createitem" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase VALUE="dsp_viewletter">
+		<cfinvoke component="strg.index" method="dsp_viewletter" ArgumentCollection=#Attributes#>
+	</cfcase>
 	<cfcase VALUE="act_updatestatus">
 		<cfinvoke component="strg.index" method="act_updatestatus" ArgumentCollection=#Attributes#>
 	</cfcase>

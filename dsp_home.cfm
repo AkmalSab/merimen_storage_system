@@ -180,7 +180,14 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
 									<td>
+										<cfif ISTRGTYPEID eq 1>
 										<a style="text-decoration: underline;" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
+										<cfelseif ISTRGTYPEID eq 2>
+											<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
+											<cfelse>
+												<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
+										</cfif>
+										
 									</td>
 									<cfif ISTRGTYPEID eq 1>
 										<td>URL</td>
