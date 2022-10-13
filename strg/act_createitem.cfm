@@ -59,9 +59,7 @@
                 </cfquery>
 
                 <cfset id = result_insert.GENERATEDKEY>
-        </cfif>
-		<cfabort>
-		
+        </cfif>		
 		<cfparam name="form.FNEXFILE" default="">
 
 		<cfif len(trim(form.FNEXFILE))>

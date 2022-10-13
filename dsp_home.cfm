@@ -155,6 +155,8 @@ BY          ON          REMARKS
 				FROM STRG_DATA WITH (NOLOCK)
 				ORDER BY iSTRGID;
 			</cfquery>
+
+<!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
 			<!--- Query to fetch main storage data --->
 			
 			<!--- Table --->
@@ -178,7 +180,7 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
 									<td>
-										<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
+										<a style="text-decoration: underline;" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
 									</td>
 									<cfif ISTRGTYPEID eq 1>
 										<td>URL</td>
