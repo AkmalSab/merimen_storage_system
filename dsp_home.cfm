@@ -157,7 +157,6 @@ BY          ON          REMARKS
 			</cfquery>
 			<!--- Query to fetch main storage data --->
 			
-			<!--- Query to fetch main storage data --->
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
@@ -179,9 +178,15 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
 									<td>
-										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
+										<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
 									</td>
-									<td>#ISTRGTYPEID#</td>
+									<cfif ISTRGTYPEID eq 1>
+										<td>URL</td>
+										<cfelseif ISTRGTYPEID eq 2>
+											<td>document</td>
+											<cfelse>
+												<td>Letter</td>
+									</cfif>									
 									<td>#VADESCRIPTION#</td>
 									<td>#VACREATOR#</td>
 									<td>#IRATING#</td>
