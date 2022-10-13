@@ -3,7 +3,8 @@ SELECT TOP (1000) *
   FROM [claims_dev].[dbo].[FDOC_PHOTO_ANNOTATE]
 
   SELECT TOP (1000) * from trx0008 where iCASEID = 33673
-  SELECT TOP (1000) * from trx0001 where iCASEID = 33673
+  SELECT TOP (1000) * from trx0001 where iCASEID = 792
+  sp_help trx0001
   SELECT TOP (1000) * from trx0070;
   SELECT TOP (1000) * from POL4001;
   SELECT TOP (1000) * from POLB4002;
@@ -13,15 +14,14 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from trx0035
 
 
-  SELECT TOP (1000) * from fobj3010 where IOBJID = 33673 --audit
-  SELECT TOP (1000) * from fobj3010 where IDOMAINID = 1 --audit
+  SELECT TOP (1000) * from fobj3010 where IOBJID = 1 --audit
+  SELECT TOP (1000) * from fobj3010 where IDOMAINID = 11 --audit
   SELECT TOP (1000) * from fobj3001 ORDER BY iDOMAINID asc; --list of domain
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
-  SELECT TOP (1000) * from fdoc3003
-  SELECT TOP (1000) * from [STRGY_TYPE];
+  SELECT TOP (1000) * from fdoc3010;  SELECT TOP (1000) * from [STRGY_TPE];
   SELECT TOP (1000) * from [STRG_DATA];
   SELECT TOP (1000) * from SYS0001;
 

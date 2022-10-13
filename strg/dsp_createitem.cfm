@@ -141,18 +141,27 @@ BY          ON          REMARKS
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<!--- Jquery --->
 		<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-
 	</head>
 	<body onload="StorageTypeChange()">
 		<div class="container mt-3">
+
+			<!--- Update status alert --->
+			<div id="statusAlert" class="row" style="display: none;">
+				<div class="col">
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<strong>Successfully!</strong> update item storage status to <strong><span id="storageStatus"></span></strong>.
+						<button type="button" class="btn-close" onclick="hideStatusAlert()" aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
 			<!--- Tabs --->
 			<div class="row">
 				<div class="col">
 					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 					<cfif isDefined('URL.Id')>
 						<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
-						<button type="button" class="btn btn-primary" onclick="updateStatus('Verify')">Verify</button>
-						<button type="button" class="btn btn-primary" onclick="updateStatus('Delete')">Delete</button>
+						<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
+						<button type="button" class="btn btn-primary" onclick="updateStatus('Deleted')">Delete</button>
 					</cfif>					
 				</div>
 			</div>
@@ -310,6 +319,25 @@ BY          ON          REMARKS
 						Documents.style.display = "none";
 						Letter.style.display = "table-row";
 					}
+				}
+
+				function updateStatus(ItemStatus){
+					// AJAX POST Request
+					$.post("index.cfm?fusebox=strg&fuseaction=act_updatestatus", //url
+					{
+						iSTRGID: <cfoutput>#URL.ID#</cfoutput>, //data
+						Status: ItemStatus
+					},
+					function(data, status){ //callback
+						// var res = JSON.parse(data)
+						console.log(data, status, ItemStatus)						
+					});
+					document.getElementById("statusAlert").style.display = 'block';
+					document.getElementById("storageStatus").innerHTML = ItemStatus;
+				}
+
+				function hideStatusAlert() {
+					document.getElementById("statusAlert").style.display = 'none';
 				}
 		</script>
 	</body>
