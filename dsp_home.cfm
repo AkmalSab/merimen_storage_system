@@ -179,7 +179,7 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
 									<td>
-										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#'>#VAITEMNAME#</a>
+										<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
 									</td>
 									<td>#ISTRGTYPEID#</td>
 									<td>#VADESCRIPTION#</td>

@@ -9,4 +9,7 @@
 	<cfcase VALUE="act_updatestatus">
 		<cfinvoke component="strg.index" method="act_updatestatus" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase VALUE="act_createitem">
+		<cfinvoke component="strg.index" method="act_createitem" ArgumentCollection=#Attributes#>
+	</cfcase>
 </cfswitch>
