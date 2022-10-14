@@ -173,6 +173,7 @@ BY          ON          REMARKS
 								<th scope="col">Rating</th>
 								<th scope="col">Classfied yes/no</th>
 								<th scope="col">Status</th>
+								<th scope="col">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -204,7 +205,10 @@ BY          ON          REMARKS
 										<cfelse>
 											<td>Only authorized users</td>
 									</cfif>			
-									<td>#VASTATUS#</td>					
+									<td>#VASTATUS#</td>
+									<td>
+										<a class="btn btn-primary" href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=#iSTRGID#&#request.mtoken#'>Edit</a>
+									</td>				
 								</tr>		
 							</cfoutput>												
 						</tbody>

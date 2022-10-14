@@ -15,4 +15,10 @@
 	<cfcase VALUE="act_createitem">
 		<cfinvoke component="strg.index" method="act_createitem" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase VALUE="act_updateitem">
+		<cfinvoke component="strg.index" method="act_updateitem" ArgumentCollection=#Attributes#>
+	</cfcase>
+	<cfcase VALUE="dsp_updateitem">
+		<cfinvoke component="strg.index" method="dsp_updateitem" ArgumentCollection=#Attributes#>
+	</cfcase>
 </cfswitch>
