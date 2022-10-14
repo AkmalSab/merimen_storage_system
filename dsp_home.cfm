@@ -54,6 +54,13 @@ BY          ON          REMARKS
         ORDER BY iSTRGTYPEID;
     </cfquery>
     <!--- Query to fetch main storage data --->
+	<!--- Query to fetch storage creator --->
+	<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
+		select iUSID, vaUSName 
+		from SEC0001 a join STRG_DATA b
+		on a.iUSID = b.vaCREATOR;
+	</cfquery>
+	<!--- Query to fetch storage creator --->
 
 	<html lang="en">
 	<head>
@@ -106,9 +113,9 @@ BY          ON          REMARKS
 					<label for="Creator" class="form-label">Creator:</label>
 					<select class="form-select" aria-label="Default select example">
 						<option selected>Open this select menu</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
+						<cfoutput query="q_creator_select_all">
+							<option value="#q_creator_select_all.iUSID#">#q_creator_select_all.vaUSName#</option>
+						</cfoutput>
 					</select>
 				</div>
 				<div class="col">

@@ -71,7 +71,7 @@
             <cfqueryparam cfsqltype="cf_sql_integer" value=0>, --iCLASSIFIED
             <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#">, --vaREMARKS
             <cfqueryparam cfsqltype="cf_sql_varchar" value="Active">, --vaSTATUS
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="Akmal">, --vaCREATOR
+            <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#">, --vaCREATOR
             <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtCREATIONDATE
             <cfqueryparam cfsqltype="cf_sql_integer" value="1">, --iMODIFIEDBY
             <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtMODIFIEDDATE
