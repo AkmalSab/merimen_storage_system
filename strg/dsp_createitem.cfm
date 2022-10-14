@@ -82,7 +82,7 @@ BY          ON          REMARKS
 		<!--- Jquery --->
 		<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 	</head>
-	<body onload="StorageTypeChange()">
+	<body onload="">
 		<div class="container mt-3">
 
 			<!--- Update status alert --->
