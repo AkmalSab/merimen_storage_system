@@ -47,6 +47,14 @@ BY          ON          REMARKS
 	<script>AddOnloadCode("MrmPreprocessForm()");</script>
 	<!--- END IMPORT MERIMEN FRAMEWORK --->
 
+	<!--- Query to fetch main storage data --->
+    <cfquery name="q_storage_type_select_all" datasource="#Request.MTRDSN#">
+        SELECT *
+        FROM STRGY_TYPE WITH (NOLOCK)
+        ORDER BY iSTRGTYPEID;
+    </cfquery>
+    <!--- Query to fetch main storage data --->
+
 	<html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -76,9 +84,9 @@ BY          ON          REMARKS
 					<label for="StorageType" class="form-label">Storage Type:</label>
 					<select class="form-select" aria-label="Default select example">
 						<option selected>Open this select menu</option>
-						<option value="1">URL</option>
-						<option value="2">Document</option>
-						<option value="3">PDF</option>
+						<cfoutput query="q_storage_type_select_all">
+							<option value="#q_storage_type_select_all.ISTRGTYPEID#">#q_storage_type_select_all.VASTRGDESCRIPTION#</option>
+						</cfoutput>
 					</select>
 				</div>
 				<div class="col">
