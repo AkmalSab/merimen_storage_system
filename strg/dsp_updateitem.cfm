@@ -116,7 +116,7 @@ BY          ON          REMARKS
 					<table class="table">
                         <tbody>
                             <cfoutput>
-								<form id="createNewStorageItem" name="createNewStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=act_updateitem&#request.mtoken#" method="post" enctype="multipart/form-data">		
+								<form id="updateStorageItem" name="updateStorageItem" action="#request.webroot#index.cfm?fusebox=strg&fuseaction=act_updateitem&#request.mtoken#" method="post" enctype="multipart/form-data">		
 							</cfoutput>					
 									<tr class="table-active">
 										<td class=clsField1>Item Name</td>
@@ -237,9 +237,9 @@ BY          ON          REMARKS
                 CKEDITOR.replace('Letter');
 
 				function submitForm() {
-					if (FormVerify(document.all('createNewStorageItem'))) {
+					if (FormVerify(document.all('updateStorageItem'))) {
                     	alert('Everything OK');
-						document.getElementById("createNewStorageItem").submit();
+						document.getElementById("updateStorageItem").submit();
 					}
 				}
 
