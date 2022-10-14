@@ -11,6 +11,9 @@
 	<cfcase VALUE="MTRroot">
 		<cfinvoke component="index" method="dsp_home" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase VALUE="search">
+		<cfinvoke component="index" method="act_searchitem" ArgumentCollection=#Attributes#>
+	</cfcase>
 	<cfcase VALUE="strg">
 		<cfinclude TEMPLATE="strg/index.cfm">
 	</cfcase>

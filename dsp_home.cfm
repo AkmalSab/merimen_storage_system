@@ -85,84 +85,89 @@ BY          ON          REMARKS
 			</div>
 			<!--- Tabs --->
 
-			<!--- Search criteria line 1 --->
-			<div class="row mt-3">
-				<div class="col">
-					<label for="StorageType" class="form-label">Storage Type:</label>
-					<select class="form-select" aria-label="Default select example">
-						<option selected>Open this select menu</option>
-						<cfoutput query="q_storage_type_select_all">
-							<option value="#q_storage_type_select_all.ISTRGTYPEID#">#q_storage_type_select_all.VASTRGDESCRIPTION#</option>
-						</cfoutput>
-					</select>
+			<!--- form searching --->
+			<cfoutput>
+				<form action="#request.webroot#index.cfm?fusebox=search&fuseaction=act_searchitem&#request.mtoken#" method="POST">
+			</cfoutput>
+				<!--- Search criteria line 1 --->
+				<div class="row mt-3">
+					<div class="col">
+						<label for="StorageType" class="form-label">Storage Type:</label>
+						<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType">
+							<option value="">Open this select menu</option>
+							<cfoutput query="q_storage_type_select_all">
+								<option value="#q_storage_type_select_all.ISTRGTYPEID#">#q_storage_type_select_all.VASTRGDESCRIPTION#</option>
+							</cfoutput>
+						</select>
+					</div>
+					<div class="col">
+						<label for="ItemName" class="form-label">Item Name:</label>
+						<input type="text" class="form-control" id="ItemName" name="ItemName" placeholder="">
+					</div>
+					<div class="col">
+						<label for="Description" class="form-label">Description:</label>
+						<input type="text" class="form-control" id="Description" name="Description" placeholder="">
+					</div>
 				</div>
-				<div class="col">
-					<label for="ItemName" class="form-label">Item Name:</label>
-  					<input type="text" class="form-control" id="ItemName" placeholder="">
-				</div>
-				<div class="col">
-					<label for="Description" class="form-label">Description:</label>
-  					<input type="text" class="form-control" id="Description" placeholder="">
-				</div>
-			</div>
-			<!--- Search criteria line 1 --->
+				<!--- Search criteria line 1 --->
 
-			<!--- Search criteria line 2 --->
-			<div class="row mt-3">
-				<div class="col">
-					<label for="Creator" class="form-label">Creator:</label>
-					<select class="form-select" aria-label="Default select example">
-						<option selected>Open this select menu</option>
-						<cfoutput query="q_creator_select_all">
-							<option value="#q_creator_select_all.iUSID#">#q_creator_select_all.vaUSName#</option>
-						</cfoutput>
-					</select>
+				<!--- Search criteria line 2 --->
+				<div class="row mt-3">
+					<div class="col">
+						<label for="Creator" class="form-label">Creator:</label>
+						<select class="form-select" aria-label="Default select example" id="Creator" name="Creator">
+							<option value="">Open this select menu</option>
+							<cfoutput query="q_creator_select_all">
+								<option value="#q_creator_select_all.iUSID#">#q_creator_select_all.vaUSName#</option>
+							</cfoutput>
+						</select>
+					</div>
+					<div class="col">
+						<label for="Tags" class="form-label">Tags:</label>
+						<input type="text" class="form-control" id="Tags" name="Tags" placeholder="">
+					</div>
+					<div class="col">
+						<label for="Rating" class="form-label">Rating:</label>
+						<select class="form-select" aria-label="Default select example" id="Rating" name="Rating">
+							<option value="">Open this select menu</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
 				</div>
-				<div class="col">
-					<label for="Tags" class="form-label">Tags:</label>
-  					<input type="text" class="form-control" id="Tags" placeholder="">
-				</div>
-				<div class="col">
-					<label for="Creator" class="form-label">Rating:</label>
-					<select class="form-select" aria-label="Default select example">
-						<option selected>Open this select menu</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
-				</div>
-			</div>
-			<!--- Search criteria line 2 --->
+				<!--- Search criteria line 2 --->
 
-			<!--- Date range --->
-			<div class="row mt-3">
-				<div class="col">
-					<form action="test" method="post" name="testform">
+				<!--- Date range --->
+				<div class="row mt-3">
+					<div class="col">
 						<table>
 							<tr>
 								<td class=clsValue1>
 									<label for="DateFrom" class="form-label">Date From:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED id=GUIdateFrom name="GUIdateFrom" type=text>
 								</td>
 								<td class=clsValue1>
 									<label for="DateTo" class="form-label">Date To:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED id=GUIdateTo name="GUIdateTo" type=text>
 								</td>
 							</tr>
 						</table>
 						<!---	<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton"> --->
-					</form>
+					</div>
 				</div>
-			</div>
-			<!--- Date range --->
+				<!--- Date range --->
 
-			<div class="row mt-3">
-				<div class="col col-md-4">
-					<button type="button" class="btn btn-secondary">Search</button>
+				<div class="row mt-3">
+					<div class="col col-md-4">
+						<input type="submit" class="btn btn-secondary" value="Search"/>
+						<input type="reset" class="btn btn-warning" value="Reset"/>
+					</div>
 				</div>
-			</div>
+			</form>
+			<!--- form searching --->
 
 			<!--- Query to fetch main storage data --->
 			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">

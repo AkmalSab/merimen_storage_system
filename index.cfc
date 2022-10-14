@@ -18,4 +18,8 @@
         <CFMODULE template="dsp_home.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
+    <cffunction name="act_searchitem" hint="Display the main login page.">
+        <cfinclude  template="act_searchitem.cfm">
+        <cfreturn>
+    </cffunction>
 </cfcomponent>
