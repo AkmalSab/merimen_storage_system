@@ -87,7 +87,7 @@ BY          ON          REMARKS
 
 			<!--- form searching --->
 			<cfoutput>
-				<form action="#request.webroot#index.cfm?fusebox=search&fuseaction=act_searchitem&#request.mtoken#" method="POST">
+				<form id="searchForm" name="searchForm" action="" method="">
 			</cfoutput>
 				<!--- Search criteria line 1 --->
 				<div class="row mt-3">
@@ -162,7 +162,7 @@ BY          ON          REMARKS
 
 				<div class="row mt-3">
 					<div class="col col-md-4">
-						<input type="submit" class="btn btn-secondary" value="Search"/>
+						<input type="button" class="btn btn-secondary" value="Search" onclick="searchStorage()"/>
 						<input type="reset" class="btn btn-warning" value="Reset"/>
 					</div>
 				</div>
@@ -250,6 +250,18 @@ BY          ON          REMARKS
 
 		<!--- 	Bootstrap 5 JS --->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+		<script>
+			function searchStorage(){
+				// AJAX POST Request
+				$.post("index.cfm?fusebox=search", //url
+				$("#searchForm").serializeArray(), //data
+				function(data, status){ //callback
+					var res = JSON.parse(data)
+					console.log(data)						
+				});
+			}
+		</script>
 	</body>
 	</html>
 <cfelse>

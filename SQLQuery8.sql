@@ -4,7 +4,7 @@ SELECT TOP (1000) *
 
   SELECT TOP (1000) * from trx0008 where iCASEID = 33673
   SELECT TOP (1000) * from trx0001 where iCASEID = 792
-  sp_help trx0001
+  sp_help STRG_DATA
   SELECT TOP (1000) * from trx0070;
   SELECT TOP (1000) * from POL4001;
   SELECT TOP (1000) * from POLB4002;
@@ -20,10 +20,41 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
- SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
-  SELECT TOP (1000) * from fdoc3010;  SELECT TOP (1000) * from [STRGY_TPE];
+  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
+  SELECT TOP (1000) * from fdoc3002; --doc class
+  SELECT TOP (1000) * from fdoc3003; --uploaded file table
+  SELECT TOP (1000) * from fdoc3004;
+  SELECT TOP (1000) * from fdoc3005; --file location
+  SELECT TOP (1000) * from fdoc3006; --file folder
+  SELECT TOP (1000) * from fdoc3007;
+  SELECT TOP (1000) * from fdoc3008;
+  SELECT TOP (1000) * from fdoc3009;
+  SELECT TOP (1000) * from FDOC3001 --document ID definition
+  SELECT TOP (1000) * from FDOC3010 --document access right
+  SELECT TOP (1000) * from [STRGY_TYPE];
   SELECT TOP (1000) * from [STRG_DATA];
   SELECT TOP (1000) * from SYS0001;
+
+  select iUSID, vaUSName 
+  from SEC0001 a join STRG_DATA b
+  on a.iUSID = b.vaCREATOR
+  WHERE 0=0
+
+  delete from STRG_DATA;
+  delete from STRGY_TYPE;
+  delete from fdoc3006;
+
+  ALTER TABLE [STRG_DATA]
+	ALTER COLUMN vaCREATOR INT;
+
+  DBCC CHECKIDENT ('STRGY_TYPE', RESEED, 0);
+GO
+
+DBCC CHECKIDENT ('STRG_DATA', RESEED, 0);
+GO
+
+DBCC CHECKIDENT ('fdoc3006', RESEED, 0);
+GO
 
 
   /****** Script for SelectTopNRows command from SSMS  ******/
@@ -202,3 +233,39 @@ FROM SEC0001 WITH (NOLOCK)
 WHERE iUSID=0
 AND siSTATUS=0
 ORDER BY COTYPE ASC
+
+USE [merimen_storage_system]
+GO
+
+/****** Object:  Table [dbo].[FDOC3006]    Script Date: 14/10/2022 4:19:56 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[FDOC3006](
+	[IFILEID] [int] IDENTITY(1,1) NOT NULL,
+	[VAFILEPATH] [nvarchar](255) NULL,
+	[VAFILENAME] [nvarchar](150) NOT NULL,
+	[VAFILEORIGNAME] [nvarchar](255) NULL,
+	[VAFILEEXT] [varchar](30) NULL,
+	[IFILESIZE] [int] NULL,
+	[ICRTBY] [int] NOT NULL,
+	[DTCRTON] [datetime] NOT NULL,
+	[SISTATUS] [smallint] NOT NULL,
+ CONSTRAINT [PK_FDOC3006] PRIMARY KEY CLUSTERED 
+(
+	[IFILEID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[FDOC3006] ADD  CONSTRAINT [DF_FDOC3006__ICRTBY__750FDE1D]  DEFAULT (1) FOR [ICRTBY]
+GO
+
+ALTER TABLE [dbo].[FDOC3006] ADD  CONSTRAINT [DF_FDOC3006__DTCRTON__76040256]  DEFAULT (getdate()) FOR [DTCRTON]
+GO
+
+ALTER TABLE [dbo].[FDOC3006] ADD  CONSTRAINT [DF_FDOC3006__SISTATU__76F8268F]  DEFAULT (0) FOR [SISTATUS]
+GO
