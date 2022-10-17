@@ -258,7 +258,16 @@ BY          ON          REMARKS
 				$.post("index.cfm?fusebox=search", //url
 				$("#searchForm").serializeArray(), //data
 				function(data, status){ //callback
-					console.log(data)						
+					let string = '';
+					let bool = false;
+					for (var i = 0; i < data.length; i++) {
+						if(data.charAt(i) == '['){
+							bool = true
+							string += data.charAt(i)
+						}
+						if(bool) string += data.charAt(i)
+					}
+					console.log(string)	
 				});
 			}
 		</script>
