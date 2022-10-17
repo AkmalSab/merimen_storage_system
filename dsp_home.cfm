@@ -86,12 +86,12 @@ BY          ON          REMARKS
 			<!--- Tabs --->
 
 			<!--- form searching --->
-			<cfoutput>
-				<form id="searchForm" name="searchForm" action="" method="">
-			</cfoutput>
+		<cfoutput>
+			<form id="searchForm" name="searchForm" action="#" method="#">
+		</cfoutput>
 				<!--- Search criteria line 1 --->
 				<div class="row mt-3">
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="StorageType" class="form-label">Storage Type:</label>
 						<select class="form-select" aria-label="Default select example" id="StorageType" name="StorageType">
 							<option value="">Open this select menu</option>
@@ -100,11 +100,11 @@ BY          ON          REMARKS
 							</cfoutput>
 						</select>
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="ItemName" class="form-label">Item Name:</label>
 						<input type="text" class="form-control" id="ItemName" name="ItemName" placeholder="">
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Description" class="form-label">Description:</label>
 						<input type="text" class="form-control" id="Description" name="Description" placeholder="">
 					</div>
@@ -113,7 +113,7 @@ BY          ON          REMARKS
 
 				<!--- Search criteria line 2 --->
 				<div class="row mt-3">
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Creator" class="form-label">Creator:</label>
 						<select class="form-select" aria-label="Default select example" id="Creator" name="Creator">
 							<option value="">Open this select menu</option>
@@ -122,11 +122,11 @@ BY          ON          REMARKS
 							</cfoutput>
 						</select>
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Tags" class="form-label">Tags:</label>
 						<input type="text" class="form-control" id="Tags" name="Tags" placeholder="">
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Rating" class="form-label">Rating:</label>
 						<select class="form-select" aria-label="Default select example" id="Rating" name="Rating">
 							<option value="">Open this select menu</option>
@@ -147,23 +147,24 @@ BY          ON          REMARKS
 							<tr>
 								<td class=clsValue1>
 									<label for="DateFrom" class="form-label">Date From:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED id=GUIdateFrom name="GUIdateFrom" type=text>
+									<input class="form-control" MRMOBJ=CALDATE id="GUIdateFrom" name="GUIdateFrom" type=text>
 								</td>
 								<td class=clsValue1>
 									<label for="DateTo" class="form-label">Date To:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED id=GUIdateTo name="GUIdateTo" type=text>
+									<input class="form-control" MRMOBJ=CALDATE id="GUIdateTo" name="GUIdateTo" type=text>
 								</td>
 							</tr>
 						</table>
-						<!---	<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton"> --->
 					</div>
 				</div>
 				<!--- Date range --->
 
 				<div class="row mt-3">
-					<div class="col col-md-4">
-						<input type="button" class="btn btn-secondary" value="Search" onclick="searchStorage()"/>
-						<input type="reset" class="btn btn-warning" value="Reset"/>
+					<div class="col-12 col-md-6 col-lg-4">
+						<input type="button" class="col-12 btn btn-secondary" value="Search" onclick="searchStorage()"/>
+					</div>
+					<div class="mt-sm-2 mt-md-0 col-12 col-md-6 col-lg-4">
+						<input type="reset" class="col-12 btn btn-warning" value="Reset"/>
 					</div>
 				</div>
 			</form>
@@ -257,7 +258,6 @@ BY          ON          REMARKS
 				$.post("index.cfm?fusebox=search", //url
 				$("#searchForm").serializeArray(), //data
 				function(data, status){ //callback
-					var res = JSON.parse(data)
 					console.log(data)						
 				});
 			}
