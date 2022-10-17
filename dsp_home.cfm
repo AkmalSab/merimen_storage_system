@@ -177,13 +177,13 @@ BY          ON          REMARKS
 				ORDER BY iSTRGID;
 			</cfquery>
 
-<!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
+			<!--- cfdump  var="#q_main_storage_select_all#"> --->
 			<!--- Query to fetch main storage data --->
 			
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
-					<table class="table table-striped table-hover">
+					<table id="main_storage" class="table table-striped table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Created On</th>
@@ -197,7 +197,7 @@ BY          ON          REMARKS
 								<th scope="col">Action</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tbodies">
 							<cfoutput query="q_main_storage_select_all">
 								<tr>
 									<th scope="row">#DTCREATIONDATE#</th>									
@@ -267,7 +267,50 @@ BY          ON          REMARKS
 						}
 						if(bool) string += data.charAt(i)
 					}
-					console.log(string)	
+					const arr = JSON.parse(string.slice(1));
+
+					console.log(arr);
+
+					var table = document.getElementById ("main_storage");
+					var tb = document.querySelectorAll('tbody');
+					var tbs = document.getElementById('tbodies');
+					console.log('main_storage = ' + main_storage.rows.length)
+					for (var i = 1; i < table.rows.length; i++) {
+						table.deleteRow(i++);
+					}	
+					
+					for(let i=0; i<arr.length;i++){
+						let row = document.createElement('tr');
+						let th_1 = document.createElement('th');
+						th_1.innerHTML = arr[i].DTCREATIONDATE;
+						let td_1 = document.createElement('td');
+						td_1.innerHTML = arr[i].VAITEMNAME;
+						let td_2 = document.createElement('td');
+						td_2.innerHTML = arr[i].ISTRGTYPEID;
+						let td_3 = document.createElement('td');
+						td_3.innerHTML = arr[i].VADESCRIPTION;
+						let td_4 = document.createElement('td');
+						td_4.innerHTML = arr[i].VACREATOR;
+						let td_5 = document.createElement('td');
+						td_5.innerHTML = arr[i].IRATING;
+						let td_6 = document.createElement('td');
+						td_6.innerHTML = arr[i].ICLASSIFIED;
+						let td_7 = document.createElement('td');
+						td_7.innerHTML = arr[i].VASTATUS;
+						let td_8 = document.createElement('td');
+						td_8.innerHTML = arr[i].VASTATUS;						
+						row.appendChild(th_1)
+						row.appendChild(td_1)
+						row.appendChild(td_2)
+						row.appendChild(td_3)
+						row.appendChild(td_4)
+						row.appendChild(td_5)
+						row.appendChild(td_6)
+						row.appendChild(td_7)
+						row.appendChild(td_8)
+						tbs.appendChild(row)
+					}
+					
 				});
 			}
 		</script>
