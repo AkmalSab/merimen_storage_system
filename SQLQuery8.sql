@@ -32,13 +32,31 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from FDOC3001 --document ID definition
   SELECT TOP (1000) * from FDOC3010 --document access right
   SELECT TOP (1000) * from [STRGY_TYPE];
-  SELECT TOP (1000) * from [STRG_DATA];
+  SELECT TOP (1000) * from [STRG_DATA] order by iSTRGTYPEID asc;
   SELECT TOP (1000) * from SYS0001;
 
-  select iUSID, vaUSName 
-  from SEC0001 a join STRG_DATA b
-  on a.iUSID = b.vaCREATOR
-  WHERE 0=0
+  select
+  a.vaCREATOR, 
+  a.iSTRGTYPEID as storage_type_id,
+  (
+	select count(iSTRGID)
+	from STRG_DATA 
+	where vaSTATUS = 'Active' and iSTRGTYPEID = a.iSTRGTYPEID
+  ) as Active_counters,
+  (
+	select count(iSTRGID)
+	from STRG_DATA a 
+	where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID
+  ) as Verified_counters,
+  (
+	select count(iSTRGID)
+	from STRG_DATA
+	where vaSTATUS = 'Outdated' and iSTRGTYPEID = a.iSTRGTYPEID
+  ) as Outdated_counters
+  from STRG_DATA a WITH (NOLOCK)
+  where 0=0
+  group by a.vaCREATOR,  a.iSTRGTYPEID
+
 
   delete from STRG_DATA;
   delete from STRGY_TYPE;

@@ -69,11 +69,11 @@ BY          ON          REMARKS
 							<tr>
 								<td class=clsValue1>
 									<label for="DateFrom" class="form-label">Date From:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name="GUIdateFrom" id="GUIdate" type=text>
 								</td>
 								<td class=clsValue1>
 									<label for="DateTo" class="form-label">Date To:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name=GUIdate id=GUIdate type=text>
+									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name="GUIdateTo" id="GUIdate" type=text>
 								</td>
 							</tr>
 						</table>
@@ -91,13 +91,17 @@ BY          ON          REMARKS
 
 			<!--- Query to fetch main storage data --->
 			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
-				SELECT *
-				FROM STRG_DATA WITH (NOLOCK)
-				ORDER BY iSTRGID;
+				select
+				a.vaCREATOR, 
+				a.iSTRGTYPEID,
+				a.vaSTATUS,
+				count(a.iSTRGTYPEID) as counters
+				from STRGY_TYPE b join STRG_DATA a WITH (NOLOCK) on a.iSTRGTYPEID = b.iSTRGTYPEID 
+				where 0=0
+				group by a.vaCREATOR,  a.iSTRGTYPEID, a.vaSTATUS
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-
-<!--- 			<cfdump  var="#q_main_storage_select_all#"> --->
+			<cfdump  var="#q_main_storage_select_all#">
 			<!--- Query to fetch main storage data --->
 			<!--- Table --->
 			<div class="row mt-3">
@@ -107,45 +111,41 @@ BY          ON          REMARKS
 							<tr>
 								<th scope="col">Storage Type</th>
 								<th scope="col">Count of Verified</th>
-								<th scope="col">Count if Not Verified</th>
+								<th scope="col">Count of Not Verified</th>
 								<th scope="col">Count of Classified</th>
 							</tr>
 						</thead>
 						<tbody>
 							<cfoutput query="q_main_storage_select_all">
-                                <tr>
-                                    <th colspan="4">Creator A</th>
-                                </tr>
+                                <!--- <tr>
+                                    <th colspan="4">#VACREATOR#</th>
+                                </tr> --->
 								<tr>
-									<th scope="row">#DTCREATIONDATE#</th>
-									<td>#VAITEMNAME#</td>
-									<td>#ISTRGTYPEID#</td>
-									<td>#VADESCRIPTION#</td>									
+									<cfif ISTRGTYPEID eq 1>
+										<th scope="row">URL</th>
+										<cfelseif ISTRGTYPEID eq 2>
+											<th scope="row">Documents</th>
+											<cfelse>
+												<th scope="row">Letter</th>
+									</cfif>						
+									<td>#COUNTERS#</td>
+									<td>#COUNTERS#</td>
+									<td>#COUNTERS#</td>									
 								</tr>	
-                                <tr>
+                                <!--- <tr>
                                     <td>Total</td>
                                     <td colspan="3">total</td>
-                                </tr>	
+                                </tr>	 --->
 							</cfoutput>	
                             <tr>
                                 <td>Grand Total</td>
-                                <td colspan="3">Grand Total</td>
+                                <td colspan="3">100</td>
                             </tr>											
 						</tbody>
 					</table>
 				</div>
 			</div>
 			<!--- Table --->
-
-			<!--- 	Logout --->
-			<cfoutput>
-				<div class="row mt-3">
-					<div class="col">
-						<a class="btn btn-danger" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_logout&#request.mtoken#">Log out</a>
-					</div>
-				</div>
-			</cfoutput>
-			<!--- 	Logout --->
 		</div>
 
 		<!--- 	Bootstrap 5 JS --->
