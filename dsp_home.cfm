@@ -208,8 +208,7 @@ BY          ON          REMARKS
 											<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
 											<cfelse>
 												<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
-										</cfif>
-										
+										</cfif>										
 									</td>
 									<cfif ISTRGTYPEID eq 1>
 										<td>URL</td>
@@ -274,19 +273,25 @@ BY          ON          REMARKS
 					var table = document.getElementById ("main_storage");
 					var tb = document.querySelectorAll('tbody');
 					var tbs = document.getElementById('tbodies');
-					console.log('main_storage = ' + main_storage.rows.length)
-					for (var i = 1; i < table.rows.length; i++) {
-						table.deleteRow(i++);
-					}	
+
+					// remove all tbody's row
+					$("#main_storage tbody tr").remove();
 					
 					for(let i=0; i<arr.length;i++){
 						let row = document.createElement('tr');
 						let th_1 = document.createElement('th');
-						th_1.innerHTML = arr[i].DTCREATIONDATE;
+						th_1.innerHTML = arr[i].DTCREATIONDATE;						
 						let td_1 = document.createElement('td');
-						td_1.innerHTML = arr[i].VAITEMNAME;
+						if(arr[i].ISTRGTYPEID == 1)
+							td_1.innerHTML = <cfoutput>'<a style="text-decoration: underline;" onclick=JSVCopenWin("' + arr[i].VAURLADDRESS + '",0,"yes",null,null,true,null)>' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
+						else if(arr[i].ISTRGTYPEID == 2)
+							td_1.innerHTML = <cfoutput>'<a href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=' + arr[i].iSTRGID + '&#request.mtoken#">' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
+						else
+							td_1.innerHTML = <cfoutput>'<a style="text-decoration: underline;" onclick=JSVCopenWin("#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=' + arr[i].ISTRGID + '&#request.mtoken#",0,"yes",null,null,true,null)>' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
 						let td_2 = document.createElement('td');
-						td_2.innerHTML = arr[i].ISTRGTYPEID;
+						if(arr[i].ISTRGTYPEID == 1) td_2.innerHTML = 'URL';
+						else if(arr[i].ISTRGTYPEID == 2) td_2.innerHTML = 'Document';
+						else td_2.innerHTML = 'Letter';						
 						let td_3 = document.createElement('td');
 						td_3.innerHTML = arr[i].VADESCRIPTION;
 						let td_4 = document.createElement('td');
@@ -294,11 +299,12 @@ BY          ON          REMARKS
 						let td_5 = document.createElement('td');
 						td_5.innerHTML = arr[i].IRATING;
 						let td_6 = document.createElement('td');
-						td_6.innerHTML = arr[i].ICLASSIFIED;
+						if(arr[i].ICLASSIFIED == 0) td_6.innerHTML = 'Anyone';
+						else td_6.innerHTML = 'Only authorized users';
 						let td_7 = document.createElement('td');
 						td_7.innerHTML = arr[i].VASTATUS;
 						let td_8 = document.createElement('td');
-						td_8.innerHTML = arr[i].VASTATUS;						
+						td_8.innerHTML = <cfoutput>'<a class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=' + arr[i].ISTRGID + '&#request.mtoken#">Edit</a>'</cfoutput>			
 						row.appendChild(th_1)
 						row.appendChild(td_1)
 						row.appendChild(td_2)
