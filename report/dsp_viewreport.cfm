@@ -93,12 +93,25 @@ BY          ON          REMARKS
 			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
 				select
 				a.vaCREATOR, 
-				a.iSTRGTYPEID,
-				a.vaSTATUS,
-				count(a.iSTRGTYPEID) as counters
-				from STRGY_TYPE b join STRG_DATA a WITH (NOLOCK) on a.iSTRGTYPEID = b.iSTRGTYPEID 
+				a.iSTRGTYPEID as storage_type_id,
+				(
+					select count(iSTRGID)
+					from STRG_DATA 
+					where vaSTATUS = 'Active' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+				) as Active_counters,
+				(
+					select count(iSTRGID)
+					from STRG_DATA a 
+					where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+				) as Verified_counters,
+				(
+					select count(iSTRGID)
+					from STRG_DATA
+					where vaSTATUS = 'Outdated' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+				) as Outdated_counters
+				from STRG_DATA a WITH (NOLOCK)
 				where 0=0
-				group by a.vaCREATOR,  a.iSTRGTYPEID, a.vaSTATUS
+				group by a.vaCREATOR,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
 			<cfdump  var="#q_main_storage_select_all#">
