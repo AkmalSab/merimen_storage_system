@@ -57,26 +57,31 @@ BY          ON          REMARKS
 		<title>Merimen Storage System</title>
 		<!--- 	Bootstrap 5 css --->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<!--- Jquery --->
+		<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+		
 	</head>
 	<body>
 		<div class="container mt-3">
 
 			<!--- Date range --->
 			<div class="row mt-3">
-				<div class="col">
-					<form action="test" method="post" name="testform">
-						<CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCDATERANGE.cfm">
-						<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton">
-					</form>
-				</div>
+				<form id="searchForm" name="searchForm">
+					<CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCDATERANGE.cfm">
+					<div class="row">
+						<div class="col-4">
+							<label for="UserName" class="form-label">User Name:</label>
+							<input type="text" class="form-control" id="UserName" name="UserName" placeholder="">
+						</div>
+						<div class="col-4">
+							<label for="Rating" class="form-label">Rating:</label>
+							<input type="text" class="form-control" id="Rating" name="Rating" placeholder="">
+						</div>
+					</div>
+					<input type="button" class="col-12 btn btn-secondary" value="Search" onclick="searchStorage()"/>
+				</form>
 			</div>
 			<!--- Date range --->
-
-			<div class="row mt-3">
-				<div class="col col-md-4">
-					<button type="button" class="btn btn-secondary">Search</button>
-				</div>
-			</div>
 
 			<!--- Query to fetch main storage data --->
 			<cfquery name="q_main_storage_report" datasource="#Request.MTRDSN#">
@@ -108,7 +113,7 @@ BY          ON          REMARKS
 				group by a.vaCREATOR,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-<!--- 			<cfdump  var="#q_main_storage_report#"> --->
+<!--- <cfdump  var="#q_main_storage_report#"> --->
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
@@ -168,6 +173,17 @@ BY          ON          REMARKS
 
 		<!--- 	Bootstrap 5 JS --->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+		<script>
+			function searchStorage(){
+				// AJAX POST Request
+				$.post("index.cfm?fusebox=rpt&fuseaction=act_searchreport", //url
+				$("#searchForm").serializeArray(), //data
+				function(data, status){ //callback
+					
+				});
+			}
+		</script>
 	</body>
 	</html>
 <cfelse>
