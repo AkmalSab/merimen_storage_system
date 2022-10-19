@@ -56,7 +56,7 @@ BY          ON          REMARKS
     <!--- Query to fetch main storage data --->
 	<!--- Query to fetch storage creator --->
 	<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
-		select iUSID, vaUSName 
+		select distinct iUSID, vaUSName
 		from SEC0001 a join STRG_DATA b
 		on a.iUSID = b.vaCREATOR;
 	</cfquery>

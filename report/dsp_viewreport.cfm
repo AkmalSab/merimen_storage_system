@@ -59,6 +59,14 @@ BY          ON          REMARKS
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<!--- Jquery --->
 		<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+		<!--- Query to fetch storage creator --->
+		<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
+			select distinct iUSID, vaUSName
+			from SEC0001 a join STRG_DATA b
+			on a.iUSID = b.vaCREATOR;
+		</cfquery>
+		<!--- Query to fetch storage creator --->
 		
 	</head>
 	<body>
@@ -71,7 +79,12 @@ BY          ON          REMARKS
 					<div class="row">
 						<div class="col-4">
 							<label for="UserName" class="form-label">User Name:</label>
-							<input type="text" class="form-control" id="UserName" name="UserName" placeholder="">
+							<select class="form-select" aria-label="Default select example" id="UserName" name="UserName">
+								<option value="">Open this select menu</option>
+								<cfoutput query="q_creator_select_all">
+									<option value="#q_creator_select_all.iUSID#">#q_creator_select_all.vaUSName#</option>
+								</cfoutput>
+							</select>
 						</div>
 						<div class="col-4">
 							<label for="Rating" class="form-label">Rating:</label>
