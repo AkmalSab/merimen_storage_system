@@ -1,6 +1,7 @@
 <!--- <cfdump  var="#FORM#"> --->
-<cfset DRFROM = lsParseDateTime("#FORM.DRFROM#","en","dd/mm/yyyy")>
-<cfset DRTO = lsParseDateTime("#FORM.DRTO#","en","dd/mm/yyyy")>
+
+<cfif len(trim(FORM.DRFROM)) NEQ 0><cfset DRFROM = lsParseDateTime("#FORM.DRFROM#","en","dd/mm/yyyy")></cfif>
+<cfif len(trim(FORM.DRTO)) NEQ 0><cfset DRTO = lsParseDateTime("#FORM.DRTO#","en","dd/mm/yyyy")></cfif>
 
 <cfquery name="q_search_storage" datasource="#Request.MTRDSN#" result="result_search_storage">
     select

@@ -75,7 +75,14 @@ BY          ON          REMARKS
 						</div>
 						<div class="col-4">
 							<label for="Rating" class="form-label">Rating:</label>
-							<input type="text" class="form-control" id="Rating" name="Rating" placeholder="">
+							<select class="form-select" aria-label="Default select example" id="Rating" name="Rating">
+								<option value="">Open this select menu</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
 						</div>
 					</div>
 					<input type="button" class="btn btn-secondary" value="Search" onclick="searchStorage()"/>
