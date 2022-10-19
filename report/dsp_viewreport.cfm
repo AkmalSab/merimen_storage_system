@@ -97,8 +97,8 @@ BY          ON          REMARKS
 				(
 					select count(iSTRGID)
 					from STRG_DATA 
-					where vaSTATUS = 'Active' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
-				) as Active_counters,
+					where vaSTATUS != 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+				) as Unverified_counters,
 				(
 					select count(iSTRGID)
 					from STRG_DATA a 
@@ -107,8 +107,13 @@ BY          ON          REMARKS
 				(
 					select count(iSTRGID)
 					from STRG_DATA
-					where vaSTATUS = 'Outdated' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
-				) as Outdated_counters
+					where iCLASSIFIED = 1 and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+				) as Classified_counters,
+				(
+					select count(iSTRGID)
+					from STRG_DATA
+					where vaCREATOR = a.vaCREATOR
+				) as Total_counters
 				from STRG_DATA a WITH (NOLOCK)
 				where 0=0
 				group by a.vaCREATOR,  a.iSTRGTYPEID
@@ -128,16 +133,17 @@ BY          ON          REMARKS
 							</tr>
 						</thead>
 						<tbody>
-							<cfset creator = 0>
-							<cfset Verified_total = 0>
-							<cfset Unverified_total = 0>
-							<cfset Classified_total = 0>
+							<cfset creator = 0><cfset i = 0>
 							<cfoutput query="q_main_storage_report">
+								<cfset i += 1>
                                 <cfif creator != VACREATOR>
+									<cfset creator = VACREATOR>
+									<cfset Verified_total = 0>
+									<cfset Unverified_total = 0>
+									<cfset Classified_total = 0>
 									<tr>
 										<th colspan="4">#VACREATOR#</th>
 									</tr>
-									<cfset creator = VACREATOR>
 								</cfif>
 								<tr>
 									<cfif STORAGE_TYPE_ID eq 1>
@@ -148,16 +154,18 @@ BY          ON          REMARKS
 												<td>Letter</td>
 									</cfif>						
 									<td>#VERIFIED_COUNTERS#</td><cfset Verified_total += VERIFIED_COUNTERS>
-									<td>#ACTIVE_COUNTERS#</td><cfset Unverified_total += ACTIVE_COUNTERS>
-									<td>#OUTDATED_COUNTERS#</td><cfset Classified_total += OUTDATED_COUNTERS>
+									<td>#UNVERIFIED_COUNTERS#</td><cfset Unverified_total += UNVERIFIED_COUNTERS>
+									<td>#CLASSIFIED_COUNTERS#</td><cfset Classified_total += CLASSIFIED_COUNTERS>
 								</tr>	
-                                <!--- <tr>
-                                    <td>Total</td>
-                                    <td colspan="3">#Verified_total#</td>
-                                </tr>	 --->
+								<cfif creator != q_main_storage_report.UNVERIFIED_COUNTERS[i+1]>
+									<tr>
+										<th>Total</th>
+										<td colspan="3">#TOTAL_COUNTERS#</td>
+									</tr>
+								</cfif>                                
 							</cfoutput>	
                             <tr>
-                                <td>Grand Total</td>
+                                <th>Grand Total</th>
                                 <td><cfoutput>#Verified_total#</cfoutput></td>
 								<td><cfoutput>#Unverified_total#</cfoutput></td>
 								<td><cfoutput>#Classified_total#</cfoutput></td>
