@@ -78,7 +78,7 @@ BY          ON          REMARKS
 							<input type="text" class="form-control" id="Rating" name="Rating" placeholder="">
 						</div>
 					</div>
-					<input type="button" class="col-12 btn btn-secondary" value="Search" onclick="searchStorage()"/>
+					<input type="button" class="btn btn-secondary" value="Search" onclick="searchStorage()"/>
 				</form>
 			</div>
 			<!--- Date range --->
@@ -117,7 +117,7 @@ BY          ON          REMARKS
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
-					<table class="table table-striped table-hover">
+					<table id="report_storage" class="table table-striped table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Storage Type</th>
@@ -126,7 +126,7 @@ BY          ON          REMARKS
 								<th scope="col">Count of Classified</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tbodies">
 							<cfset creator = 0><cfset i = 0>
 							<cfoutput query="q_main_storage_report">
 								<cfset i += 1>
@@ -180,7 +180,114 @@ BY          ON          REMARKS
 				$.post("index.cfm?fusebox=rpt&fuseaction=act_searchreport", //url
 				$("#searchForm").serializeArray(), //data
 				function(data, status){ //callback
-					
+					let string = '';
+					let bool = false;
+					for (var i = 0; i < data.length; i++) {
+						if(data.charAt(i) == '['){
+							bool = true
+							string += data.charAt(i)
+						}
+						if(bool) string += data.charAt(i)
+					}
+					const arr = JSON.parse(string.slice(1));
+
+					console.log(arr);
+
+					var tbs = document.getElementById('tbodies');
+
+					// remove all tbody's row
+					$("#report_storage tbody tr").remove();
+
+					let creator = 0; verified_counter = 0; unverified_counter = 0; classified_counter = 0;
+
+					// plug in data into table
+					for(let i=0; i<arr.length;i++){
+
+						if(creator != arr[i].VACREATOR){
+							creator = arr[i].VACREATOR
+							// creator row
+							let row = document.createElement('tr');
+							let th_1 = document.createElement('th');
+							th_1.innerHTML = arr[i].VACREATOR;	
+							th_1.colSpan  = "4"
+							row.appendChild(th_1);
+
+							tbs.appendChild(row);
+						}
+						
+
+						// storage type row
+						let row2 = document.createElement('tr');
+						let td_1 = document.createElement('td');
+						if(arr[i].STORAGE_TYPE_ID == 1)
+							td_1.innerHTML = 'URL';
+						else if(arr[i].STORAGE_TYPE_ID == 2)
+							td_1.innerHTML = 'Documents';
+						else
+							td_1.innerHTML = 'Letter';						
+						
+						let td_2 = document.createElement('td');
+						td_2.innerHTML = arr[i].VERIFIED_COUNTERS;	
+						verified_counter += arr[i].VERIFIED_COUNTERS;
+						
+						let td_3 = document.createElement('td');
+						td_3.innerHTML = arr[i].UNVERIFIED_COUNTERS;
+						unverified_counter += arr[i].UNVERIFIED_COUNTERS;
+
+						let td_4 = document.createElement('td');
+						td_4.innerHTML = arr[i].CLASSIFIED_COUNTERS;
+						classified_counter += arr[i].CLASSIFIED_COUNTERS;
+
+						row2.appendChild(td_1);
+						row2.appendChild(td_2);
+						row2.appendChild(td_3);
+						row2.appendChild(td_4);
+						tbs.appendChild(row2);
+
+						
+
+						// total row
+						if(i==arr.length-1){
+							let row3 = document.createElement('tr');
+							let td_5 = document.createElement('th');
+							td_5.innerHTML = 'Total';
+							let td_6 = document.createElement('td');
+							td_6.innerHTML = arr[i].TOTAL_COUNTERS;
+							td_6.colSpan  = "4"
+							row3.appendChild(td_5);
+							row3.appendChild(td_6);
+
+							tbs.appendChild(row3);
+						}
+						else{
+							if(creator != arr[i+1].VACREATOR){
+								let row3 = document.createElement('tr');
+								let td_5 = document.createElement('th');
+								td_5.innerHTML = 'Total';
+								let td_6 = document.createElement('td');
+								td_6.innerHTML = arr[i].TOTAL_COUNTERS;
+								td_6.colSpan  = "4"
+								row3.appendChild(td_5);
+								row3.appendChild(td_6);
+
+								tbs.appendChild(row3);
+							}	
+						}				
+					}
+					let row4 = document.createElement('tr');
+					let td_8 = document.createElement('th');
+					td_8.innerHTML = 'Grand Total'
+					let td_9 = document.createElement('td');
+					td_9.innerHTML = verified_counter;
+					let td_10 = document.createElement('td');
+					td_10.innerHTML = unverified_counter;
+					let td_11 = document.createElement('td');
+					td_11.innerHTML = classified_counter;
+					row4.appendChild(td_8);
+					row4.appendChild(td_9);
+					row4.appendChild(td_10);
+					row4.appendChild(td_11);
+					tbs.appendChild(row4)
 				});
 			}
 		</script>
