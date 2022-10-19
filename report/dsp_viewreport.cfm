@@ -90,7 +90,7 @@ BY          ON          REMARKS
 			</div>
 
 			<!--- Query to fetch main storage data --->
-			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
+			<cfquery name="q_main_storage_report" datasource="#Request.MTRDSN#">
 				select
 				a.vaCREATOR, 
 				a.iSTRGTYPEID as storage_type_id,
@@ -114,8 +114,7 @@ BY          ON          REMARKS
 				group by a.vaCREATOR,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-			<cfdump  var="#q_main_storage_select_all#">
-			<!--- Query to fetch main storage data --->
+			<cfdump  var="#q_main_storage_report#">
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
@@ -129,30 +128,39 @@ BY          ON          REMARKS
 							</tr>
 						</thead>
 						<tbody>
-							<cfoutput query="q_main_storage_select_all">
-                                <!--- <tr>
-                                    <th colspan="4">#VACREATOR#</th>
-                                </tr> --->
+							<cfset creator = 0>
+							<cfset Verified_total = 0>
+							<cfset Unverified_total = 0>
+							<cfset Classified_total = 0>
+							<cfoutput query="q_main_storage_report">
+                                <cfif creator != VACREATOR>
+									<tr>
+										<th colspan="4">#VACREATOR#</th>
+									</tr>
+									<cfset creator = VACREATOR>
+								</cfif>
 								<tr>
-									<cfif ISTRGTYPEID eq 1>
-										<th scope="row">URL</th>
-										<cfelseif ISTRGTYPEID eq 2>
-											<th scope="row">Documents</th>
+									<cfif STORAGE_TYPE_ID eq 1>
+										<td>URL</td>
+										<cfelseif STORAGE_TYPE_ID eq 2>
+											<td>Documents</td>
 											<cfelse>
-												<th scope="row">Letter</th>
+												<td>Letter</td>
 									</cfif>						
-									<td>#COUNTERS#</td>
-									<td>#COUNTERS#</td>
-									<td>#COUNTERS#</td>									
+									<td>#VERIFIED_COUNTERS#</td><cfset Verified_total += VERIFIED_COUNTERS>
+									<td>#ACTIVE_COUNTERS#</td><cfset Unverified_total += ACTIVE_COUNTERS>
+									<td>#OUTDATED_COUNTERS#</td><cfset Classified_total += OUTDATED_COUNTERS>
 								</tr>	
                                 <!--- <tr>
                                     <td>Total</td>
-                                    <td colspan="3">total</td>
+                                    <td colspan="3">#Verified_total#</td>
                                 </tr>	 --->
 							</cfoutput>	
                             <tr>
                                 <td>Grand Total</td>
-                                <td colspan="3">100</td>
+                                <td><cfoutput>#Verified_total#</cfoutput></td>
+								<td><cfoutput>#Unverified_total#</cfoutput></td>
+								<td><cfoutput>#Classified_total#</cfoutput></td>
                             </tr>											
 						</tbody>
 					</table>
