@@ -65,19 +65,8 @@ BY          ON          REMARKS
 			<div class="row mt-3">
 				<div class="col">
 					<form action="test" method="post" name="testform">
-						<table>
-							<tr>
-								<td class=clsValue1>
-									<label for="DateFrom" class="form-label">Date From:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name="GUIdateFrom" id="GUIdate" type=text>
-								</td>
-								<td class=clsValue1>
-									<label for="DateTo" class="form-label">Date To:</label>
-									<input class="form-control" MRMOBJ=CALDATE CHKREQUIRED name="GUIdateTo" id="GUIdate" type=text>
-								</td>
-							</tr>
-						</table>
-						<!---	<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton"> --->
+						<CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCDATERANGE.cfm">
+						<input type=button value="TEST SUBMIT" onclick="if (FormVerify(document.all('testform'))) alert('Everything OK');" class="clsButton">
 					</form>
 				</div>
 			</div>
@@ -119,7 +108,7 @@ BY          ON          REMARKS
 				group by a.vaCREATOR,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-			<cfdump  var="#q_main_storage_report#">
+<!--- 			<cfdump  var="#q_main_storage_report#"> --->
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
