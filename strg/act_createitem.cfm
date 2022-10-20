@@ -40,50 +40,30 @@
     </cfif>
 
     <!--- query insert into STRG_DATA --->
-    <cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#" result="result_insert">
-        insert into STRG_DATA 
-        (
-            iSTRGTYPEID,
-            vaITEMNAME,
-            vaDESCRIPTION, 
-            iDOMAINID,
-            iOBJID,
-            iRATING,
-            iCLASSIFIED,
-            vaREMARKS,
-            vaSTATUS,
-            vaCREATOR,
-            dtCREATIONDATE,
-            iMODIFIEDBY,
-            dtMODIFIEDDATE,
-            vaURLADDRESS,
-            iDOCUMENTID,
-            vaTEXTFIELD
-        )
-        values 
-        ( 
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.STORAGETYPE#">, --iSTRGTYPEID
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#">, --vaITEMNAME
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#">, --vaDESCRIPTION
-            <cfqueryparam cfsqltype="cf_sql_integer" value=33>, --iDOMAINID
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#fileid#">, --iOBJID
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.RATING#">, --iRATING
-            <cfqueryparam cfsqltype="cf_sql_integer" value=0>, --iCLASSIFIED
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#">, --vaREMARKS
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="Active">, --vaSTATUS
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#">, --vaCREATOR
-            <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtCREATIONDATE
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">, --iMODIFIEDBY
-            <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtMODIFIEDDATE
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.URL#">, --vaURLADDRESS
-            <cfqueryparam cfsqltype="cf_sql_integer" value="#fileid#">, --iDOCUMENTID
-            <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.LETTER#"> --vaTEXTFIELD
-        )
-    </cfquery>
-    <!--- query insert into STRG_DATA --->
 
     <!--- Get latest inserted id --->
-    <cfset id = result_insert.GENERATEDKEY>
+    <cfset id="">
+
+    <cfstoredproc  procedure="sspSTRGDataInsertUpdate" datasource="#Request.MTRDSN#">
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.STORAGETYPE#" dbVarName=@ai_strgtypeid>, <!--- iSTRGTYPEID --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#" dbVarName=@as_itemname>, <!--- vaITEMNAME --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#" dbVarName=@as_description>, <!--- vaDESCRIPTION --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value=33 dbVarName=@ai_domainid>, <!--- iDOMAINID --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_objid>, <!--- iOBJID --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.RATING#" dbVarName=@ai_rating>, <!--- iRATING --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value=0 dbVarName=@ai_classfied>, <!--- iCLASSIFIED --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#" dbVarName=@as_remarks>, <!--- vaREMARKS --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="Active" dbVarName=@as_status>, <!--- vaSTATUS --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#" dbVarName=@ai_creator>, <!--- vaCREATOR --->
+        <cfprocparam type="in" cfsqltype="cf_sql_timestamp" value=#datatime# dbVarName=@adt_creationdate>, <!--- dtCREATIONDATE --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#" dbVarName=@ai_modifiedby>, <!--- iMODIFIEDBY --->
+        <cfprocparam type="in" cfsqltype="cf_sql_timestamp" value=#datatime# dbVarName=@adt_modifieddate>, <!--- dtMODIFIEDDATE --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.URL#" dbVarName=@as_urladdress>, <!--- vaURLADDRESS --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_documentid>, <!--- iDOCUMENTID --->
+        <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.LETTER#" dbVarName=@as_textfield> <!--- vaTEXTFIELD --->
+        <cfprocparam type="out" CFSQLType="cf_sql_integer" variable="id" dbVarName=@li_id> <!--- last id --->
+    </cfstoredproc>
+    <!--- query insert into STRG_DATA --->
 
     <!--- Redirect to home --->
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">

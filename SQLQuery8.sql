@@ -34,7 +34,7 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from FDOC3001 --document ID definition
   SELECT TOP (1000) * from FDOC3010 --document access right
   SELECT TOP (1000) * from [STRGY_TYPE];
-  SELECT TOP (1000) * from [STRG_DATA] order by iSTRGTYPEID asc;
+  SELECT TOP (1000) * from [STRG_DATA] order by iSTRGID asc;
   SELECT TOP (1000) * from SYS0001;
 
   update [STRG_DATA] set vaSTATUS = 'Active';
@@ -64,8 +64,6 @@ SELECT TOP (1000) *
   ) as Total_counters
   from STRG_DATA a WITH (NOLOCK)
   where 0=0
-  and a.dtCREATIONDATE >= 01/11/2022
-  and a.dtCREATIONDATE <= 01/11/2022
   group by a.vaCREATOR,  a.iSTRGTYPEID
 
 
@@ -311,21 +309,21 @@ GO
 CREATE OR ALTER PROCEDURE sspSTRGDataInsertUpdate
 @ai_strgid int = 0,
 @ai_strgtypeid int,
-@as_itemname nvarchar,
-@as_description nvarchar,
+@as_itemname nvarchar(255),
+@as_description nvarchar(255),
 @ai_domainid int = 33,
-@ai_objid int = 11,
+@ai_objid int = 0,
 @ai_rating int,
 @ai_classfied int = 0,
-@as_remarks nvarchar,
-@as_status nvarchar = "Active",
+@as_remarks nvarchar(255),
+@as_status nvarchar(255) = "Active",
 @ai_creator int,
 @adt_creationdate datetime,
 @ai_modifiedby int = 1,
 @adt_modifieddate datetime,
-@as_urladdress nvarchar,
+@as_urladdress nvarchar(255),
 @ai_documentid int,
-@as_textfield nvarchar,
+@as_textfield nvarchar(255),
 @li_id int output
 AS
 BEGIN
@@ -358,6 +356,7 @@ BEGIN
       @as_itemname,
       @as_description,
       @ai_domainid,
+	  @ai_objid,
       @ai_rating,
       @ai_classfied,
       @as_remarks,
@@ -370,16 +369,26 @@ BEGIN
       @ai_documentid,
       @as_textfield
     );
+
+	--get latest insert id
+	SELECT @li_id = iSTRGID 
+	FROM STRG_DATA 
+	WHERE iSTRGID = @@Identity;
 END
 
 IF (@ai_strgid != 0)
 BEGIN
+
+	SET @li_id = @ai_strgid;
+
 	update STRG_DATA set
     iSTRGTYPEID = @ai_strgtypeid,
     vaITEMNAME = @as_itemname,
     vaDESCRIPTION = @as_description,
+	iOBJID = @ai_objid,
     iRATING = @ai_rating,
     vaREMARKS = @as_remarks,
+	iMODIFIEDBY = @ai_modifiedby,
     dtMODIFIEDDATE = @ai_modifiedby,
     vaURLADDRESS = @as_urladdress,
     iDOCUMENTID = @ai_documentid,
