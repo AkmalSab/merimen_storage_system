@@ -22,6 +22,8 @@ BY          ON          REMARKS
 --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
+<!--- 	<cfdump  var="#SESSION.VARS.USID#"> --->
+
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
 	<CFSET DS=StructNew()>
 	<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>

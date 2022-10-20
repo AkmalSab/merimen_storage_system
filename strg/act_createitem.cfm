@@ -66,14 +66,14 @@
             <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#">, --vaITEMNAME
             <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#">, --vaDESCRIPTION
             <cfqueryparam cfsqltype="cf_sql_integer" value=33>, --iDOMAINID
-            <cfqueryparam cfsqltype="cf_sql_integer" value=11>, --iOBJID
+            <cfqueryparam cfsqltype="cf_sql_integer" value="#fileid#">, --iOBJID
             <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.RATING#">, --iRATING
             <cfqueryparam cfsqltype="cf_sql_integer" value=0>, --iCLASSIFIED
             <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#">, --vaREMARKS
             <cfqueryparam cfsqltype="cf_sql_varchar" value="Active">, --vaSTATUS
             <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#">, --vaCREATOR
             <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtCREATIONDATE
-            <cfqueryparam cfsqltype="cf_sql_integer" value="1">, --iMODIFIEDBY
+            <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">, --iMODIFIEDBY
             <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtMODIFIEDDATE
             <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.URL#">, --vaURLADDRESS
             <cfqueryparam cfsqltype="cf_sql_integer" value="#fileid#">, --iDOCUMENTID

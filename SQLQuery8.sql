@@ -20,6 +20,8 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
+  SELECT TOP (1000) * from SEC0003; --list of permission definition
+  SELECT TOP (1000) * from SEC0004; --list of permission set to user
   SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
   SELECT TOP (1000) * from fdoc3002; --doc class
   SELECT TOP (1000) * from fdoc3003; --uploaded file table
@@ -35,26 +37,35 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from [STRG_DATA] order by iSTRGTYPEID asc;
   SELECT TOP (1000) * from SYS0001;
 
+  update [STRG_DATA] set vaSTATUS = 'Active';
+
   select
   a.vaCREATOR, 
   a.iSTRGTYPEID as storage_type_id,
   (
 	select count(iSTRGID)
 	from STRG_DATA 
-	where vaSTATUS = 'Active' and iSTRGTYPEID = a.iSTRGTYPEID
-  ) as Active_counters,
+	where vaSTATUS != 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+  ) as Unverified_counters,
   (
 	select count(iSTRGID)
 	from STRG_DATA a 
-	where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID
+	where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
   ) as Verified_counters,
   (
 	select count(iSTRGID)
 	from STRG_DATA
-	where vaSTATUS = 'Outdated' and iSTRGTYPEID = a.iSTRGTYPEID
-  ) as Outdated_counters
+	where iCLASSIFIED = 1 and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR
+  ) as Classified_counters,
+  (
+	select count(iSTRGID)
+	from STRG_DATA
+	where vaCREATOR = a.vaCREATOR
+  ) as Total_counters
   from STRG_DATA a WITH (NOLOCK)
   where 0=0
+  and a.dtCREATIONDATE >= 01/11/2022
+  and a.dtCREATIONDATE <= 01/11/2022
   group by a.vaCREATOR,  a.iSTRGTYPEID
 
 
@@ -287,3 +298,93 @@ GO
 
 ALTER TABLE [dbo].[FDOC3006] ADD  CONSTRAINT [DF_FDOC3006__SISTATU__76F8268F]  DEFAULT (0) FOR [SISTATUS]
 GO
+
+/****** Object:  StoredProcedure Script Date: 20/10/2022 3:40:56 PM ******/
+USE [merimen_storage_system]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE OR ALTER PROCEDURE sspSTRGDataInsertUpdate
+@ai_strgid int = 0,
+@ai_strgtypeid int,
+@as_itemname nvarchar,
+@as_description nvarchar,
+@ai_domainid int = 33,
+@ai_objid int = 11,
+@ai_rating int,
+@ai_classfied int = 0,
+@as_remarks nvarchar,
+@as_status nvarchar = "Active",
+@ai_creator int,
+@adt_creationdate datetime,
+@ai_modifiedby int = 1,
+@adt_modifieddate datetime,
+@as_urladdress nvarchar,
+@ai_documentid int,
+@as_textfield nvarchar,
+@li_id int output
+AS
+BEGIN
+SET NOCOUNT ON --To hide the number of rows affected messages, (improve performance)
+
+IF (@ai_strgid = 0)
+BEGIN
+	insert into STRG_DATA 
+    (
+        iSTRGTYPEID,
+        vaITEMNAME,
+        vaDESCRIPTION, 
+        iDOMAINID,
+        iOBJID,
+        iRATING,
+        iCLASSIFIED,
+        vaREMARKS,
+        vaSTATUS,
+        vaCREATOR,
+        dtCREATIONDATE,
+        iMODIFIEDBY,
+        dtMODIFIEDDATE,
+        vaURLADDRESS,
+        iDOCUMENTID,
+        vaTEXTFIELD
+    )
+    values 
+    (
+      @ai_strgtypeid,
+      @as_itemname,
+      @as_description,
+      @ai_domainid,
+      @ai_rating,
+      @ai_classfied,
+      @as_remarks,
+      @as_status,
+      @ai_creator,
+      @adt_creationdate,
+      @ai_modifiedby,
+      @adt_modifieddate,
+      @as_urladdress,
+      @ai_documentid,
+      @as_textfield
+    );
+END
+
+IF (@ai_strgid != 0)
+BEGIN
+	update STRG_DATA set
+    iSTRGTYPEID = @ai_strgtypeid,
+    vaITEMNAME = @as_itemname,
+    vaDESCRIPTION = @as_description,
+    iRATING = @ai_rating,
+    vaREMARKS = @as_remarks,
+    dtMODIFIEDDATE = @ai_modifiedby,
+    vaURLADDRESS = @as_urladdress,
+    iDOCUMENTID = @ai_documentid,
+    vaTEXTFIELD = @as_textfield
+	where iSTRGID = @ai_strgid
+END
+
+END
