@@ -3,12 +3,9 @@
 <!--- If the form has submitted --->
 	<cfif structKeyExists(FORM, "ItemName")>
 
-        <!--- Get current date time --->
-        <cfset datatime = CREATEODBCDATETIME( Now() ) />
-
         <!--- Default value for FNEXFILE input type file --->
         <cfparam name="form.FNEXFILE" default="">
-        <cfparam  name="fileid" default="0">
+        <cfparam name="fileid" default="0">
 
         <cfif structKeyExists(FORM, "EDITSTORAGE")>
 
@@ -43,21 +40,25 @@
                 <cfset fileid = result_insert_fdoc3006.GENERATEDKEY>
             </cfif>
 
-            <cfquery name="q_insert_strg_data" datasource="#Request.MTRDSN#" result="result_insert">
-                update STRG_DATA set
-                    iSTRGTYPEID = <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.STORAGETYPE#">, --iSTRGTYPEID
-                    vaITEMNAME = <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#">, --vaITEMNAME
-                    vaDESCRIPTION = <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#">, --vaDESCRIPTION
-                    iOBJID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#fileid#">, --iOBJID
-                    iRATING = <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.RATING#">, --iRATING
-                    vaREMARKS = <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#">, --vaREMARKS
-                    iMODIFIEDBY = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">,--iMODIFIEDBY
-                    dtMODIFIEDDATE = <cfqueryparam cfsqltype="cf_sql_timestamp" value=#datatime#>, --dtMODIFIEDDATE
-                    vaURLADDRESS = <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.URL#">, --vaURLADDRESS
-                    iDOCUMENTID = <cfqueryparam cfsqltype="cf_sql_integer" value="#fileid#">, --iDOCUMENTID
-                    vaTEXTFIELD = <cfqueryparam cfsqltype="cf_sql_varchar" value="#FORM.LETTER#"> --vaTEXTFIELD
-                where iSTRGID = <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.IDSTORAGE#">
-		    </cfquery>
+            <!--- Get latest inserted id --->
+            <cfset id="">
+
+            <!--- query update STRG_DATA --->
+            <cfstoredproc  procedure="sspSTRGDataInsertUpdate" datasource="#Request.MTRDSN#">
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.IDSTORAGE#" dbVarName=@ai_strgid>
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.STORAGETYPE#" dbVarName=@ai_strgtypeid>, <!--- iSTRGTYPEID --->
+                <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.ITEMNAME#" dbVarName=@as_itemname>, <!--- vaITEMNAME --->
+                <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.DESCRIPTION#" dbVarName=@as_description>, <!--- vaDESCRIPTION --->
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_objid>, <!--- iOBJID --->
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.RATING#" dbVarName=@ai_rating>, <!--- iRATING --->
+                <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#" dbVarName=@as_remarks>, <!--- vaREMARKS --->
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#" dbVarName=@ai_modifiedby>, <!--- iMODIFIEDBY --->
+                <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.URL#" dbVarName=@as_urladdress>, <!--- vaURLADDRESS --->
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_documentid>, <!--- iDOCUMENTID --->
+                <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.LETTER#" dbVarName=@as_textfield> <!--- vaTEXTFIELD --->
+                <cfprocparam type="out" CFSQLType="cf_sql_integer" variable="id" dbVarName=@li_id> <!--- last id --->
+            </cfstoredproc>
+            <!--- query update STRG_DATA --->
         </cfif>		
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
 </cfif>
