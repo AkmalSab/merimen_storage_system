@@ -55,9 +55,7 @@
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#" dbVarName=@as_remarks>, <!--- vaREMARKS --->
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="Active" dbVarName=@as_status>, <!--- vaSTATUS --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#" dbVarName=@ai_creator>, <!--- vaCREATOR --->
-        <cfprocparam type="in" cfsqltype="cf_sql_timestamp" value=#datatime# dbVarName=@adt_creationdate>, <!--- dtCREATIONDATE --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#" dbVarName=@ai_modifiedby>, <!--- iMODIFIEDBY --->
-        <cfprocparam type="in" cfsqltype="cf_sql_timestamp" value=#datatime# dbVarName=@adt_modifieddate>, <!--- dtMODIFIEDDATE --->
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.URL#" dbVarName=@as_urladdress>, <!--- vaURLADDRESS --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_documentid>, <!--- iDOCUMENTID --->
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.LETTER#" dbVarName=@as_textfield> <!--- vaTEXTFIELD --->
