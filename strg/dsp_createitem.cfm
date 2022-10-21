@@ -186,6 +186,32 @@ BY          ON          REMARKS
 											</cfoutput>								
 										</td>
 									</tr>
+									<tr class="table-active">
+										<td class=clsField1>Classified</td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1" CHECKED>
+														<label class="form-check-label" for="classified">
+															Yes
+														</label>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0">
+														<label class="form-check-label" for="classified">
+															No
+														</label>
+													<cfelse>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1" CHECKED>
+														<label class="form-check-label" for="classified">
+															Yes
+														</label>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0">
+														<label class="form-check-label" for="classified">
+															No
+														</label>
+												</cfif>			
+											</cfoutput>								
+										</td>
+									</tr>
 									<tr class="" style="display: none;" id="URLtr">
 										<td class=clsField1>URL</td>
 										<td class=clsValue1>

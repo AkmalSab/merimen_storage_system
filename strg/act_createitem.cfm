@@ -1,7 +1,5 @@
 <!--- If the form has submitted --->
 <cfif structKeyExists(FORM, "ItemName")>
-    <cfset datatime = CREATEODBCDATETIME( Now() ) />
-    <!--- <cfdump  var="#FORM#"><cfabort> --->
 
     <!--- Default value for FNEXFILE input type file --->
     <cfparam name="form.FNEXFILE" default="">
@@ -51,7 +49,7 @@
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value=33 dbVarName=@ai_domainid>, <!--- iDOMAINID --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_objid>, <!--- iOBJID --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.RATING#" dbVarName=@ai_rating>, <!--- iRATING --->
-        <cfprocparam type="in" cfsqltype="cf_sql_integer" value=0 dbVarName=@ai_classfied>, <!--- iCLASSIFIED --->
+        <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.CLASSIFIED#" dbVarName=@ai_classfied>, <!--- iCLASSIFIED --->
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#" dbVarName=@as_remarks>, <!--- vaREMARKS --->
         <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="Active" dbVarName=@as_status>, <!--- vaSTATUS --->
         <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.vars.USID#" dbVarName=@ai_creator>, <!--- vaCREATOR --->
