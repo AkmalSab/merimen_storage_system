@@ -1,4 +1,4 @@
-<!--- <cfdump  var="#FORM#"> --->
+<!--- <cfdump  var="#FORM#"><cfabort> --->
 
 <!--- If the form has submitted --->
 	<cfif structKeyExists(FORM, "ItemName")>
@@ -52,6 +52,7 @@
                 <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_objid>, <!--- iOBJID --->
                 <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.RATING#" dbVarName=@ai_rating>, <!--- iRATING --->
                 <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.REMARKS#" dbVarName=@as_remarks>, <!--- vaREMARKS --->
+                <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#FORM.CLASSIFIED#" dbVarName=@ai_classfied>, <!--- iCLASSIFIED --->
                 <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#" dbVarName=@ai_modifiedby>, <!--- iMODIFIEDBY --->
                 <cfprocparam type="in" cfsqltype="cf_sql_varchar" value="#FORM.URL#" dbVarName=@as_urladdress>, <!--- vaURLADDRESS --->
                 <cfprocparam type="in" cfsqltype="cf_sql_integer" value="#fileid#" dbVarName=@ai_documentid>, <!--- iDOCUMENTID --->

@@ -31,7 +31,7 @@ BY          ON          REMARKS
 			FROM STRG_DATA WITH (NOLOCK)
 			WHERE iSTRGID = #URL.id#
 		</cfquery>
-<!--- 		<cfdump  var="#q_main_storage_select_specific#"> --->
+<!--- <cfdump  var="#q_main_storage_select_specific#"> --->
 	</cfif>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
@@ -182,6 +182,43 @@ BY          ON          REMARKS
 													<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" value="#q_main_storage_select_specific.IRATING#" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
 													<cfelse>
 														<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+												</cfif>			
+											</cfoutput>								
+										</td>
+									</tr>
+									<tr>
+										<td class=clsField1>Classified</td>
+										<td class=clsValue1>
+											<cfoutput>
+												<cfif isDefined('URL.Id')>
+													<cfif q_main_storage_select_specific.ICLASSIFIED EQ 1>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1" CHECKED>
+														<label class="form-check-label" for="classified">
+															Yes
+														</label>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0">
+														<label class="form-check-label" for="classified">
+															No
+														</label>
+														<cfelse>
+															<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1">
+															<label class="form-check-label" for="classified">
+																Yes
+															</label>
+															<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0" CHECKED>
+															<label class="form-check-label" for="classified">
+																No
+															</label>
+													</cfif>
+													<cfelse>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1" CHECKED>
+														<label class="form-check-label" for="classified">
+															Yes
+														</label>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0">
+														<label class="form-check-label" for="classified">
+															No
+														</label>
 												</cfif>			
 											</cfoutput>								
 										</td>

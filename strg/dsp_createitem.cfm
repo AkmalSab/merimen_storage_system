@@ -186,7 +186,7 @@ BY          ON          REMARKS
 											</cfoutput>								
 										</td>
 									</tr>
-									<tr class="table-active">
+									<tr>
 										<td class=clsField1>Classified</td>
 										<td class=clsValue1>
 											<cfoutput>
