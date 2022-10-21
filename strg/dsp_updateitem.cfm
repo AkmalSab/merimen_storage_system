@@ -104,7 +104,7 @@ BY          ON          REMARKS
 					<cfif isDefined('URL.Id')>
 						<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
 						<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
-						<button type="button" class="btn btn-primary" onclick="updateStatus('Deleted')">Delete</button>
+						<button type="button" class="btn btn-primary" onclick="popup()">Delete</button>
 					</cfif>					
 				</div>
 			</div>
@@ -303,6 +303,17 @@ BY          ON          REMARKS
 					}
 				}
 
+				function popup(){
+					var exframe,exhtml="";
+					<cfoutput>
+						exhtml += "<form id='deleteStorageItem' name='deleteStorageItem' action='#request.webroot#index.cfm?fusebox=strg&fuseaction=act_deleteitem&#request.mtoken#' method='POST'><table><tr><td class=clsField1>Remarks</td><td class=clsValue1><textarea id='AuditRemarks' name='AuditRemarks' class='form-control' rows='10' cols='80' onblur='ObjUpperCase(this)' CHKREQUIRED></textarea></td></tr><tr><td class=clsField1>Submit</td><td class=clsValue1><input type='submit' value='Delete' /></td></tr></table></form>";
+					</cfoutput>
+					exframe=JSVCCtxMenuFrame(null,"ALERT","AUDIT REMARKS","800",false,true);
+					JSVCCtxMenuContent(exframe,exhtml);
+					JSVCshowCtxMenuEv(this.event,exframe,null,2,2);
+
+				}
+
 				<cfif isDefined('URL.Id')>
 					function updateStatus(ItemStatus){
 						// AJAX POST Request
@@ -322,7 +333,9 @@ BY          ON          REMARKS
 					function hideStatusAlert() {
 						document.getElementById("statusAlert").style.display = 'none';
 					}
-				</cfif>				
+				</cfif>		
+				
+				
 		</script>
 	</body>
 	</html>

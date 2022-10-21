@@ -23,4 +23,8 @@
         <cfmodule template="dsp_updateitem.cfm" AttributeCollection=#Arguments#>
         <cfreturn>
     </cffunction>
+    <cffunction name="act_deleteitem" hint="Homepage for this module" returntype="any" output="true">
+        <cfmodule template="act_deleteitem.cfm" AttributeCollection=#Arguments#>
+        <cfreturn>
+    </cffunction>
 </cfcomponent>

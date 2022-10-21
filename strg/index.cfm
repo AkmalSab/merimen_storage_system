@@ -21,4 +21,7 @@
 	<cfcase VALUE="dsp_updateitem">
 		<cfinvoke component="strg.index" method="dsp_updateitem" ArgumentCollection=#Attributes#>
 	</cfcase>
+	<cfcase  value="act_deleteitem">
+		<cfinvoke component="strg.index" method="act_deleteitem" ArgumentCollection=#Attributes#>
+	</cfcase>
 </cfswitch>
