@@ -176,6 +176,7 @@ BY          ON          REMARKS
 			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
 				SELECT *
 				FROM STRG_DATA WITH (NOLOCK)
+				WHERE iCLASSIFIED = 0 or vaCREATOR = #SESSION.VARS.USID#
 				ORDER BY iSTRGID;
 			</cfquery>
 
