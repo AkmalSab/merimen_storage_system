@@ -60,6 +60,32 @@
                 <cfprocparam type="out" CFSQLType="cf_sql_integer" variable="id" dbVarName=@li_id> <!--- last id --->
             </cfstoredproc>
             <!--- query update STRG_DATA --->
+
+            <!--- Query to insert audit logs --->
+            <cfquery name="q_last_id" datasource="#Request.MTRDSN#">
+                SELECT TOP 1 ITAID
+                FROM [FOBJ3010] WITH (NOLOCK)
+                ORDER BY ITAID DESC
+            </cfquery>
+
+            <cfset ITAID = q_last_id.ITAID + 1>
+
+            <cfstoredproc PROCEDURE="sspFOBJAudit" DATASOURCE="#Request.MTRDSN#" RETURNCODE=YES>
+                <cfprocparam TYPE=IN DBVARNAME=@ITAID VALUE="#ITAID#" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@ITATYPEID VALUE="1000613" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@ai_usid VALUE="#SESSION.VARS.USID#" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@ICRTCOROLE NULL="YES" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@ICRTCOSECPOS NULL="YES" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@DTCURDT NULL="YES" CFSQLTYPE="CF_SQL_TIMESTAMP">
+                <cfprocparam TYPE=IN DBVARNAME=@IDOMAINID VALUE="901" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@IOBJID VALUE="#FORM.IDSTORAGE#" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@ILINKID NULL="YES" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@IPARAM1 VALUE="4" CFSQLTYPE="CF_SQL_INTEGER">
+                <cfprocparam TYPE=IN DBVARNAME=@VATAREMARKS VALUE="UPDATE STORAGE CONTENT" CFSQLTYPE="CF_SQL_VARCHAR">
+            </cfstoredproc>
+
+            <cfdump  var="#cfstoredproc#">
+            <!--- Query to insert audit logs --->
         </cfif>		
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
 </cfif>
