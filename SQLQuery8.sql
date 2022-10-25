@@ -13,10 +13,10 @@ SELECT TOP (1000) *
 
   SELECT TOP (1000) * from trx0035
 
-
-  SELECT TOP (1000) * from fobj3010 where IOBJID = 1 --audit
-  SELECT TOP (1000) * from fobj3010 where IDOMAINID = 11 --audit
-  SELECT TOP (1000) * from fobj3001 ORDER BY iDOMAINID asc; --list of domain
+  SELECT TOP (1000) * from fobjd3010 ORDER BY ITATYPEID desc;--list of audit types (1000613)
+  SELECT TOP (1000) * from fobj3010 where IDOMAINID = 901 --list of all audit records
+  SELECT TOP (1000) * from fobj3010 where VATAREMARKS LIKE '%ISAAC123.%' --list of all audit records
+  SELECT TOP (1000) * from fobj3001 ORDER BY iDOMAINID desc; --list of domain (901)
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
