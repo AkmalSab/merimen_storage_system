@@ -107,11 +107,14 @@ BY          ON          REMARKS
 					<cfoutput>
 						<a class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">Return</a>
 					</cfoutput>
-					<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
+					
 					<cfif isDefined('URL.Id')>
-						<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
-						<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
-						<button type="button" class="btn btn-primary" onclick="popup()">Delete</button>
+						<cfif q_main_storage_select_specific.vacreator EQ SESSION.VARS.USID>
+							<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
+							<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
+							<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
+							<button type="button" class="btn btn-primary" onclick="popup()">Delete</button>
+						</cfif>						
 					</cfif>					
 				</div>
 			</div>
