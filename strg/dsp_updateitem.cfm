@@ -75,7 +75,7 @@ BY          ON          REMARKS
 		WHERE IDOMAINID = 901
 		AND IOBJID = #URL.ID#	
 		ORDER BY ITAID DESC
-    </cfquery>
+    </cfquery>	
     <!--- Query to fetch main storage audit --->
 
 	<html lang="en">
@@ -269,24 +269,26 @@ BY          ON          REMARKS
 			<!--- Form --->
 
 			<!--- Audit Logs --->
-			<div class="row mt-3">
-				<table class="table table-striped">
-					<tr>
-						<th>No</th>
-						<th>Remarks</th>
-						<th>Created By</th>
-						<th>Created On</th>
-					</tr>
-					<cfoutput query="q_storage_audit_select_all">
+			<cfif q_storage_audit_select_all.RecordCount GT 0>
+				<div class="row mt-3">
+					<table class="table table-striped">
 						<tr>
-							<td>#q_storage_audit_select_all.ITAID#</td>
-							<td>#q_storage_audit_select_all.VATAREMARKS#</td>
-							<td>#q_storage_audit_select_all.ICRTBY#</td>
-							<td>#q_storage_audit_select_all.DTCRTON#</td>
+							<th>No</th>
+							<th>Remarks</th>
+							<th>Created By</th>
+							<th>Created On</th>
 						</tr>
-					</cfoutput>
-				</table>
-			</div>
+						<cfoutput query="q_storage_audit_select_all">
+							<tr>
+								<td>#q_storage_audit_select_all.ITAID#</td>
+								<td>#q_storage_audit_select_all.VATAREMARKS#</td>
+								<td>#q_storage_audit_select_all.ICRTBY#</td>
+								<td>#q_storage_audit_select_all.DTCRTON#</td>
+							</tr>
+						</cfoutput>
+					</table>
+				</div>
+			</cfif>			
 			<!--- Audit Logs --->
 		</div>
 
