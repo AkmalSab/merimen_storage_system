@@ -69,7 +69,14 @@ BY          ON          REMARKS
     </cfquery>
     <!--- Query to fetch main storage data --->
 
-<!--- 	<cfdump  var="#q_storage_type_select_all#"> --->
+	<!--- Query to fetch main storage audit --->
+    <cfquery name="q_storage_audit_select_all" datasource="#Request.MTRDSN#">
+        SELECT * FROM [FOBJ3010] WITH (NOLOCK)
+		WHERE IDOMAINID = 901
+		AND IOBJID = #URL.ID#	
+		ORDER BY ITAID DESC
+    </cfquery>
+    <!--- Query to fetch main storage audit --->
 
 	<html lang="en">
 	<head>
@@ -260,6 +267,27 @@ BY          ON          REMARKS
 				</div>
 			</div>
 			<!--- Form --->
+
+			<!--- Audit Logs --->
+			<div class="row mt-3">
+				<table class="table table-striped">
+					<tr>
+						<th>No</th>
+						<th>Remarks</th>
+						<th>Created By</th>
+						<th>Created On</th>
+					</tr>
+					<cfoutput query="q_storage_audit_select_all">
+						<tr>
+							<td>#q_storage_audit_select_all.ITAID#</td>
+							<td>#q_storage_audit_select_all.VATAREMARKS#</td>
+							<td>#q_storage_audit_select_all.ICRTBY#</td>
+							<td>#q_storage_audit_select_all.DTCRTON#</td>
+						</tr>
+					</cfoutput>
+				</table>
+			</div>
+			<!--- Audit Logs --->
 		</div>
 
 		<!--- 	Bootstrap 5 JS --->
