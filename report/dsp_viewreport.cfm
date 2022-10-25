@@ -67,6 +67,8 @@ BY          ON          REMARKS
 			on a.iUSID = b.vaCREATOR;
 		</cfquery>
 		<!--- Query to fetch storage creator --->
+
+<!--- 		<cfdump  var="#q_creator_select_all#"> --->
 		
 	</head>
 	<body>
@@ -133,7 +135,7 @@ BY          ON          REMARKS
 				group by a.vaCREATOR,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-<!--- <cfdump  var="#q_main_storage_report#"> --->
+			<!--- <cfdump  var="#q_main_storage_report#"> --->
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
@@ -171,7 +173,7 @@ BY          ON          REMARKS
 									<td>#UNVERIFIED_COUNTERS#</td><cfset Unverified_total += UNVERIFIED_COUNTERS>
 									<td>#CLASSIFIED_COUNTERS#</td><cfset Classified_total += CLASSIFIED_COUNTERS>
 								</tr>	
-								<cfif creator != q_main_storage_report.UNVERIFIED_COUNTERS[i+1]>
+								<cfif creator != q_main_storage_report.vaCREATOR[i+1]>
 									<tr>
 										<th>Total</th>
 										<td colspan="3">#TOTAL_COUNTERS#</td>
