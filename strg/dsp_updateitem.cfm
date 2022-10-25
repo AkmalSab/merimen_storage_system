@@ -320,7 +320,8 @@ BY          ON          REMARKS
 						$.post("index.cfm?fusebox=strg&fuseaction=act_updatestatus", //url
 						{
 							iSTRGID: <cfoutput>#URL.ID#</cfoutput>, //data
-							Status: ItemStatus
+							Status: ItemStatus,
+							USID: <cfoutput>#SESSION.VARS.USID#</cfoutput>
 						},
 						function(data, status){ //callback
 							// var res = JSON.parse(data)

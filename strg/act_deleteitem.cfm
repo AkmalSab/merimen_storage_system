@@ -2,6 +2,7 @@
 <cfquery name="q_last_id" datasource="#Request.MTRDSN#">
     SELECT TOP 1 ITAID
     FROM [FOBJ3010] WITH (NOLOCK)
+    WHERE IDOMAINID = 901
     ORDER BY ITAID DESC
 </cfquery>
 
@@ -28,3 +29,5 @@
 </cfstoredproc>
 
 <cfdump  var="#cfstoredproc#">
+
+<cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
