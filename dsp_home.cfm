@@ -22,10 +22,6 @@ BY          ON          REMARKS
 --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
-	<cfdump  var="#SESSION.VARS#">
-
-	
-
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
 	<CFSET DS=StructNew()>
 	<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
@@ -177,12 +173,25 @@ BY          ON          REMARKS
 			<!--- form searching --->
 
 			<!--- Query to fetch main storage data --->
-			<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
-				SELECT *
-				FROM STRG_DATA WITH (NOLOCK)
-				WHERE iCLASSIFIED = 0 or vaCREATOR = #SESSION.VARS.USID#
-				ORDER BY iSTRGID;
-			</cfquery>
+			<cfif ArrayContains(SESSION.VARS.PERMISSION,"7004")>
+				<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
+					SELECT *
+					FROM STRG_DATA WITH (NOLOCK)
+					WHERE iCLASSIFIED = 0 
+					and iCLASSIFIED = 1 
+					or vaCREATOR = #SESSION.VARS.USID#
+					ORDER BY iSTRGID;
+				</cfquery>
+				<cfelse>
+					<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
+						SELECT *
+						FROM STRG_DATA WITH (NOLOCK)
+						WHERE iCLASSIFIED = 0 
+						or vaCREATOR = #SESSION.VARS.USID#
+						ORDER BY iSTRGID;
+					</cfquery>
+			</cfif>
+			
 
 			<!--- cfdump  var="#q_main_storage_select_all#"> --->
 			<!--- Query to fetch main storage data --->

@@ -112,8 +112,12 @@ BY          ON          REMARKS
 						<cfif q_main_storage_select_specific.vacreator EQ SESSION.VARS.USID>
 							<button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
 							<button type="button" class="btn btn-primary" onclick="updateStatus('Outdated')">Set to Outdated</button>
-							<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
-							<button type="button" class="btn btn-primary" onclick="popup()">Delete</button>
+							<cfif ArrayContains(SESSION.VARS.PERMISSION,"7001")>
+								<button type="button" class="btn btn-primary" onclick="updateStatus('Verified')">Verify</button>
+							</cfif>
+							<cfif ArrayContains(SESSION.VARS.PERMISSION,"7002")>
+								<button type="button" class="btn btn-primary" onclick="popup()">Delete</button>
+							</cfif>
 						</cfif>						
 					</cfif>					
 				</div>
@@ -188,11 +192,15 @@ BY          ON          REMARKS
 										<td class=clsField1>Rating</td>
 										<td class=clsValue1>
 											<cfoutput>
-												<cfif isDefined('URL.Id')>
-													<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" value="#q_main_storage_select_specific.IRATING#" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+												<cfif ArrayContains(SESSION.VARS.PERMISSION,"7003")>
+													<cfif isDefined('URL.Id')>													
+														<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" value="#q_main_storage_select_specific.IRATING#" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+														<cfelse>
+															<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
+													</cfif>	
 													<cfelse>
-														<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED>
-												</cfif>			
+														<input type="number" class="form-control" id="Rating" name="Rating" min="1" max="5" value="#q_main_storage_select_specific.IRATING#" onblur="JSVCNumLOC(this,1,5,null,null,null,null,null,false,false,alertmsg)" CHKREFORMAT="^([0-9]{1})$" CHKREQUIRED readonly>
+												</cfif>														
 											</cfoutput>								
 										</td>
 									</tr>
