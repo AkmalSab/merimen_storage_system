@@ -176,7 +176,8 @@ BY          ON          REMARKS
 			<cfif ArrayContains(SESSION.VARS.PERMISSION,"7004")>
 				<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
 					SELECT *
-					FROM STRG_DATA WITH (NOLOCK)
+					FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+					ON a.iOBJID = b.IFILEID
 					WHERE iCLASSIFIED = 0 
 					and iCLASSIFIED = 1 
 					or vaCREATOR = #SESSION.VARS.USID#
@@ -185,15 +186,15 @@ BY          ON          REMARKS
 				<cfelse>
 					<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
 						SELECT *
-						FROM STRG_DATA WITH (NOLOCK)
+						FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+						ON a.iOBJID = b.IFILEID
 						WHERE iCLASSIFIED = 0 
 						or vaCREATOR = #SESSION.VARS.USID#
 						ORDER BY iSTRGID;
 					</cfquery>
 			</cfif>
 			
-
-			<!--- cfdump  var="#q_main_storage_select_all#"> --->
+			<!--- <cfdump  var="#q_main_storage_select_all#"> --->
 			<!--- Query to fetch main storage data --->
 			
 			<!--- Table --->
@@ -221,7 +222,7 @@ BY          ON          REMARKS
 										<cfif ISTRGTYPEID eq 1>
 										<a style="text-decoration: underline;" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
 										<cfelseif ISTRGTYPEID eq 2>
-											<a href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=#iSTRGID#&#request.mtoken#'>#VAITEMNAME#</a>
+											<a href='docs/#VAFILEORIGNAME#' download>#VAITEMNAME#</a>
 											<cfelse>
 												<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
 										</cfif>										
