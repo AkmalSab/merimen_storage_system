@@ -22,7 +22,9 @@ BY          ON          REMARKS
 --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
-<!--- 	<cfdump  var="#SESSION.VARS.USID#"> --->
+	<cfdump  var="#SESSION.VARS#">
+
+	
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
 	<CFSET DS=StructNew()>
@@ -79,7 +81,9 @@ BY          ON          REMARKS
 			<div class="row">
 				<div class="col">
 					<cfoutput>
-						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Create New Item</a>
+						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7000")>
+							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Create New Item</a>
+						</cfif>						
 						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=rpt&fuseaction=dsp_viewreport&#request.mtoken#">View Report</a>
 						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Admin</a>
 					</cfoutput>					
