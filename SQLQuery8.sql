@@ -20,9 +20,9 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
-  SELECT TOP (1000) * from SEC0003; --list of permission definition
-  SELECT TOP (1000) * from SEC0004; --list of permission set to user
-  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of user
+  SELECT TOP (1000) * from SEC0003 where sipgroup >= 7000; --list of permission definition
+  SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; --list of permission set to user
+  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of companies
   SELECT TOP (1000) * from fdoc3002; --doc class
   SELECT TOP (1000) * from fdoc3003; --uploaded file table
   SELECT TOP (1000) * from fdoc3004;
@@ -397,3 +397,17 @@ BEGIN
 END
 
 END
+
+
+SELECT * FROM [FOBJ3010] WITH (NOLOCK)
+WHERE IDOMAINID = 901
+ORDER BY ITAID DESC
+
+select distinct iUSID, vaUSName
+from SEC0001 a join STRG_DATA b
+on a.iUSID = b.vaCREATOR;
+
+SELECT *
+FROM SEC0003 a JOIN SEC0004 b WITH (NOLOCK)
+ON a.siPGROUP = b.siPGROUP
+WHERE b.iUSID = 1 and b.siPGROUP >= 7000

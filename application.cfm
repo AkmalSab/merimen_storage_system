@@ -168,6 +168,26 @@
 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCFORMURL2ATTRIBUTES.cfm" NOFORM=1>
 
+
+<!--- Get user's permission list --->
+<cfquery NAME="q_user_permission_list" DATASOURCE=#CURDSN#>	
+	SELECT *
+	FROM SEC0003 a JOIN SEC0004 b WITH (NOLOCK)
+	ON a.siPGROUP = b.siPGROUP
+	WHERE b.iUSID = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#"> and b.siPGROUP >= 7000
+</cfquery>
+
+<!--- create new array to store query result --->
+<cfset permission_array = ArrayNew(1)>
+
+<!--- Loop query and append to permission array --->
+<cfloop query="q_user_permission_list">
+	<cfset ArrayAppend(permission_array, q_user_permission_list.siPGROUP)>
+</cfloop>
+
+<!--- Store permission array in session --->
+<cfset SESSION.VARS.PERMISSION = permission_array>
+
 <script>
 var request=new Object();
 request.webroot="#Request.Webroot#";
