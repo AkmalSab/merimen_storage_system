@@ -81,7 +81,7 @@ BY          ON          REMARKS
 							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Create New Item</a>
 						</cfif>						
 						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=rpt&fuseaction=dsp_viewreport&#request.mtoken#">View Report</a>
-						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#">Admin</a>
+						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Admin</a>
 					</cfoutput>					
 				</div>
 			</div>
