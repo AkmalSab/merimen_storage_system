@@ -217,7 +217,7 @@ BY          ON          REMARKS
 						<tbody id="tbodies">
 							<cfoutput query="q_main_storage_select_all">
 								<tr>
-									<th scope="row">#DTCREATIONDATE#</th>									
+									<th scope="row">#dateTimeFormat(DTCREATIONDATE,'dd/mm/yyyy HH:nn:ss')#</th>									
 									<td>
 										<cfif ISTRGTYPEID eq 1>
 										<a style="text-decoration: underline;" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>

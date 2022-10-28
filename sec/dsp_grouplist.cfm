@@ -53,20 +53,16 @@ BY          ON          REMARKS
 	<script>AddOnloadCode("MrmPreprocessForm()");</script>
 	<!--- END IMPORT MERIMEN FRAMEWORK --->
 
-	<!--- Query to fetch main storage data --->
-    <cfquery name="q_storage_type_select_all" datasource="#Request.MTRDSN#">
-        SELECT *
-        FROM STRGY_TYPE WITH (NOLOCK)
-        ORDER BY iSTRGTYPEID;
+	<!--- Query to fetch user group list --->
+    <cfquery name="q_user_group_select_all" datasource="#Request.MTRDSN#">
+        select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
+		from fsec4001 a WITH (NOLOCK) 
+		where a.icoid = 1
+		and a.sistatus = 0  
     </cfquery>
-    <!--- Query to fetch main storage data --->
-	<!--- Query to fetch storage creator --->
-	<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
-		select distinct iUSID, vaUSName
-		from SEC0001 a join STRG_DATA b
-		on a.iUSID = b.vaCREATOR;
-	</cfquery>
-	<!--- Query to fetch storage creator --->
+    <!--- Query to fetch user group list --->
+
+<!--- 	<cfdump  var="#q_user_group_select_all#"> --->
 
 	<html lang="en">
 	<head>
@@ -108,13 +104,19 @@ BY          ON          REMARKS
 							</tr>
 						</thead>
 						<tbody id="tbodies">									
-							<tr>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-								<td>1</td>
-							</tr>
+							<cfoutput query="q_user_group_select_all">
+								<tr>
+									<td>#VAGRPNAME#</td>
+									<td>#VAGRPDESC#</td>
+									<td>#dateTimeFormat(DTCRTON,'dd/mm/yyyy HH:nn:ss')#</td>
+									<td>
+										<a class="btn btn-primary">Manage</a>
+									</td>
+									<td>
+										<a href="">Delete</a>
+									</td>
+								</tr>
+							</cfoutput>
 						</tbody>
 					</table>
 				</div>
