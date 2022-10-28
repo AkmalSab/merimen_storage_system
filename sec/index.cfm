@@ -9,4 +9,7 @@
     <cfcase value=dsp_grouplist>
         <cfinvoke component="sec.index" method="dsp_grouplist" ArgumentCollection=#Attributes#>
     </cfcase>
+    <cfcase value=xml_SVCGetAllUser>
+        <cfinvoke component="sec.index" method="xml_SVCGetAllUser" ArgumentCollection=#Attributes#>
+    </cfcase>
 </cfswitch>

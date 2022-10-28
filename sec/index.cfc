@@ -12,4 +12,8 @@
         <CFMODULE template="dsp_grouplist.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
+    <cffunction name="xml_SVCGetAllUser" hint="Group list page" returntype="any" output="true">
+        <CFMODULE template="xml_SVCGetAllUser.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>
