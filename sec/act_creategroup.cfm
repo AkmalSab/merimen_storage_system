@@ -62,5 +62,5 @@ select igrpid from FSEC4001 where VAGRPNAME = <cfqueryparam CFSQLTYPE="cf_sql_va
 
 <cfinclude template="qry_sspFSECCreateUserGroup.cfm">
 
-<!--- <CFLOCATION url="#request.webroot#index.cfm?fusebox=SVCsec&fuseaction=dsp_grouplist&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&urlback=#URLencodedformat(attributes.urlback)#&#request.mtoken#" ADDTOKEN="no"> --->
+<CFLOCATION url="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&urlback=#URLencodedformat(attributes.urlback)#&#request.mtoken#" ADDTOKEN="no">
 
