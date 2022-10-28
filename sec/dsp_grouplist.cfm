@@ -22,6 +22,8 @@ BY          ON          REMARKS
 --->
 <cfif IsDefined("SESSION.VARS.ORGTYPE")>
 
+	<cfset newurlback = urlencodedformat('#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#')>
+	
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
 	<CFSET DS=StructNew()>
 	<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
@@ -124,15 +126,17 @@ BY          ON          REMARKS
 			<div class="row mt-3">
 				<div class="col">
 					<h3 class="card text-primary">New Group</h3>
-					<form class="">
+					<cfoutput>
+						<form name="createGroup" method="post" action="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_creategroup&iDomainId=11&iObjId=1&urlback=#newurlback#&#request.mtoken#">
+					</cfoutput>
 						<table class="col-12">
 							<tr>
 								<td>Group Name</td>
-								<td><input type="text" class="form-control" id="GroupName" name="GroupName" maxlength=30 size=30 CHKREFORMAT="^[a-z0-9@\-]+$" CHKRESAMPLE="a-z,0-9,@,-" onblur="DoReq(this)" CHKREQUIRED></td>
+								<td><input type="text" class="form-control" id="grpname" name="grpname" maxlength=30 size=30 CHKREFORMAT="^[a-z0-9@\-]+$" CHKRESAMPLE="a-z,0-9,@,-" onblur="DoReq(this)" CHKREQUIRED></td>
 							</tr>
 							<tr>
 								<td>Description</td>
-								<td><input type="text" class="form-control" id="GroupName" name="GroupName" maxlength=30 size=30 onblur="DoReq(this)" CHKREQUIRED></td>
+								<td><input type="text" class="form-control" id="DESC" name="DESC" maxlength=30 size=30 onblur="DoReq(this)" CHKREQUIRED></td>
 							</tr>
 							<tr>
 								<td>Leaders to be added</td>
@@ -148,6 +152,12 @@ BY          ON          REMARKS
 									<input name=member_name id=member_name type=Text maxlength=10000 size=50 onChange="Retoken(this,null,null)">
 									<input type=button class=clsButton <cfif not Request.DS.FN.SVCGetResp()>style=width:15%</cfif> value="Search" onclick="StartMemberSearch()">
 									<input type=text value="" name=member_id id=member_id>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<input type=button value="Create" onclick="SubmitForm(createGroup)">
 								</td>
 							</tr>
 						</table>
@@ -180,11 +190,17 @@ BY          ON          REMARKS
 
 					function StartLeaderSearch() 
 					{
-						LeaderSearch.StartSearch('',"&G=35");
+						LeaderSearch.StartSearch('',"&G=1");
 					}
 					function StartMemberSearch()
 					{
-						MemberSearch.StartSearch('',"&G=35");
+						MemberSearch.StartSearch('',"&G=1");
+					}
+					function SubmitForm(frm) 
+					{
+						if(FormVerify(frm)) {
+							FormSubmit(frm);
+						}
 					}
 			</script>
 		</cfoutput>

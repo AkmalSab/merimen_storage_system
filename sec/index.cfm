@@ -12,4 +12,11 @@
     <cfcase value=xml_SVCGetAllUser>
         <cfinvoke component="sec.index" method="xml_SVCGetAllUser" ArgumentCollection=#Attributes#>
     </cfcase>
+    <cfcase value=act_creategroup>
+        <cfinvoke component="sec.index" method="act_creategroup" ArgumentCollection=#Attributes#>
+    </cfcase>
+    <cfcase value=qry_sspFSECCreateUserGroup>
+        <cfinvoke component="sec.index" method="qry_sspFSECCreateUserGroup" ArgumentCollection=#Attributes#>
+    </cfcase>
+    
 </cfswitch>
