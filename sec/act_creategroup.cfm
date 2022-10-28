@@ -46,7 +46,7 @@ UPDATES:
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCchkmail.cfm" isadmin=1 idomainid=#attributes.idomainid# iobjid=#attributes.iobjid#--->
 
 
-<cfquery name=q_checkgroup datasource=#request.SVCDSN#>
+<cfquery name=q_checkgroup datasource=#request.mtrdsn#>
 select igrpid from FSEC4001 where VAGRPNAME = <cfqueryparam CFSQLTYPE="cf_sql_varchar" value="#form.grpname#"> AND icoid=<cfqueryparam cfsqltype="cf_sql_integer" value="#attributes.iobjid#"> and sistatus=0
 </cfquery>
 

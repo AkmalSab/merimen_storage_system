@@ -21,8 +21,36 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
   SELECT TOP (1000) * from SEC0003 where sipgroup >= 7000; --list of permission definition
-  SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; --list of permission set to user
-  SELECT TOP (1000) * from SEC0005 where iCOID = 1; --list of companies
+  SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; --definition
+  SELECT TOP (1000) * from SEC0005 order by iCOID asc; --list of companies
+  SELECT TOP (1000) * from fsec4001 order by iGRPID DESC; -- list of group > 6461
+  SELECT TOP (1000) * from fsec4002; -- list of user bind to which group
+  SELECT TOP (1000) * from FSEC4004; -- list of permission bind to which group
+
+  sp_help fsec4001
+  ALTER TABLE fsec4001
+  ADD CONSTRAINT fsec4001_pk PRIMARY KEY (iGRPID);
+
+  ALTER TABLE fsec4001 ADD iGRPID2 INT IDENTITY(1,1);
+  ALTER TABLE fsec4001 DROP COLUMN iGRPID;
+  ALTER TABLE fsec4001 DROP CONSTRAINT fsec4001_pk;
+  EXEC sp_rename 'DBO.fsec4001.iGRPID2', 'iGRPID', 'COLUMN';
+
+  ALTER TABLE fsec4001
+  ALTER COLUMN iGRPID INT IDENTITY(7000, 1);
+
+
+  select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
+  from fsec4001 a WITH (NOLOCK) 
+  where a.icoid = 35 and a.sistatus=0 order by a.vagrpname
+
+  select a.itskgrpid,a.vatskgrpname 
+  from ftsk1001 a WITH (NOLOCK) 
+  where a.icoid = 35 and a.sistatus=0 order by a.itskgrpid
+
+
+  sp_help SEC0005
+  SELECT TOP (1000) * from fdoc3001;
   SELECT TOP (1000) * from fdoc3002; --doc class
   SELECT TOP (1000) * from fdoc3003; --uploaded file table
   SELECT TOP (1000) * from fdoc3004;
@@ -31,6 +59,7 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fdoc3007;
   SELECT TOP (1000) * from fdoc3008;
   SELECT TOP (1000) * from fdoc3009;
+  SELECT TOP (1000) * from fdoc3010;
   SELECT TOP (1000) * from FDOC3001 --document ID definition
   SELECT TOP (1000) * from FDOC3010 --document access right
   SELECT TOP (1000) * from [STRGY_TYPE];
@@ -411,3 +440,8 @@ SELECT *
 FROM SEC0003 a JOIN SEC0004 b WITH (NOLOCK)
 ON a.siPGROUP = b.siPGROUP
 WHERE b.iUSID = 1 and b.siPGROUP >= 7000
+
+SELECT *
+FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+ON a.iOBJID = b.IFILEID
+ORDER BY iSTRGID;
