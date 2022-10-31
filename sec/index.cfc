@@ -28,4 +28,8 @@
         <CFMODULE template="dsp_modgroupperm.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
+    <cffunction name="act_modgroupperm" hint="Group list page" returntype="any" output="true">
+        <CFMODULE template="act_modgroupperm.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>

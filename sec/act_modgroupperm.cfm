@@ -14,6 +14,9 @@ BY          ON          REMARKS
 
 Updates:
 --->
+
+<cfdump  var="#FORM#">
+<cfabort>
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCDISABLEDIRECT.cfm" Path="#GetCurrentTemplatePath()#">
 <CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCchkguid.cfm" required>
 <cfparam name="attributes.igrpid" default="">
@@ -35,6 +38,7 @@ Updates:
 	<CFPROCPARAM TYPE="IN" DBVARNAME="@as_grpname" NULL=yes CFSQLTYPE="CF_SQL_VARCHAR">				
 </cfstoredproc>
 
+<cfabort>
 <script>
 	window.close();
 	window.opener.location.reload(false);

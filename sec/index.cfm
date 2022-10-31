@@ -21,5 +21,8 @@
     <cfcase value=dsp_modgroupperm>
         <cfinvoke component="sec.index" method="dsp_modgroupperm" ArgumentCollection=#Attributes#>
     </cfcase>
+    <cfcase value=act_modgroupperm>
+        <cfinvoke component="sec.index" method="act_modgroupperm" ArgumentCollection=#Attributes#>
+    </cfcase>
     
 </cfswitch>
