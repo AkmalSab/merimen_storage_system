@@ -110,7 +110,11 @@ BY          ON          REMARKS
 									<td>#VAGRPDESC#</td>
 									<td>#dateTimeFormat(DTCRTON,'dd/mm/yyyy HH:nn:ss')#</td>
 									<td>
-										<a class="btn btn-primary">Manage</a>
+										<input type="button" class="clsButton" value="Manage" onclick="JSVCgenPopLink(
+											'/claims/index.cfm?fusebox=SVCsec&amp;fuseaction=dsp_modgroupperm&amp;idomainid=10&amp;iobjid=35&amp;igrpid=6894&amp;CFID=7846&amp;CFTOKEN=4dd37093a37c252e-320E29F8-9C27-CD77-E10ECBC354921226&amp;USID=1&amp;RID=3594046&amp;grpname=BIClmGrp',
+											'EditUserGroupPermissions',
+											500,
+											500)">
 									</td>
 									<td>
 										<a href="">Delete</a>

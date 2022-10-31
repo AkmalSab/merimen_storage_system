@@ -24,9 +24,15 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; --definition
   SELECT TOP (1000) * from SEC0005 order by iCOID asc; --list of companies
   SELECT TOP (1000) * from fsec4001 order by iGRPID DESC; -- list of group > 6461
-  SELECT TOP (1000) * from fsec4002; -- list of user bind to which group
+  SELECT TOP (1000) * from fsec4002 order by iGRPID DESC; -- list of user bind to which group
   SELECT TOP (1000) * from FSEC4004; -- list of permission bind to which group
 
+  select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
+  from fsec4001 a WITH (NOLOCK) 
+  where a.icoid = 35
+  and a.sistatus=0
+  
+  order by a.vagrpname
   sp_help fsec4001
   ALTER TABLE fsec4001
   ADD CONSTRAINT fsec4001_pk PRIMARY KEY (iGRPID);
@@ -36,8 +42,10 @@ SELECT TOP (1000) *
   ALTER TABLE fsec4001 DROP CONSTRAINT fsec4001_pk;
   EXEC sp_rename 'DBO.fsec4001.iGRPID2', 'iGRPID', 'COLUMN';
 
-  ALTER TABLE fsec4001
-  ALTER COLUMN iGRPID INT IDENTITY(7000, 1);
+  select iusid from sec0001 where vausid IN ('MMDANNY');
+
+
+
 
 
   select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
