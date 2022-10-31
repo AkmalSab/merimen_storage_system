@@ -50,7 +50,7 @@
 </CFIF> --->
 
 <!--- retrieve permissions according to cotypemask --->
-<cfquery name="q_grpperm" datasource=#Request.SVCDSN#>
+<cfquery name="q_grpperm" datasource=#Request.MTRDSN#>
 SELECT a.iPERMGRPID, c.vaPERMGRPNAME,a.siPGROUP,a.siPREQUIRED,a.vaDESC,
 CHK=CASE WHEN b.siPGROUP IS NULL THEN 0 ELSE 1 END,
 PRIVATE_PERM=CASE WHEN EXISTS(SELECT 1 FROM SEC0003_CO d WITH (NOLOCK) WHERE d.siPGROUP=a.siPGROUP) THEN 1 ELSE 0 END,
@@ -72,14 +72,13 @@ WHERE a.siCOTYPEID & <cfqueryparam cfsqltype="cf_sql_integer" value="#cotypemask
 ORDER BY a.iPERMGRPID,a.vaDESC
 </cfquery>
 
-
 <script>
 function ClkHelp(cotypemask)
 {	w=window.open(request.webroot+'index.cfm?fusebox=SVCadmin&fuseaction=dsp_userpermhelp&cotypemask='+cotypemask+'&nolayout=1&'+request.mtoken,'PermWindow','resizable=yes,scrollbars=yes,menubar=no;');
 }
 </script>
 <CFOUTPUT>
-<form name=ModGroupPerm action="#request.webroot#index.cfm?fusebox=SVCsec&fuseaction=act_modgroupperm&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&igrpid=#attributes.igrpid#&#request.mtoken#" method=post>
+<form name=ModGroupPerm action="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_modgroupperm&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&igrpid=#attributes.igrpid#&#request.mtoken#" method=post>
 <br><table CELLPADDING=3 CELLSPACING=0 align=center style="border:##214383 1px solid;width:90%">
 <tr><td align=center bgcolor=##214383 style=color:white><b>#Server.SVClang("Permissions Assigned to Group",12514)#: &nbsp; &nbsp;<input type=button class=clsButton value="#Server.SVClang("Help",1090)#" onclick="ClkHelp(#cotypemask#)"><br>#Attributes.grpname#</b></td></tr>
 </CFOUTPUT>
@@ -88,28 +87,42 @@ function ClkHelp(cotypemask)
 <cfset allpermlist = ""><cfset oldpermlist = "">
 <cfset curgrp=-1>
 <cfoutput query=q_grpperm>
-<cfset AllowMod=1>
-<cfif siPREQUIRED GT 0>
-	<cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCchkgrp.cfm" GRPLIST="#siPREQUIRED#R">
-	<cfif CanRead IS 0>
-		<cfset AllowMod=0>
-	</cfif>
-<cfelse>
-</cfif>
-<CFIF curgrp IS NOT iPERMGRPID>
-	<CFSET curgrp=iPERMGRPID>
-	<br><b><u>#vaPERMGRPNAME#</u></b><br>
-</CFIF>
+    <cfset AllowMod=1>
+    <cfif siPREQUIRED GT 0>
+        <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCchkgrp.cfm" GRPLIST="#siPREQUIRED#R">
+        <cfif CanRead IS 0>
+            <cfset AllowMod=0>
+        </cfif>
+    <cfelse>
+    </cfif>
+    <CFIF curgrp IS NOT iPERMGRPID>
+        <CFSET curgrp=iPERMGRPID>
+        <br><b><u>#vaPERMGRPNAME#</u></b><br>
+    </CFIF>
 
-<cfif (PRIVATE_PERM IS 0 OR (PRIVATE_PERM IS 1 AND PRIVATE_GCOID IS GCOID))>
-	<input type="checkbox" value="#siPGROUP#" ID="P#siPGROUP#"<CFIF AllowMod IS 0> DISABLED<CFELSE> NAME=PERCHK</CFIF><CFIF CHK IS 1> CHECKED</cfif>>&nbsp;<cfif SESSION.VARS.ORGTYPE IS "D">(#siPGROUP#) </cfif>#vaDESC#<br>
-</cfif>
-<cfif AllowMod IS 1>
-	<cfset allpermlist=ListAppend(allpermlist,siPGROUP)>
- 	<cfif Chk IS 1>
-		<cfset oldpermlist=ListAppend(oldpermlist,siPGROUP)>
-	</CFIF>
-</cfif>
+    <cfif (PRIVATE_PERM IS 0 OR (PRIVATE_PERM IS 1 AND PRIVATE_GCOID IS GCOID))>
+        <input 
+        type="checkbox" 
+        value="#siPGROUP#" 
+        ID="P#siPGROUP#"
+        <CFIF AllowMod IS 0> 
+            DISABLED
+        <CFELSE> 
+            NAME=PERCHK
+        </CFIF>
+        <CFIF CHK IS 1> 
+            CHECKED
+        </cfif>>&nbsp;
+        <cfif SESSION.VARS.ORGTYPE IS "D">
+            (#siPGROUP#) 
+        </cfif>#vaDESC#<br>
+    </cfif>
+    <cfif AllowMod IS 1>
+        <cfset allpermlist=ListAppend(allpermlist,siPGROUP)>
+        <cfif Chk IS 1>
+            <cfset oldpermlist=ListAppend(oldpermlist,siPGROUP)>
+        </CFIF>
+    </cfif>
 </cfoutput>
 <cfoutput>
 <input type="hidden" NAME="GRPNAME" ID="GRPNAME" value="#Attributes.grpname#">

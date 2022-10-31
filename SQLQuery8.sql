@@ -21,11 +21,17 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from fdoc3003; --framework docs
   SELECT TOP (1000) * from SEC0001; --list of user
   SELECT TOP (1000) * from SEC0003 where sipgroup >= 7000; --list of permission definition
-  SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; --definition
+  SELECT TOP (1000) * from SEC0004 where sipgroup >= 7000 ORDER BY SIPGROUP ASC; -- list of permission set to user
   SELECT TOP (1000) * from SEC0005 order by iCOID asc; --list of companies
-  SELECT TOP (1000) * from fsec4001 order by iGRPID DESC; -- list of group > 6461
-  SELECT TOP (1000) * from fsec4002 order by iGRPID DESC; -- list of user bind to which group
+  SELECT TOP (1000) * from fsec4001 order by iGRPID DESC; -- list of group definition > 6461
+  SELECT TOP (1000) * from fsec4002 order by iGRPID DESC; -- list of group set to user
   SELECT TOP (1000) * from FSEC4004; -- list of permission bind to which group
+  SELECT TOP (1000) * from SEC0023; --list of permission group id
+  SELECT TOP (1000) * from SEC0003_CO;
+
+  UPDATE SEC0003
+  SET iPERMGRPID = 160
+  where sipgroup >= 7000;
 
   select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
   from fsec4001 a WITH (NOLOCK) 
