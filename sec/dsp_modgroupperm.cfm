@@ -45,9 +45,9 @@
 <!--- Exclude permissions: PERMGRPNOTLIST, permdislist--->
 <CFSET PERMGRPNOTLIST = "">
 <CFSET PERMDISLIST = "">
-<cfif application.appmode eq "CLAIMS">
+<!--- <cfif application.appmode eq "CLAIMS">
 	<cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\MTRexcludePerm.cfm" ORGTYPE="#session.vars.orgtype#" LOCID="#LOCID#" COID="#GCOID#">
-</CFIF>
+</CFIF> --->
 
 <!--- retrieve permissions according to cotypemask --->
 <cfquery name="q_grpperm" datasource=#Request.SVCDSN#>
@@ -63,10 +63,15 @@ WHERE a.siCOTYPEID & <cfqueryparam cfsqltype="cf_sql_integer" value="#cotypemask
 <CFIF LOCID IS 2 AND SESSION.VARS.ORGTYPE IS NOT "D">
     AND a.siPGROUP NOT IN (440,503,444,442,441,443,500,504,501,502,53)
 </CFIF>
-<CFIF PERMGRPNOTLIST neq "">AND c.iPERMGRPID NOT IN (<cfqueryparam value="#PERMGRPNOTLIST#" cfsqltype="CF_SQL_INTEGER" list="true">)</CFIF>
-<CFIF PERMDISLIST neq "">AND a.siPGROUP not in (<cfqueryparam value="#PERMDISLIST#" cfsqltype="CF_SQL_NUMERIC" list="true">)</cfif>
+<CFIF PERMGRPNOTLIST neq "">
+    AND c.iPERMGRPID NOT IN (<cfqueryparam value="#PERMGRPNOTLIST#" cfsqltype="CF_SQL_INTEGER" list="true">)
+</CFIF>
+<CFIF PERMDISLIST neq "">
+    AND a.siPGROUP not in (<cfqueryparam value="#PERMDISLIST#" cfsqltype="CF_SQL_NUMERIC" list="true">)
+</cfif>
 ORDER BY a.iPERMGRPID,a.vaDESC
 </cfquery>
+
 
 <script>
 function ClkHelp(cotypemask)

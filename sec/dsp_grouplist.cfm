@@ -62,7 +62,7 @@ BY          ON          REMARKS
     </cfquery>
     <!--- Query to fetch user group list --->
 
-<!--- 	<cfdump  var="#q_user_group_select_all#"> --->
+<!--- <cfdump  var="#q_user_group_select_all#"> --->
 
 	<html lang="en">
 	<head>
@@ -111,7 +111,7 @@ BY          ON          REMARKS
 									<td>#dateTimeFormat(DTCRTON,'dd/mm/yyyy HH:nn:ss')#</td>
 									<td>
 										<input type="button" class="clsButton" value="Manage" onclick="JSVCgenPopLink(
-											'#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_modgroupperm&#request.mtoken#',
+											'#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_modgroupperm&iobjid=1&IGRPID=#q_user_group_select_all.IGRPID#&grpname=#q_user_group_select_all.VAGRPNAME#&#request.mtoken#',
 											'EditUserGroupPermissions',
 											500,
 											500)">
