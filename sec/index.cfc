@@ -24,4 +24,8 @@
         <CFMODULE template="qry_sspFSECCreateUserGroup.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
+    <cffunction name="dsp_modgroupperm" hint="Group list page" returntype="any" output="true">
+        <CFMODULE template="dsp_modgroupperm.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>

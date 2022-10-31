@@ -18,5 +18,8 @@
     <cfcase value=qry_sspFSECCreateUserGroup>
         <cfinvoke component="sec.index" method="qry_sspFSECCreateUserGroup" ArgumentCollection=#Attributes#>
     </cfcase>
+    <cfcase value=dsp_modgroupperm>
+        <cfinvoke component="sec.index" method="dsp_modgroupperm" ArgumentCollection=#Attributes#>
+    </cfcase>
     
 </cfswitch>

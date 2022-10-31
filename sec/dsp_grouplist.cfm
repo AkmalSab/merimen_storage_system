@@ -111,7 +111,7 @@ BY          ON          REMARKS
 									<td>#dateTimeFormat(DTCRTON,'dd/mm/yyyy HH:nn:ss')#</td>
 									<td>
 										<input type="button" class="clsButton" value="Manage" onclick="JSVCgenPopLink(
-											'/claims/index.cfm?fusebox=SVCsec&amp;fuseaction=dsp_modgroupperm&amp;idomainid=10&amp;iobjid=35&amp;igrpid=6894&amp;CFID=7846&amp;CFTOKEN=4dd37093a37c252e-320E29F8-9C27-CD77-E10ECBC354921226&amp;USID=1&amp;RID=3594046&amp;grpname=BIClmGrp',
+											'#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_modgroupperm&#request.mtoken#',
 											'EditUserGroupPermissions',
 											500,
 											500)">
