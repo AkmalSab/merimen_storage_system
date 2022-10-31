@@ -14,9 +14,13 @@ BY          ON          REMARKS
 
 Updates:
 --->
-
+FORM
 <cfdump  var="#FORM#">
-<cfabort>
+attributes
+<cfdump  var="#attributes#">
+Request.MTRDSN
+<cfdump  var="#Request.MTRDSN#">
+
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCDISABLEDIRECT.cfm" Path="#GetCurrentTemplatePath()#">
 <CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCchkguid.cfm" required>
 <cfparam name="attributes.igrpid" default="">
@@ -25,7 +29,7 @@ Updates:
 <cfmodule template="#request.apppath#services/CustomTags\SVCchkinput.cfm" chkstring="#attributes.idomainid##attributes.iobjid##attributes.igrpid#" chktype="NUM">
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCchktask.cfm" isadmin=1 idomainid=#attributes.idomainid# iobjid=#attributes.iobjid# igrpid=#attributes.igrpid#>
 
-<cfstoredproc PROCEDURE='sspFSECModUserGroupPerm' DATASOURCE=#Request.SVCDSN# RETURNCODE=YES>
+<cfstoredproc PROCEDURE='sspFSECModUserGroupPerm' DATASOURCE=#Request.MTRDSN# RETURNCODE=YES>
 	<CFPROCPARAM TYPE=IN  DBVARNAME=@ai_IGRPID VALUE=#attributes.igrpid# CFSQLTYPE=CF_SQL_INTEGER>
 	<CFPROCPARAM TYPE=IN  DBVARNAME=@ai_USID VALUE=#attributes.usid# CFSQLTYPE=CF_SQL_INTEGER>
 	<CFPROCPARAM TYPE=IN  DBVARNAME=@ai_COID VALUE=#attributes.iobjid# CFSQLTYPE=CF_SQL_INTEGER>
@@ -35,9 +39,8 @@ Updates:
 	<CFELSE>
 		<CFPROCPARAM TYPE=IN  DBVARNAME=@as_perchk VALUE=#FORM.PERCHK# CFSQLTYPE=CF_SQL_VARCHAR>
 	</CFIF>
-	<CFPROCPARAM TYPE="IN" DBVARNAME="@as_grpname" NULL=yes CFSQLTYPE="CF_SQL_VARCHAR">				
+	<CFPROCPARAM TYPE=IN DBVARNAME=@as_grpname NULL=true CFSQLTYPE="CF_SQL_VARCHAR">
 </cfstoredproc>
-
 <cfabort>
 <script>
 	window.close();

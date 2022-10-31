@@ -78,7 +78,7 @@ function ClkHelp(cotypemask)
 }
 </script>
 <CFOUTPUT>
-<form name=ModGroupPerm action="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_modgroupperm&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&igrpid=#attributes.igrpid#&#request.mtoken#" method=post>
+<form name=ModGroupPerm action="#request.webroot#index.cfm?fusebox=sec&fuseaction=act_modgroupperm&idomainid=#attributes.idomainid#&iobjid=#attributes.iobjid#&igrpid=#attributes.igrpid#&USID=#SESSION.VARS.USID#&#request.mtoken#" method=post>
 <br><table CELLPADDING=3 CELLSPACING=0 align=center style="border:##214383 1px solid;width:90%">
 <tr><td align=center bgcolor=##214383 style=color:white><b>#Server.SVClang("Permissions Assigned to Group",12514)#: &nbsp; &nbsp;<input type=button class=clsButton value="#Server.SVClang("Help",1090)#" onclick="ClkHelp(#cotypemask#)"><br>#Attributes.grpname#</b></td></tr>
 </CFOUTPUT>

@@ -24,11 +24,35 @@
         <CFMODULE template="qry_sspFSECCreateUserGroup.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
-    <cffunction name="dsp_modgroupperm" hint="Group list page" returntype="any" output="true">
+    <cffunction name="dsp_modgroupperm" hint="Modify Group Permission interface (popup)" returntype="any" output="true">
+        <cfargument name="idomainid" required="false" default="" type="string"
+            displayname="The DomainID of the object"
+            hint="The DomainID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="iobjid" required="false" default="" type="string"
+            displayname="The ObjID of the object"
+            hint="The ObjID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="igrpid" required="false" default="" type="string"
+            displayname="Group ID"
+            hint="Group ID must be passed in to display the list of permissions for the group (iGrpID in FSEC4001).">
+        <cfargument name="grpname" required="false" type="string"
+            displayname="Group Name"
+            hint="Name of the group.">
         <CFMODULE template="dsp_modgroupperm.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
-    <cffunction name="act_modgroupperm" hint="Group list page" returntype="any" output="true">
+    <cffunction name="act_modgroupperm" hint="Modify the Permission for a group" returntype="any" output="true">
+        <cfargument name="igrpid" required="false" default="" type="string"
+            displayname="Group ID"
+            hint="Modify the permissions for this User Group ID">
+        <cfargument name="idomainid" required="false" default="" type="string"
+            displayname="The DomainID of the object"
+            hint="The DomainID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="iobjid" required="false" default="" type="string"
+            displayname="The ObjID of the object"
+            hint="The ObjID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="usid" required="false" type="string"
+            displayname="The iUSID "
+            hint="User making the changes.">
         <CFMODULE template="act_modgroupperm.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
