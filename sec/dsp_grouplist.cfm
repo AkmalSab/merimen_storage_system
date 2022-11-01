@@ -117,7 +117,12 @@ BY          ON          REMARKS
 											500)">
 									</td>
 									<td>
-										<a href="javascript:if(confirm('Confirm to delete #VAGRPNAME# ?')){window.location.href='#request.webroot#index.cfm?fusebox=sec&fuseaction=act_delgroup&iDomainId=11&iObjId=1&igrpid=#q_user_group_select_all.IGRPID#&urlback=#newurlback#&USID=1&#request.mtoken#'}">Delete</a>
+										<a href="
+										javascript:if(confirm('Confirm to delete #VAGRPNAME# ?'))
+										{
+											window.location.href='#request.webroot#index.cfm?fusebox=sec&fuseaction=act_delgroup&iDomainId=11&iObjId=1&igrpid=#q_user_group_select_all.IGRPID#&usid=1&urlback=#URLEncodedFormat(newurlback)#&#request.mtoken#'
+										}
+										">Delete</a>
 									</td>
 								</tr>
 							</cfoutput>

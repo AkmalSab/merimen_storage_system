@@ -42,7 +42,7 @@ Updates:
 <!---cfmodule template="#request.apppath#services/CustomTags\SVCchkinput.cfm" chkstring="#attributes.idomainid##attributes.iobjid##attributes.ialiasid#" chktype="NUM">
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags\SVCchkmail.cfm" isadmin=1 idomainid=#attributes.idomainid# iobjid=#attributes.iobjid# cur_ialiasid=#attributes.ialiasid#--->
 
-<cfstoredproc PROCEDURE='sspFSECDeleteUserGroup' DATASOURCE=#Request.SVCDSN# RETURNCODE=YES>
+<cfstoredproc PROCEDURE='sspFSECDeleteUserGroup' DATASOURCE=#Request.MTRDSN# RETURNCODE=YES>
 	<CFPROCPARAM TYPE=IN  DBVARNAME=@igrpid VALUE=#attributes.igrpid# CFSQLTYPE=CF_SQL_INTEGER>
 	<CFPROCPARAM TYPE=IN  DBVARNAME=@usid VALUE=#session.vars.usid# CFSQLTYPE=CF_SQL_INTEGER>
 </cfstoredproc>
@@ -51,4 +51,4 @@ Updates:
     <cfthrow TYPE=EX_DBERROR ErrorCode="Error Modifying User Group">
 </cfif>
 <cfabort>
-<CFLOCATION URL="#request.webroot#index.cfm?fusebox=SVCsec&fuseaction=dsp_grouplist&iDomainid=#attributes.idomainid#&iObjId=#attributes.iobjid#&urlback=#urlencodedformat(attributes.urlback)#&#Request.MToken#" ADDTOKEN="no">
+<CFLOCATION URL="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&iDomainid=#attributes.idomainid#&iObjId=#attributes.iobjid#&urlback=#urlencodedformat(attributes.urlback)#&#Request.MToken#" ADDTOKEN="no">
