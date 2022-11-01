@@ -172,10 +172,10 @@
 <cfif isDefined('SESSION.VARS.USID')>
 	<!--- Get user's permission list --->
 	<cfquery NAME="q_user_permission_list" DATASOURCE=#CURDSN#>	
-		SELECT *
-		FROM SEC0003 a JOIN SEC0004 b WITH (NOLOCK)
-		ON a.siPGROUP = b.siPGROUP
-		WHERE b.iUSID = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#"> and b.siPGROUP >= 7000
+		SELECT b.siPGROUP
+		FROM fsec4002 a 
+		JOIN FSEC4004 b WITH (NOLOCK) ON a.iGRPID = b.iGRPID
+		WHERE a.iUSID = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">
 	</cfquery>
 
 	<!--- create new array to store query result --->
@@ -188,7 +188,12 @@
 
 	<!--- Store permission array in session --->
 	<cfset SESSION.VARS.PERMISSION = permission_array>
+
+<!--- <cfdump  var="#q_user_permission_list#"> --->
+<!--- <cfdump  var="#SESSION.VARS.PERMISSION#"> --->
 </cfif>
+
+
 
 <script>
 var request=new Object();

@@ -14,7 +14,7 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from trx0035
 
   SELECT TOP (1000) * from fobjd3010 ORDER BY ITATYPEID desc;--list of audit types (1000613)
-  SELECT TOP (1000) * from fobj3010 where IDOMAINID = 901 --list of all audit records
+  SELECT TOP (1000) * from fobj3010 order by DTCRTON desc --list of all audit records
   SELECT TOP (1000) * from fobj3010 where VATAREMARKS LIKE '%ISAAC123.%' --list of all audit records
   SELECT TOP (1000) * from fobj3001 ORDER BY iDOMAINID desc; --list of domain (901)
   SELECT TOP (1000) * from fobj3003; --list of domain-corole
@@ -25,12 +25,17 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from SEC0005 order by iCOID asc; --list of companies
   SELECT TOP (1000) * from fsec4001 order by iGRPID DESC; -- list of group definition > 6461
   SELECT TOP (1000) * from fsec4002 order by iGRPID DESC; -- list of group set to user
-  SELECT TOP (1000) * from FSEC4004; -- list of permission bind to which group
-  SELECT TOP (1000) * from SEC0023; --list of permission group id
+  SELECT TOP (1000) * from FSEC4004 order by iGRPID DESC; -- list of permission bind to which group
+  SELECT TOP (1000) * from SEC0023; --list of category for permission group
   SELECT TOP (1000) * from SEC0003_CO;
   SELECT TOP (1000) * from fCSI('7000,7004');
 
+	SELECT b.siPGROUP
+	FROM fsec4002 a 
+	JOIN FSEC4004 b WITH (NOLOCK) ON a.iGRPID = b.iGRPID
+	WHERE a.iUSID = 1
 
+  --delete from FSEC4004;
   SELECT TOP 1000 * FROM FSEC4004 ORDER BY siPGROUP ASC
 
   UPDATE SEC0003

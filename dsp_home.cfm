@@ -79,9 +79,13 @@ BY          ON          REMARKS
 					<cfoutput>
 						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7000")>
 							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_createitem&#request.mtoken#">Create New Item</a>
-						</cfif>						
-						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=rpt&fuseaction=dsp_viewreport&#request.mtoken#">View Report</a>
-						<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#">Admin</a>
+						</cfif>			
+						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7007")>
+							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=rpt&fuseaction=dsp_viewreport&#request.mtoken#">View Report</a>
+						</cfif>									
+						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7006")>
+							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#">Admin</a>
+						</cfif>
 					</cfoutput>					
 				</div>
 			</div>
@@ -211,7 +215,7 @@ BY          ON          REMARKS
 								<th scope="col">Rating</th>
 								<th scope="col">Classfied yes/no</th>
 								<th scope="col">Status</th>
-								<th scope="col">Action</th>
+								<th scope="col" class="text-center" colspan="2">Action</th>
 							</tr>
 						</thead>
 						<tbody id="tbodies">
@@ -219,13 +223,7 @@ BY          ON          REMARKS
 								<tr>
 									<th scope="row">#dateTimeFormat(DTCREATIONDATE,'dd/mm/yyyy HH:nn:ss')#</th>									
 									<td>
-										<cfif ISTRGTYPEID eq 1>
-										<a style="text-decoration: underline;" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
-										<cfelseif ISTRGTYPEID eq 2>
-											<a href='docs/#VAFILEORIGNAME#' download>#VAITEMNAME#</a>
-											<cfelse>
-												<a style="text-decoration: underline;" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>#VAITEMNAME#</a>
-										</cfif>										
+										#VAITEMNAME#						
 									</td>
 									<cfif ISTRGTYPEID eq 1>
 										<td>URL</td>
@@ -243,8 +241,19 @@ BY          ON          REMARKS
 											<td>Only authorized users</td>
 									</cfif>			
 									<td>#VASTATUS#</td>
+									<cfif ArrayContains(SESSION.VARS.PERMISSION,"7005")>
+										<td>											
+											<a class="btn btn-primary" href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=#iSTRGID#&#request.mtoken#'>Edit</a>								
+										</td>
+									</cfif>
 									<td>
-										<a class="btn btn-primary" href='#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=#iSTRGID#&#request.mtoken#'>Edit</a>
+										<cfif ISTRGTYPEID eq 1>
+										<a class="btn btn-primary" onclick=JSVCopenWin('#q_main_storage_select_all.VAURLADDRESS#',0,'yes',null,null,true,null)>View</a>
+										<cfelseif ISTRGTYPEID eq 2>
+											<a class="btn btn-primary" href='docs/#VAFILEORIGNAME#' download>View</a>
+											<cfelse>
+												<a class="btn btn-primary" onclick=JSVCopenWin('#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=#iSTRGID#&#request.mtoken#',0,'yes',null,null,true,null)>View</a>
+										</cfif>
 									</td>				
 								</tr>		
 							</cfoutput>												
