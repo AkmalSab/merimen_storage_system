@@ -233,7 +233,7 @@ BY          ON          REMARKS
 							// creator row
 							let row = document.createElement('tr');
 							let th_1 = document.createElement('th');
-							th_1.innerHTML = arr[i].VACREATOR;	
+							th_1.innerHTML = arr[i].VAUSNAME;	
 							th_1.colSpan  = "4"
 							row.appendChild(th_1);
 							tbs.appendChild(row);
