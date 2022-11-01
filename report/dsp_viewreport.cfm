@@ -109,6 +109,7 @@ BY          ON          REMARKS
 			<cfquery name="q_main_storage_report" datasource="#Request.MTRDSN#">
 				select
 				a.vaCREATOR, 
+				b.vaUSName,
 				a.iSTRGTYPEID as storage_type_id,
 				(
 					select count(iSTRGID)
@@ -130,12 +131,13 @@ BY          ON          REMARKS
 					from STRG_DATA
 					where vaCREATOR = a.vaCREATOR
 				) as Total_counters
-				from STRG_DATA a WITH (NOLOCK)
+				from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK)
+				on a.vaCREATOR = b.iUSID
 				where 0=0
-				group by a.vaCREATOR,  a.iSTRGTYPEID
+				group by a.vaCREATOR, b.vaUSName,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
-			<!--- <cfdump  var="#q_main_storage_report#"> --->
+<!--- 			<cfdump  var="#q_main_storage_report#"> --->
 			<!--- Table --->
 			<div class="row mt-3">
 				<div class="col">
@@ -150,15 +152,16 @@ BY          ON          REMARKS
 						</thead>
 						<tbody id="tbodies">
 							<cfset creator = 0><cfset i = 0>
+							<cfset Verified_total = 0>
+							<cfset Unverified_total = 0>
+							<cfset Classified_total = 0>
 							<cfoutput query="q_main_storage_report">
 								<cfset i += 1>
                                 <cfif creator != VACREATOR>
 									<cfset creator = VACREATOR>
-									<cfset Verified_total = 0>
-									<cfset Unverified_total = 0>
-									<cfset Classified_total = 0>
+									
 									<tr>
-										<th colspan="4">#VACREATOR#</th>
+										<th colspan="4">#VAUSNAME#</th>
 									</tr>
 								</cfif>
 								<tr>
