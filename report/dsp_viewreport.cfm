@@ -223,7 +223,7 @@ BY          ON          REMARKS
 					// remove all tbody's row
 					$("#report_storage tbody tr").remove();
 
-					let creator = 0; verified_counter = 0; unverified_counter = 0; classified_counter = 0;
+					let creator = 0; verified_counter = 0; unverified_counter = 0; classified_counter = 0; total = 0;
 
 					// plug in data into table
 					for(let i=0; i<arr.length;i++){
@@ -236,11 +236,9 @@ BY          ON          REMARKS
 							th_1.innerHTML = arr[i].VACREATOR;	
 							th_1.colSpan  = "4"
 							row.appendChild(th_1);
-
 							tbs.appendChild(row);
 						}
 						
-
 						// storage type row
 						let row2 = document.createElement('tr');
 						let td_1 = document.createElement('td');
@@ -254,10 +252,14 @@ BY          ON          REMARKS
 						let td_2 = document.createElement('td');
 						td_2.innerHTML = arr[i].VERIFIED_COUNTERS;	
 						verified_counter += arr[i].VERIFIED_COUNTERS;
+
+						total += arr[i].VERIFIED_COUNTERS;
 						
 						let td_3 = document.createElement('td');
 						td_3.innerHTML = arr[i].UNVERIFIED_COUNTERS;
 						unverified_counter += arr[i].UNVERIFIED_COUNTERS;
+
+						total += arr[i].UNVERIFIED_COUNTERS;
 
 						let td_4 = document.createElement('td');
 						td_4.innerHTML = arr[i].CLASSIFIED_COUNTERS;
@@ -267,9 +269,7 @@ BY          ON          REMARKS
 						row2.appendChild(td_2);
 						row2.appendChild(td_3);
 						row2.appendChild(td_4);
-						tbs.appendChild(row2);
-
-						
+						tbs.appendChild(row2);						
 
 						// total row
 						if(i==arr.length-1){
@@ -277,11 +277,10 @@ BY          ON          REMARKS
 							let td_5 = document.createElement('th');
 							td_5.innerHTML = 'Total';
 							let td_6 = document.createElement('td');
-							td_6.innerHTML = arr[i].TOTAL_COUNTERS;
+							td_6.innerHTML = total;
 							td_6.colSpan  = "4"
 							row3.appendChild(td_5);
 							row3.appendChild(td_6);
-
 							tbs.appendChild(row3);
 						}
 						else{
@@ -290,11 +289,10 @@ BY          ON          REMARKS
 								let td_5 = document.createElement('th');
 								td_5.innerHTML = 'Total';
 								let td_6 = document.createElement('td');
-								td_6.innerHTML = arr[i].TOTAL_COUNTERS;
+								td_6.innerHTML = total;
 								td_6.colSpan  = "4"
 								row3.appendChild(td_5);
 								row3.appendChild(td_6);
-
 								tbs.appendChild(row3);
 							}	
 						}				
