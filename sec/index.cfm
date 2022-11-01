@@ -24,5 +24,8 @@
     <cfcase value=act_modgroupperm>
         <cfinvoke component="sec.index" method="act_modgroupperm" ArgumentCollection=#Attributes#>
     </cfcase>
+    <cfcase value=act_delgroup>
+        <cfinvoke component="sec.index" method="act_delgroup" ArgumentCollection=#Attributes#>
+    </cfcase>
     
 </cfswitch>

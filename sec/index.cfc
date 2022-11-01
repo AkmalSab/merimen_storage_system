@@ -56,4 +56,20 @@
         <CFMODULE template="act_modgroupperm.cfm" AttributeCollection=#Arguments#>
         <CFRETURN>
     </cffunction>
+    <cffunction name="act_delgroup" hint="Deletes a user group." returntype="any" output="false">
+        <cfargument name="iDomainID" required="false" default="" type="string"
+            displayname="The DomainID of the object"
+            hint="The DomainID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="iobjid" required="false" default="" type="string"
+            displayname="The ObjID of the object"
+            hint="The ObjID of the object. Each object is identified by a (DomainID,ObjID) pair.">
+        <cfargument name="igrpid" required="false" default="" type="string"
+            displayname="Group ID"
+            hint="Group ID to delete.">
+        <cfargument name="urlback" required="false" default="" type="string"
+            displayname="Back button URL."
+            hint="URL for the back button in dsp_grouplist to go back to">
+        <CFMODULE template="act_delgroup.cfm" AttributeCollection=#Arguments#>
+        <CFRETURN>
+    </cffunction>
 </cfcomponent>
