@@ -223,7 +223,7 @@
 <div align=center id="mainpad">
 <br>
 <form id="labeladdf" method="post" action="#urlf#">
-    <input type="button" class="clsButton" href="javascript:formsubmit(2)" value="Saves"/>
+    <input type="button" class="clsButton" onclick="javascript:formsubmit(2)" value="Saves"/>
     <table class="clsClmTable" align="center" width="90%" style="table-layout:fixed" >
         <colgroup>
             <col class="clsClmEstTone1">

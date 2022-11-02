@@ -12,6 +12,7 @@
 
 <cfset database = request.svcdsn>
 
+<cfdump  var="#FORM#"><cfabort>
 <cftransaction action=begin>
 
 <cfquery name="qry_labelidcheck" datasource="#database#">
