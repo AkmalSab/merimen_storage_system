@@ -4,7 +4,6 @@ SELECT TOP (1000) *
 
   SELECT TOP (1000) * from trx0008 where iCASEID = 33673
   SELECT TOP (1000) * from trx0001 where iCASEID = 792
-  sp_help STRG_DATA
   SELECT TOP (1000) * from trx0070;
   SELECT TOP (1000) * from POL4001;
   SELECT TOP (1000) * from POLB4002;
@@ -30,8 +29,8 @@ SELECT TOP (1000) *
   SELECT TOP (1000) * from SEC0003_CO;
   SELECT TOP (1000) * from fCSI('7000,7004');
   SELECT TOP (1000) * from FOBJ3020; 
-  SELECT TOP (1000) * from FOBJB3020;
-  SELECT TOP (1000) * from FOBJB3022;
+  SELECT TOP (1000) * from FOBJB3020 --list of label definition;
+  SELECT TOP (1000) * from FOBJB3022 --list of Label-Company Link;
 
 	SELECT b.siPGROUP
 	FROM fsec4002 a 
@@ -491,19 +490,6 @@ group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID
 select *
 from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK)
 on a.vaCREATOR = b.iUSID
-
-select a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID as storage_type_id, 
-( select count(iSTRGID) from STRG_DATA where vaSTATUS != 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR ) as Unverified_counters, 
-( select count(iSTRGID) from STRG_DATA a where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR ) as Verified_counters, 
-( select count(iSTRGID) from STRG_DATA where iCLASSIFIED = 1 and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR ) as Classified_counters, 
-( select count(iSTRGID) from STRG_DATA where vaCREATOR = a.vaCREATOR ) as Total_counters 
-from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK) on a.vaCREATOR = b.iUSID 
-where 0=0 
-and a.dtCREATIONDATE >= '2022-10-01 00:00:00' AND a.dtCREATIONDATE <= '2022-11-01 23:59:59'
-group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID
-order by a.vaCREATOR
-
-
 select * from STRG_DATA
 
 select a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID as storage_type_id, 
@@ -511,8 +497,7 @@ select a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID as storage_type_id,
 ( select count(iSTRGID) from STRG_DATA a where vaSTATUS = 'Verified' and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR ) as Verified_counters, 
 ( select count(iSTRGID) from STRG_DATA where iCLASSIFIED = 1 and iSTRGTYPEID = a.iSTRGTYPEID and vaCREATOR = a.vaCREATOR ) as Classified_counters, 
 ( select count(iSTRGID) from STRG_DATA where vaCREATOR = a.vaCREATOR ) as Total_counters 
-from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK) on a.vaCREATOR = b.iUSID 
-where 0=0 
-and a.dtCREATIONDATE >= '2022-01-11 00:00:00' AND a.dtCREATIONDATE <= '2022-01-11 23:59:59' 
-group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID 
-order by a.vaCREATOR
+from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK) 
+on a.vaCREATOR = b.iUSID 
+where 0=0 and a.dtCREATIONDATE >= '2022-01-11 00:00:00' AND a.dtCREATIONDATE <= '2022-02-11 23:59:59' 
+group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID order by a.vaCREATOR
