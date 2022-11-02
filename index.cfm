@@ -20,6 +20,9 @@
 	<cfcase VALUE="rpt">
 		<cfinclude TEMPLATE="report/index.cfm">
 	</cfcase>
+	<cfcase VALUE="tag">
+		<cfinclude TEMPLATE="tag/index.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfdefaultcase>

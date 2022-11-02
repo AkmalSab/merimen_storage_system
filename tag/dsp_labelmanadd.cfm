@@ -15,7 +15,6 @@
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCADDFILE.cfm" FNAME="svcselector"> 
 
 <cfset custom_tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
-
 <cfquery name="qry_co" datasource="#request.mtrdsn#">
     select icoid,vaconame,ilocid,igcoid 
     from sec0005 with (nolock) 
@@ -74,6 +73,31 @@
 <cfset locale = request.ds.locales[qry_co.ilocid]>
 <cfset locid = qry_co.ilocid>
 
+<!---    START IMPORT MERIMEN FRAMEWORK      --->
+<CFSET DS=StructNew()>
+<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
+<CFSET Request.DS=DS>
+<CFSET Request.DS.FN.SVCSvrFileDSUpdate()>
+<style>
+.code {color:blue; font-family: 'courier sans ms'}
+.quest { color:red;}
+</style>
+<!--- Include these using AddFile --->
+<script>
+    var request=new Object();
+    <CFOUTPUT>
+    request.apppath="#request.apppath#";
+    request.approot="#request.approot#";
+    </CFOUTPUT>
+    sysdt=new Date();
+</script>
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="JQUERY">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
+<script>AddOnloadCode("MrmPreprocessForm()");</script>
+<!--- END IMPORT MERIMEN FRAMEWORK --->
+
 <cfoutput>
 <h3 class=clsColorNote align=center>#Server.SVClang("Create/ Update Labels",27077)#</h3>
 <script>
@@ -98,10 +122,10 @@
         SVCconfirm(message,formsubmit(1))
     }
 
-    GenerateMenubar("ClaimMenu",90,true);
-    AddToMenubar("ClaimMenu","<< " + JSVClang("Back (Co-Profile)",27033),"#urlback#");
-    AddToMenubar("ClaimMenu",JSVClang("Save",6804),"javascript:formsubmit(2)");
-    AddOnloadCode("MrmPreprocessForm();");
+    // GenerateMenubar("ClaimMenu",90,true);
+    // AddToMenubar("ClaimMenu","<< " + JSVClang("Back (Co-Profile)",27033),"#urlback#");
+    // AddToMenubar("ClaimMenu",JSVClang("Save",6804),"javascript:formsubmit(2)");
+    // AddOnloadCode("MrmPreprocessForm();");
 </script>
 
 <table class="clsClmTable" align="center" width="90%" style="table-layout:fixed">
@@ -253,7 +277,8 @@
     				<input name=labeldisp id=labeldisp type=hidden tabindex=-1 style=background-color:silver size=40 onblur=DoReq(this)>
     				<input name=labeldata id=labeldata type=hidden>
 
-    				<cfmodule template="#request.logpath#index.cfm" fusebox="SVCobj" fuseaction="dsp_SVCSelector"
+                    dfdfgddgdf
+    				<!--- <cfmodule template="#request.logpath#index.cfm" fusebox="SVCobj" fuseaction="dsp_SVCSelector"
     					URL="#request.webroot#index.cfm?fusebox=SVCobj&fuseaction=xml_SVCGetLabeldef&coid=#attributes.coid#&keyword="
     					TYPE="POPUP" 
                         SHOWCHECKBOX="0" 
@@ -263,7 +288,7 @@
                         SRCVALUEFIELD="labelid"
     					JCALLBACK="populatelabeldata" 
                         BUTTONTEXT="Select Existing Labels"
-                        BUTTON_DISABLED=0>
+                        BUTTON_DISABLED=0> --->
                 </td>
             </tr>
             <tr>

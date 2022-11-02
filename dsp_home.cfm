@@ -85,6 +85,7 @@ BY          ON          REMARKS
 						</cfif>									
 						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7006")>
 							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#">Admin</a>
+							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=tag&fuseaction=dsp_labelmanadd&#request.mtoken#">Label</a>
 						</cfif>
 					</cfoutput>					
 				</div>
