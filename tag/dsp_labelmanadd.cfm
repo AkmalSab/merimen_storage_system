@@ -5,8 +5,8 @@
 <cfparam name="attributes.labelstat" default="">
 <cfparam name="attributes.labelcostat" default="">
 
-<cfset urlback="#request.webroot#index.cfm?fusebox=MTRadmin&fuseaction=dsp_labelmanedit&coid=#attributes.coid#&#Request.MToken#">
-<cfset urlf="#request.webroot#index.cfm?fusebox=MTRadmin&fuseaction=act_labelmanadd&labelcoid=#attributes.labelcoid#&coid=#attributes.coid#&labelid=#attributes.labelid#&#Request.MToken#">
+<cfset urlback="#request.webroot#index.cfm?fusebox=tag&fuseaction=dsp_labelmanadd&coid=#attributes.coid#&#Request.MToken#">
+<cfset urlf="#request.webroot#index.cfm?fusebox=tag&fuseaction=act_labelmanadd&labelcoid=#attributes.labelcoid#&coid=#attributes.coid#&labelid=#attributes.labelid#&#Request.MToken#">
 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCADDFILE.cfm" FNAME="underscore"> 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCADDFILE.cfm" FNAME="underscore-mrm"> 
@@ -223,6 +223,7 @@
 <div align=center id="mainpad">
 <br>
 <form id="labeladdf" method="post" action="#urlf#">
+    <input type="button" class="clsButton" href="javascript:formsubmit(2)" value="Saves"/>
     <table class="clsClmTable" align="center" width="90%" style="table-layout:fixed" >
         <colgroup>
             <col class="clsClmEstTone1">
@@ -297,7 +298,7 @@
                     <cfif killfields>
                         <span data-bind="html:thedomlong().name"> </span>
                         <input type="hidden" name="thedom" data-bind="value:thedom">
-                    <cfelse>
+                    <cfelse>                        
                         <select id="thedom" name="thedom" data-bind="options:data.doms,optionsText:'name',optionsValue:'val',value:thedom">
                         </select>
                     </cfif>
@@ -538,6 +539,7 @@
             ,{val:15	,name:'Policy Record Table BIZ_POL'}
             ,{val:17	,name:'External Mail'}
             ,{val:20	,name:'Repair Card Reminder Letter'}
+            ,{val:901	,name:'Storage Item'}
             <!---  
             ,{val:22	,name:'Topup'}
             ,{val:23	,name:'Adjustment'}
@@ -809,7 +811,7 @@
     <cfelse>
         var preset = {
         	<cfif attributes.coid eq 700469>
-    		<cfquery name=q_getmax datasource=#request.svcdsn#>select useid=max(ilbldefid)+1 from fobjb3020 with (nolock) where ilbldefid<=10000</cfquery>
+    		<cfquery name=q_getmax datasource=#request.mtrdsn#>select useid=max(ilbldefid)+1 from fobjb3020 with (nolock) where ilbldefid<=10000</cfquery>
             theloc:'7'
             ,thedom:'1'
             ,labelid:'#q_getmax.useid#'

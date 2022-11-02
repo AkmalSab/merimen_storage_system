@@ -6,4 +6,7 @@
     <cfcase VALUE="dsp_labelmanedit">
 		<cfinvoke component="tag.index" method="dsp_labelmanedit" ArgumentCollection=#Attributes#>
 	</cfcase>
-</cfswitch>z
+	<cfcase VALUE="act_labelmanadd">
+		<cfinvoke component="tag.index" method="act_labelmanadd" ArgumentCollection=#Attributes#>
+	</cfcase>
+</cfswitch>

@@ -8,4 +8,8 @@
         <cfmodule template="dsp_labelmanedit.cfm" attributecollection=#arguments#>
         <cfreturn>
     </cffunction>
+    <cffunction access="public" name="act_labelmanadd" output=false>
+        <cfmodule template="act_labelmanadd.cfm" attributecollection=#arguments#>
+        <cfreturn>
+    </cffunction>
 </cfcomponent>
