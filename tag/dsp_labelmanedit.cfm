@@ -16,6 +16,31 @@
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCADDFILE.cfm" FNAME="ko"> 
 <cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCADDFILE.cfm" FNAME="ko-mrm"> 
 
+<!---    START IMPORT MERIMEN FRAMEWORK      --->
+<CFSET DS=StructNew()>
+<cfmodule TEMPLATE="#request.apppath#services/CustomTags/SVCcffunctions.cfm" DS=#DS#>
+<CFSET Request.DS=DS>
+<CFSET Request.DS.FN.SVCSvrFileDSUpdate()>
+<style>
+.code {color:blue; font-family: 'courier sans ms'}
+.quest { color:red;}
+</style>
+<!--- Include these using AddFile --->
+<script>
+    var request=new Object();
+    <CFOUTPUT>
+    request.apppath="#request.apppath#";
+    request.approot="#request.approot#";
+    </CFOUTPUT>
+    sysdt=new Date();
+</script>
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="JQUERY">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
+<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
+<script>AddOnloadCode("MrmPreprocessForm()");</script>
+<!--- END IMPORT MERIMEN FRAMEWORK --->
+
 <cfoutput>
 <h3 class=clsColorNote align=center>#Server.SVClang("View Labels",27078)#</h3>
 <script>
@@ -23,11 +48,11 @@
         var f = JSVCall('frefresh')
         f.submit()
     }
-    GenerateMenubar("ClaimMenu",90,true);
-    AddToMenubar("ClaimMenu","<< " + JSVClang("Back (Co-Profile)",27033),"#urlback#");
-    AddToMenubar("ClaimMenu",JSVClang("Refresh Label",27079),"javascript:refresher()");
-    AddToMenubar("ClaimMenu",JSVClang("Add Label",27080) + " >>","#urladdlabel#");
-    AddOnloadCode("MrmPreprocessForm();");
+    // GenerateMenubar("ClaimMenu",90,true);
+    // AddToMenubar("ClaimMenu","<< " + JSVClang("Back (Co-Profile)",27033),"#urlback#");
+    // AddToMenubar("ClaimMenu",JSVClang("Refresh Label",27079),"javascript:refresher()");
+    // AddToMenubar("ClaimMenu",JSVClang("Add Label",27080) + " >>","#urladdlabel#");
+    // AddOnloadCode("MrmPreprocessForm();");
 </script>
 <br>
 <cfmodule TEMPLATE="#Request.LOGPATH#CustomTags\URLBACK.cfm" new>
