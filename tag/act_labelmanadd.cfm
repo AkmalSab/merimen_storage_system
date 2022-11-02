@@ -10,15 +10,18 @@
 	<cfset allowCreateLabel = true>
 </cfif>
 
-<cfset database = request.svcdsn>
+<cfset database = request.mtrdsn>
 
-<cfdump  var="#FORM#"><cfabort>
+<cfdump  var="#allowCreateLabel#">
+<cfdump  var="#FORM#">
 <cftransaction action=begin>
 
 <cfquery name="qry_labelidcheck" datasource="#database#">
     select 1 from FOBJB3020 where iLBLDEFID = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
 </cfquery>
-
+qry_labelidcheck
+<cfdump  var="#qry_labelidcheck#">
+<cfdump  var="#session#">
 <cftry>
     <!--- update label definition --->
     <cfif qry_labelidcheck.recordcount gt 0> 
@@ -43,6 +46,9 @@
             where     
             ILBLDEFID = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
         </cfquery>
+        qry_labeldef2
+        <cfdump  var="#qry_labeldef2#">
+
         <cfif rslt_labeldef2.recordcount gt 0>
             <cfset attributes.labelid = form.labelid>
             <cfset attributes.labelstat="U">
@@ -72,6 +78,10 @@
 					,<cfif form.LOCALEDESC is "">NULL<CFELSE><cfqueryparam value="#form.LOCALEDESC#" CFSQLType = "cf_sql_varchar"></CFIF>
                     )
             </cfquery>
+
+            rslt_labeldef1
+            <cfdump  var="#rslt_labeldef1#">
+
             <cfif rslt_labeldef1.recordcount gt 0>
                 <cfset attributes.labelid = form.labelid>
                 <cfset attributes.labelcoid = -1>
@@ -100,6 +110,9 @@
     select 1 from FOBJB3020 where iLBLDEFID = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
 </cfquery>
 
+qry_labelidcheck2
+<cfdump  var="#qry_labelidcheck2#">
+
 <cfif qry_labelidcheck2.recordcount eq 0>
     <cfthrow TYPE="EX_SECFAILED" ErrorCode="BADCSTAT" EXTENDEDINFO="INVALID LABELID">
 </cfif>
@@ -113,6 +126,9 @@
             and iGCOID = <cfqueryparam value="#form.OWNER#" CFSQLType = "cf_sql_integer" null="no">
     </cfquery>
 
+    qry_labelcocheck
+    <cfdump  var="#qry_labelcocheck#">
+
     <cftry>
         <cfif StructKeyExists(form,'TIECO')>
 
@@ -120,12 +136,6 @@
                 <cfquery name="qry_tieco2" datasource="#database#" result="rslt_tieco2">
                     update FOBJB3022 set
                         siSTATUS       = <cfqueryparam value="#StructKeyExists(form,'DEACTIVATE')?1:0#" CFSQLType = "cf_sql_smallint" null="no">
-    <!--- 
-            <cfif application.db_mode eq 'DEV'>
-                ,iLBLDEFID       = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
-                ,iGCOID         = <cfqueryparam value="#form.OWNER#" CFSQLType = "cf_sql_integer" null="no">
-            </cfif>
-    --->
                         ,iGROUPPRIORITY = <cfqueryparam value="#form.GROUPORDER#" CFSQLType = "cf_sql_integer" null="#form.GROUPORDER eq ''#">
                         ,iSELECTOR      = <cfqueryparam value="#form.CLAIMTYPEVAL#" CFSQLType = "cf_sql_integer" null="no">
                         ,vaSELECTOR     = <cfqueryparam value="" CFSQLType = "cf_sql_integer" null="yes">
@@ -133,6 +143,8 @@
                         iLBLDEFID = <cfqueryparam value="#attributes.labelid#" CFSQLType = "cf_sql_integer" null="no">
                         and iGCOID = <cfqueryparam value="#form.OWNER#" CFSQLType = "cf_sql_integer" null="no">
                 </cfquery>
+                qry_tieco2
+                <cfdump  var="#qry_tieco2#">
                 <cfif rslt_tieco2.recordcount gt 0>
                     <cfset attributes.labelid = form.labelid>
                     <cfset attributes.labelstat="U">
@@ -152,6 +164,8 @@
                         ,<cfqueryparam value="" CFSQLType = "cf_sql_integer" null="yes">
                         )
                 </cfquery>
+                rslt_tieco1
+                <cfdump  var="#rslt_tieco1#">
                 <cfif rslt_tieco1.recordcount gt 0>
                     <cfset attributes.labelid = form.labelid>
                     <cfset attributes.labelcoid=form.owner>
@@ -171,6 +185,8 @@
                 </cfquery>
                 <cfset attributes.labelcoid=''>
                 <cfset attributes.labelcostat="D">
+                qry_tieco3
+                <cfdump  var="#qry_tieco3#">
             <cfelse>
                 <cfset attributes.labelcoid=-1>
             </cfif>
@@ -185,5 +201,5 @@
 <cftransaction action="commit">
 </cftransaction>
 
-<CFLOCATION url="#request.webroot#index.cfm?fusebox=MTRadmin&fuseaction=dsp_labelmanadd&labelstat=#attributes.labelstat#&labelcostat=#attributes.labelcostat#&labelcoid=#attributes.labelcoid#&coid=#attributes.coid#&labelid=#attributes.labelid#&#Request.MToken#" ADDTOKEN="no">
+<CFLOCATION url="#request.webroot#index.cfm?fusebox=tag&fuseaction=dsp_labelmanadd&labelstat=#attributes.labelstat#&labelcostat=#attributes.labelcostat#&labelcoid=#attributes.labelcoid#&coid=#attributes.coid#&labelid=#attributes.labelid#&#Request.MToken#" ADDTOKEN="no">
 
