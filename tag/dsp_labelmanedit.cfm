@@ -309,7 +309,7 @@ todo: fuzzy search capability
         var self = this
         this.data = data
         this.seturl = function(labelid,gcoid){
-            return request.webroot+'index.cfm?fusebox=MTRadmin&fuseaction=dsp_labelmanadd&coid=#attributes.coid#&labelcoid='+gcoid+'&labelid='+labelid+'&'+request.mtoken
+            return '#request.webroot#'+'index.cfm?fusebox=tag&fuseaction=dsp_labelmanadd&coid=#attributes.coid#&labelcoid='+gcoid+'&labelid='+labelid+'&'+'#request.mtoken#'
         }
         this.filtName = ko.observable('')
         this.filtOwnership = ko.observableArray(['0','#qry_co.icoid#'])
