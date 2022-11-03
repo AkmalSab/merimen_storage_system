@@ -1,6 +1,8 @@
 <!--- If the form has submitted --->
 <cfif structKeyExists(FORM, "ItemName")>
 
+    
+
     <!--- Default value for FNEXFILE input type file --->
     <cfparam name="form.FNEXFILE" default="">
     <cfparam  name="fileid" default="0">
@@ -60,6 +62,20 @@
         <cfprocparam type="out" CFSQLType="cf_sql_integer" variable="id" dbVarName=@li_id> <!--- last id --->
     </cfstoredproc>
     <!--- query insert into STRG_DATA --->
+
+    <cfoutput>
+        id = #id#
+    </cfoutput>
+
+    
+    
+    <cfloop list="#form.TAGS#" index="item">
+        <cfoutput>
+            <cfquery name="q_insert_tags" datasource="#request.mtrdsn#">
+                insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) values (#item#,901,#id#,GETDATE())
+            </cfquery>
+        </cfoutput>
+    </cfloop>
 
     <!--- Redirect to home --->
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">

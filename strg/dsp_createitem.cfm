@@ -219,20 +219,23 @@ BY          ON          REMARKS
 									<tr>
 										<td class=clsField1>Tag/Label</td>
 										<td class=clsValue1>
-											<cfdump  var="#Attributes#">
-											<CFSTOREDPROC PROCEDURE="sspFOBJLabelGetAll" DATASOURCE=#Request.MTRDSN# RETURNCODE=YES>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.DOMAINID# DBVARNAME=@ai_domainid>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.OBJID# DBVARNAME=@ai_objid>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.LOCID# DBVARNAME=@ai_locid>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.USID# DBVARNAME=@ai_usid>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.GCOID# DBVARNAME=@ai_gcoid>
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.COROLE# DBVARNAME=@ai_corole>												
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER NULL=YES VALUE="" DBVARNAME=@ai_selector>		
-												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_VARCHAR NULL=YES VALUE="" DBVARNAME=@as_selector1>									
-												<CFPROCRESULT resultset=1 NAME=q_lbls>
-											</CFSTOREDPROC>
-											<CFSET returncode=CFSTOREDPROC.STATUSCODE>
-											<cfdump  var="#q_lbls#">
+											<!--- <cfdump  var="#Attributes#"> --->
+											<cfquery name="q_select_label" datasource="#Request.MTRDSN#">
+												SELECT b.*
+												FROM FOBJ3020 a 
+												RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
+												RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
+												where b.iDOMAINID = 1 and c.iGCOID = 1
+											</cfquery>
+											<!--- <cfdump  var="#q_select_label#"> --->											
+												<cfoutput query="q_select_label">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" value="#q_select_label.ILBLDEFID#" name="tags">
+														<label class="form-check-label" for="tags">
+															#q_select_label.VALBLDESC#
+														</label>
+													</div>
+												</cfoutput>
 										</td>
 									</tr>
 									<tr class="" style="display: none;" id="URLtr">
