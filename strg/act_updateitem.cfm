@@ -88,5 +88,16 @@
             <cfdump  var="#cfstoredproc#">
             <!--- Query to insert audit logs --->
         </cfif>		
+
+        <!--- Insert into labels transaction table (FOBJ3020) --->
+        <cfif structKeyExists(FORM, "TAGS")>
+            <cfloop list="#form.TAGS#" index="item">
+                <cfoutput>
+                    <cfquery name="q_insert_tags" datasource="#request.mtrdsn#">
+                        insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) values (#item#,901,#id#,GETDATE())
+                    </cfquery>
+                </cfoutput>
+            </cfloop>
+        </cfif>
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
 </cfif>
