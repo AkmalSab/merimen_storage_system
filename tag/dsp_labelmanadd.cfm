@@ -277,9 +277,7 @@
 
     				<input name=labeldisp id=labeldisp type=hidden tabindex=-1 style=background-color:silver size=40 onblur=DoReq(this)>
     				<input name=labeldata id=labeldata type=hidden>
-
-                    dfdfgddgdf
-    				<!--- <cfmodule template="#request.logpath#index.cfm" fusebox="SVCobj" fuseaction="dsp_SVCSelector"
+    				<cfmodule template="#request.logpath#index.cfm" fusebox="SVCobj" fuseaction="dsp_SVCSelector"
     					URL="#request.webroot#index.cfm?fusebox=SVCobj&fuseaction=xml_SVCGetLabeldef&coid=#attributes.coid#&keyword="
     					TYPE="POPUP" 
                         SHOWCHECKBOX="0" 
@@ -289,7 +287,7 @@
                         SRCVALUEFIELD="labelid"
     					JCALLBACK="populatelabeldata" 
                         BUTTONTEXT="Select Existing Labels"
-                        BUTTON_DISABLED=0> --->
+                        BUTTON_DISABLED=0>
                 </td>
             </tr>
             <tr>

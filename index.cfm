@@ -23,6 +23,9 @@
 	<cfcase VALUE="tag">
 		<cfinclude TEMPLATE="tag/index.cfm">
 	</cfcase>
+	<cfcase VALUE="SVCobj">
+        <cfinclude TEMPLATE="/services/obj/index.cfm">
+    </cfcase>
 	<cfdefaultcase>
 		<cfinvoke component="index" method="dsp_login" ArgumentCollection=#Attributes#>
 	</cfdefaultcase>

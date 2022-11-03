@@ -216,6 +216,25 @@ BY          ON          REMARKS
 											</cfoutput>								
 										</td>
 									</tr>
+									<tr>
+										<td class=clsField1>Tag/Label</td>
+										<td class=clsValue1>
+											<cfdump  var="#Attributes#">
+											<CFSTOREDPROC PROCEDURE="sspFOBJLabelGetAll" DATASOURCE=#Request.MTRDSN# RETURNCODE=YES>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.DOMAINID# DBVARNAME=@ai_domainid>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.OBJID# DBVARNAME=@ai_objid>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.LOCID# DBVARNAME=@ai_locid>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.USID# DBVARNAME=@ai_usid>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.GCOID# DBVARNAME=@ai_gcoid>
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER VALUE=#Attributes.COROLE# DBVARNAME=@ai_corole>												
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_INTEGER NULL=YES VALUE="" DBVARNAME=@ai_selector>		
+												<CFPROCPARAM TYPE=IN CFSQLTYPE=CF_SQL_VARCHAR NULL=YES VALUE="" DBVARNAME=@as_selector1>									
+												<CFPROCRESULT resultset=1 NAME=q_lbls>
+											</CFSTOREDPROC>
+											<CFSET returncode=CFSTOREDPROC.STATUSCODE>
+											<cfdump  var="#q_lbls#">
+										</td>
+									</tr>
 									<tr class="" style="display: none;" id="URLtr">
 										<td class=clsField1>URL</td>
 										<td class=clsValue1>
