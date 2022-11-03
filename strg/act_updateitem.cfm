@@ -85,12 +85,17 @@
                 <cfprocparam TYPE=IN DBVARNAME=@VATAREMARKS VALUE="UPDATE STORAGE CONTENT" CFSQLTYPE="CF_SQL_VARCHAR">
             </cfstoredproc>
 
-            <cfdump  var="#cfstoredproc#">
+            <!---<cfdump  var="#cfstoredproc#">--->
             <!--- Query to insert audit logs --->
         </cfif>		
+        <!--- Delete existing label --->
+        <cfquery name="q_delete_tags" datasource="#request.mtrdsn#">
+            delete from FOBJ3020 where IDOMAINID = 901 and IOBJID = #id#
+        </cfquery>
 
         <!--- Insert into labels transaction table (FOBJ3020) --->
         <cfif structKeyExists(FORM, "TAGS")>
+            <!--- First time add new label --->
             <cfloop list="#form.TAGS#" index="item">
                 <cfoutput>
                     <cfquery name="q_insert_tags" datasource="#request.mtrdsn#">
@@ -98,6 +103,10 @@
                     </cfquery>
                 </cfoutput>
             </cfloop>
+            <cfelse>
+            <cfquery name="q_delete_tags" datasource="#request.mtrdsn#">
+                delete from FOBJ3020 where IDOMAINID = 901 and IOBJID = #id#
+            </cfquery>  
         </cfif>
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">
 </cfif>

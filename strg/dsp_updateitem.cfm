@@ -261,12 +261,19 @@ BY          ON          REMARKS
 									</tr>
 									<tr>
 										<td class=clsField1>Tag/Label</td>
-										<td class=clsValue1> 
-											<cfset i = 1>
-											<!---<cfdump  var="#q_select_all_label#">--->
+										<td class=clsValue1> <cfset isSame = false>
 											<cfif q_select_all_label.recordCount GT 0>
-												<cfoutput query="q_select_all_label">
-													<cfif q_select_all_label.ILBLDEFID EQ q_select_specific_label.ILBLDEFID[i++]>
+												<cfset q_select_specific_label = ValueArray(q_select_specific_label, 'ILBLDEFID')>
+												<cfoutput query="q_select_all_label">													
+													<cfloop array="#q_select_specific_label#" item="item">
+														<cfif q_select_all_label.ILBLDEFID EQ item>
+															<cfset isSame = true>
+															<cfbreak>
+															<cfelse>
+															<cfset isSame = false>
+														</cfif>
+													</cfloop>
+													<cfif isSame>
 														<div class="form-check">
 															<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags" checked>
 															<label class="form-check-label" for="tags">
@@ -274,13 +281,13 @@ BY          ON          REMARKS
 															</label>
 														</div>
 														<cfelse>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags">
-															<label class="form-check-label" for="tags">
-																#q_select_all_label.VALBLDESC#
-															</label>
-														</div>
-													</cfif>														
+															<div class="form-check">
+																<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags">
+																<label class="form-check-label" for="tags">
+																	#q_select_all_label.VALBLDESC#
+																</label>
+															</div>
+													</cfif>
 												</cfoutput>
 											</cfif>												
 										</td>
