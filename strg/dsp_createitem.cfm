@@ -220,19 +220,19 @@ BY          ON          REMARKS
 										<td class=clsField1>Tag/Label</td>
 										<td class=clsValue1>
 											<!--- <cfdump  var="#Attributes#"> --->
-											<cfquery name="q_select_label" datasource="#Request.MTRDSN#">
+											<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
 												SELECT b.*
 												FROM FOBJ3020 a 
 												RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
 												RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
 												where b.iDOMAINID = 1 and c.iGCOID = 1
 											</cfquery>
-											<!--- <cfdump  var="#q_select_label#"> --->											
-												<cfoutput query="q_select_label">
+											<!--- <cfdump  var="#q_select_all_label#"> --->											
+												<cfoutput query="q_select_all_label">
 													<div class="form-check">
-														<input class="form-check-input" type="checkbox" value="#q_select_label.ILBLDEFID#" name="tags">
+														<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags">
 														<label class="form-check-label" for="tags">
-															#q_select_label.VALBLDESC#
+															#q_select_all_label.VALBLDESC#
 														</label>
 													</div>
 												</cfoutput>

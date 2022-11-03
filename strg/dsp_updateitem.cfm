@@ -31,7 +31,25 @@ BY          ON          REMARKS
 			FROM STRG_DATA WITH (NOLOCK)
 			WHERE iSTRGID = #URL.id#
 		</cfquery>
-<!--- <cfdump  var="#q_main_storage_select_specific#"> --->
+		<!--- <cfdump  var="#q_main_storage_select_specific#"> --->
+
+		<!--- query to fetch all label --->
+		<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
+			SELECT b.*
+			FROM FOBJ3020 a 
+			RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
+			RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
+			where b.iDOMAINID = 1 and c.iGCOID = 1
+		</cfquery>
+
+		<!--- query to fetch current item's label --->
+		<cfquery name="q_select_specific_label" datasource="#Request.MTRDSN#">
+			SELECT b.*
+			FROM FOBJ3020 a 
+			RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
+			RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
+			where b.iDOMAINID = 1 and c.iGCOID = 1 and a.iOBJID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
+		</cfquery>
 	</cfif>
 
 	<!---    START IMPORT MERIMEN FRAMEWORK      --->
@@ -239,6 +257,32 @@ BY          ON          REMARKS
 														</label>
 												</cfif>			
 											</cfoutput>								
+										</td>
+									</tr>
+									<tr>
+										<td class=clsField1>Tag/Label</td>
+										<td class=clsValue1> 
+											<cfset i = 1>
+											<!---<cfdump  var="#q_select_all_label#">--->
+											<cfif q_select_all_label.recordCount GT 0>
+												<cfoutput query="q_select_all_label">
+													<cfif q_select_all_label.ILBLDEFID EQ q_select_specific_label.ILBLDEFID[i++]>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags" checked>
+															<label class="form-check-label" for="tags">
+																#q_select_all_label.VALBLDESC#
+															</label>
+														</div>
+														<cfelse>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags">
+															<label class="form-check-label" for="tags">
+																#q_select_all_label.VALBLDESC#
+															</label>
+														</div>
+													</cfif>														
+												</cfoutput>
+											</cfif>												
 										</td>
 									</tr>
 									<tr class="" style="display: none;" id="URLtr">
