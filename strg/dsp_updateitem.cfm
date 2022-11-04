@@ -35,11 +35,9 @@ BY          ON          REMARKS
 
 		<!--- query to fetch all label --->
 		<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
-			SELECT b.*
-			FROM FOBJ3020 a 
-			RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
-			RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
-			where b.iDOMAINID = 1 and c.iGCOID = 1
+			SELECT *
+			FROM FOBJB3020 WITH (NOLOCK)
+			WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
 		</cfquery>
 
 		<!--- query to fetch current item's label --->
@@ -47,8 +45,8 @@ BY          ON          REMARKS
 			SELECT b.*
 			FROM FOBJ3020 a 
 			RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
-			RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
-			where b.iDOMAINID = 1 and c.iGCOID = 1 and a.iOBJID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
+			where b.iDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer"> 
+			and a.iOBJID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
 		</cfquery>
 	</cfif>
 
