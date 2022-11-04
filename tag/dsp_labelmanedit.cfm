@@ -188,6 +188,7 @@ todo: fuzzy search capability
             ,{val:15	,name:'Policy Record Table BIZ_POL'}
             ,{val:17	,name:'External Mail'}
             ,{val:20	,name:'Repair Card Reminder Letter'}
+            ,{val:901	,name:'Storage Item'}
 <!---  
             ,{val:22	,name:'Topup'}
             ,{val:23	,name:'Adjustment'}
