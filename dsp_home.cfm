@@ -181,21 +181,30 @@ BY          ON          REMARKS
 			<!--- Query to fetch main storage data --->
 			<cfif ArrayContains(SESSION.VARS.PERMISSION,"7004")>
 				<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
-					SELECT *
+					/* SELECT *
 					FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
 					ON a.iOBJID = b.IFILEID
-					WHERE iCLASSIFIED = 0 
-					and iCLASSIFIED = 1 
-					or vaCREATOR = #SESSION.VARS.USID#
+					WHERE iCLASSIFIED in (0,1)
+					and vaCREATOR = #SESSION.VARS.USID#
+					ORDER BY iSTRGID; */
+
+					SELECT *, c.vaUSName
+					FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+					ON a.iOBJID = b.IFILEID
+					LEFT JOIN SEC0001 c WITH (NOLOCK)
+					ON a.vaCREATOR = c.iUSID
+					WHERE iCLASSIFIED in (0,1)
+					or vaCREATOR = 1
 					ORDER BY iSTRGID;
 				</cfquery>
 				<cfelse>
 					<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
-						SELECT *
+						SELECT *, c.vaUSName
 						FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
 						ON a.iOBJID = b.IFILEID
-						WHERE iCLASSIFIED = 0 
-						or vaCREATOR = #SESSION.VARS.USID#
+						LEFT JOIN SEC0001 c WITH (NOLOCK)
+						ON a.vaCREATOR = c.iUSID
+						WHERE iCLASSIFIED = 0 or vaCREATOR = #SESSION.VARS.USID#
 						ORDER BY iSTRGID;
 					</cfquery>
 			</cfif>
@@ -214,6 +223,7 @@ BY          ON          REMARKS
 								<th scope="col">Storage Type</th>
 								<th scope="col">Description</th>
 								<th scope="col">Creator - User Name</th>
+								<th scope="col">Tags</th>
 								<th scope="col">Rating</th>
 								<th scope="col">Classfied yes/no</th>
 								<th scope="col">Status</th>
@@ -235,7 +245,8 @@ BY          ON          REMARKS
 												<td>Letter</td>
 									</cfif>									
 									<td>#VADESCRIPTION#</td>
-									<td>#VACREATOR#</td>
+									<td>#VAUSNAME#</td>
+									<td>#IRATING#</td>
 									<td>#IRATING#</td>
 									<cfif ICLASSIFIED EQ 0>
 										<td>Anyone</td>
