@@ -61,6 +61,13 @@ BY          ON          REMARKS
 		on a.iUSID = b.vaCREATOR;
 	</cfquery>
 	<!--- Query to fetch storage creator --->
+	<!--- Query to fetch labels --->
+	<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
+		SELECT *
+		FROM FOBJB3020 WITH (NOLOCK)
+		WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
+	</cfquery>
+	<!--- Query to fetch labels --->
 
 	<html lang="en">
 	<head>
@@ -132,7 +139,12 @@ BY          ON          REMARKS
 					</div>
 					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Tags" class="form-label">Tags:</label>
-						<input type="text" class="form-control" id="Tags" name="Tags" placeholder="">
+						<select class="form-select" aria-label="Default select example" id="Tags" name="Tags">
+							<option value="">Open this select menu</option>
+							<cfoutput query="q_select_all_label">
+								<option value="#q_select_all_label.ILBLDEFID#">#q_select_all_label.VALBLDESC#</option>
+							</cfoutput>
+						</select>
 					</div>
 					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Rating" class="form-label">Rating:</label>
@@ -222,10 +234,10 @@ BY          ON          REMARKS
 								<th scope="col">Item Name</th>
 								<th scope="col">Storage Type</th>
 								<th scope="col">Description</th>
-								<th scope="col">Creator - User Name</th>
+								<th scope="col">User Name</th>
 								<th scope="col">Tags</th>
 								<th scope="col">Rating</th>
-								<th scope="col">Classfied yes/no</th>
+								<th scope="col">Classfied</th>
 								<th scope="col">Status</th>
 								<th scope="col" class="text-center" colspan="2">Action</th>
 							</tr>
@@ -313,6 +325,7 @@ BY          ON          REMARKS
 				$.post("index.cfm?fusebox=search", //url
 				$("#searchForm").serializeArray(), //data
 				function(data, status){ //callback
+					console.log(data);
 					let string = '';
 					let bool = false;
 					for (var i = 0; i < data.length; i++) {
@@ -339,11 +352,11 @@ BY          ON          REMARKS
 						th_1.innerHTML = arr[i].DTCREATIONDATE;						
 						let td_1 = document.createElement('td');
 						if(arr[i].ISTRGTYPEID == 1)
-							td_1.innerHTML = <cfoutput>'<a style="text-decoration: underline;" onclick=JSVCopenWin("' + arr[i].VAURLADDRESS + '",0,"yes",null,null,true,null)>' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
+							td_1.innerHTML = arr[i].VAITEMNAME;
 						else if(arr[i].ISTRGTYPEID == 2)
-							td_1.innerHTML = <cfoutput>'<a href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=' + arr[i].iSTRGID + '&#request.mtoken#">' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
+							td_1.innerHTML = arr[i].VAITEMNAME;
 						else
-							td_1.innerHTML = <cfoutput>'<a style="text-decoration: underline;" onclick=JSVCopenWin("#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=' + arr[i].ISTRGID + '&#request.mtoken#",0,"yes",null,null,true,null)>' + arr[i].VAITEMNAME + '</a>'</cfoutput>;
+							td_1.innerHTML = arr[i].VAITEMNAME;
 						let td_2 = document.createElement('td');
 						if(arr[i].ISTRGTYPEID == 1) td_2.innerHTML = 'URL';
 						else if(arr[i].ISTRGTYPEID == 2) td_2.innerHTML = 'Document';
@@ -351,7 +364,7 @@ BY          ON          REMARKS
 						let td_3 = document.createElement('td');
 						td_3.innerHTML = arr[i].VADESCRIPTION;
 						let td_4 = document.createElement('td');
-						td_4.innerHTML = arr[i].VACREATOR;
+						td_4.innerHTML = arr[i].VAUSNAME;
 						let td_5 = document.createElement('td');
 						td_5.innerHTML = arr[i].IRATING;
 						let td_6 = document.createElement('td');
@@ -360,16 +373,29 @@ BY          ON          REMARKS
 						let td_7 = document.createElement('td');
 						td_7.innerHTML = arr[i].VASTATUS;
 						let td_8 = document.createElement('td');
-						td_8.innerHTML = <cfoutput>'<a class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=' + arr[i].ISTRGID + '&#request.mtoken#">Edit</a>'</cfoutput>			
+						td_8.innerHTML = <cfoutput>'<a class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_updateitem&id=' + arr[i].ISTRGID + '&#request.mtoken#">Edit</a>'</cfoutput>		
+
+						let td_9 = document.createElement('td');
+						td_9.innerHTML = '<span style="color:#'+ arr[i].ICOLORTXT + ';background-color:#' + arr[i].ICOLORBGRND +';">' + arr[i].VALBLNAME + '</span>';
+
+						let td_10 = document.createElement('td');
+						if(arr[i].ISTRGTYPEID == 1)
+							td_10.innerHTML = <cfoutput>'<a class="btn btn-primary" style="text-decoration: underline;" onclick=JSVCopenWin("' + arr[i].VAURLADDRESS + '",0,"yes",null,null,true,null)>View</a>'</cfoutput>;
+						else if(arr[i].ISTRGTYPEID == 2)
+							td_10.innerHTML = '<a class="btn btn-primary" href="docs/'+ arr[i].VAFILEORIGNAME +'" download>View</a>';
+						else
+							td_10.innerHTML = <cfoutput>'<a class="btn btn-primary" style="text-decoration: underline;" onclick=JSVCopenWin("#request.webroot#index.cfm?fusebox=strg&fuseaction=dsp_viewletter&id=' + arr[i].ISTRGID + '&#request.mtoken#",0,"yes",null,null,true,null)>View</a>'</cfoutput>;
 						row.appendChild(th_1)
 						row.appendChild(td_1)
 						row.appendChild(td_2)
 						row.appendChild(td_3)
 						row.appendChild(td_4)
+						row.appendChild(td_9)
 						row.appendChild(td_5)
 						row.appendChild(td_6)
 						row.appendChild(td_7)
 						row.appendChild(td_8)
+						row.appendChild(td_10)
 						tbs.appendChild(row)
 					}
 					
