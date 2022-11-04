@@ -221,11 +221,9 @@ BY          ON          REMARKS
 										<td class=clsValue1>
 											<!--- <cfdump  var="#Attributes#"> --->
 											<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
-												SELECT b.*
-												FROM FOBJ3020 a 
-												RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
-												RIGHT JOIN FOBJB3022 c on b.iLBLDEFID = c.iLBLDEFID
-												where b.iDOMAINID = 1 and c.iGCOID = 1
+												SELECT *
+												FROM FOBJB3020 WITH (NOLOCK)
+												WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
 											</cfquery>
 											<!--- <cfdump  var="#q_select_all_label#"> --->											
 												<cfoutput query="q_select_all_label">
