@@ -246,7 +246,24 @@ BY          ON          REMARKS
 									</cfif>									
 									<td>#VADESCRIPTION#</td>
 									<td>#VAUSNAME#</td>
-									<td>#IRATING#</td>
+									<td>
+										<cfquery name="q_select_labels_for_specific_item" datasource="#Request.MTRDSN#">
+											SELECT e.*
+											FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+											ON a.iOBJID = b.IFILEID
+											LEFT JOIN SEC0001 c WITH (NOLOCK)
+											ON a.vaCREATOR = c.iUSID
+											LEFT JOIN FOBJ3020 d WITH (NOLOCK)
+											ON a.iSTRGID = d.IOBJID
+											LEFT JOIN FOBJB3020 e WITH (NOLOCK)
+											ON d.ILBLDEFID = e.ILBLDEFID
+											WHERE a.iSTRGID = <cfqueryparam value="#ISTRGID#" cfsqltype="cf_sql_integer">
+											ORDER BY iSTRGID
+										</cfquery>
+										<cfloop query="q_select_labels_for_specific_item">
+											<span style="color:#ICOLORTXT#;background-color:#ICOLORBGRND#;">#VALBLNAME#</span> <br>
+										</cfloop>
+									</td>
 									<td>#IRATING#</td>
 									<cfif ICLASSIFIED EQ 0>
 										<td>Anyone</td>
