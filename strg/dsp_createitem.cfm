@@ -229,7 +229,7 @@ BY          ON          REMARKS
 												<cfoutput query="q_select_all_label">
 													<div class="form-check">
 														<input class="form-check-input" type="checkbox" value="#q_select_all_label.ILBLDEFID#" name="tags">
-														<label class="form-check-label" for="tags">
+														<label class="form-check-label" for="tags" style="color:#ICOLORTXT#;background-color:#ICOLORBGRND#;">
 															#q_select_all_label.VALBLDESC#
 														</label>
 													</div>
