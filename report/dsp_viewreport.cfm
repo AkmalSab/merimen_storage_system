@@ -77,16 +77,7 @@ BY          ON          REMARKS
 			<!--- Date range --->
 			<div class="row mt-3">
 				<form id="searchForm" name="searchForm">
-					<div class="row">
-						<div class="col-4">
-							<label for="DateFrom" class="form-label">Date From:</label>
-							<input class="form-control" id="DRFROM" name="DRFROM" type="date">
-						</div>
-						<div class="col-4">
-							<label for="DateTo" class="form-label">Date To:</label>
-							<input class="form-control" id="DRTO" name="DRTO" type="date">
-						</div>
-					</div>
+					<CFMODULE TEMPLATE="#request.apppath#services/CustomTags\SVCDATERANGE.cfm">
 					<div class="row">
 						<div class="col-4">
 							<label for="UserName" class="form-label">User Name:</label>

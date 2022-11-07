@@ -1,9 +1,6 @@
 <!--- <cfdump  var="#FORM#"> --->
-<!--- <cfoutput>
-   DRFROM = #dateFormat("#FORM.DRFROM#", "yyyy-mm-dd")#
-   DRTO = #dateFormat("#FORM.DRTO#", "yyyy-mm-dd")#
-</cfoutput>
- --->
+<cfset FORM.DRFROM=LSDateFormat(FORM.DRFROM,"yyyy-mm-dd","English (UK)")>
+<cfset FORM.DRTO=LSDateFormat(FORM.DRTO,"yyyy-mm-dd","English (UK)")>
 <cfquery name="q_search_storage" datasource="#Request.MTRDSN#" result="result_search_storage">
     select
     a.vaCREATOR, 
@@ -40,7 +37,7 @@
     </cfif>
     <cfif len(trim(FORM.DRFROM)) NEQ 0>
         <cfif len(trim(FORM.DRTO)) NEQ 0>         
-            and a.dtCREATIONDATE >= '#dateFormat("#FORM.DRFROM#", "yyyy-mm-dd")# 00:00:00' AND a.dtCREATIONDATE <= '#FORM.DRTO# 23:59:59'
+            and a.dtCREATIONDATE >= '#FORM.DRFROM# 00:00:00' AND a.dtCREATIONDATE <= '#FORM.DRTO# 23:59:59'
         </cfif>
     </cfif>
     group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID
