@@ -92,8 +92,6 @@ BY          ON          REMARKS
 						</cfif>									
 						<cfif ArrayContains(SESSION.VARS.PERMISSION,"7006")>
 							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=sec&fuseaction=dsp_grouplist&#request.mtoken#">Admin</a>
-							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=tag&fuseaction=dsp_labelmanadd&coid=1&USID=#session.vars.usid#&#request.mtoken#">Label Edit</a>
-							<a type="button" class="btn btn-primary" href="#request.webroot#index.cfm?fusebox=tag&fuseaction=dsp_labelmanedit&coid=1&USID=#session.vars.usid#&#request.mtoken#">Label List</a>
 						</cfif>
 					</cfoutput>					
 				</div>
