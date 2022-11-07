@@ -1,14 +1,9 @@
-<cfset DayFrom = "#dateFormat(FORM.DRFROM, 'dd')#">
-<cfset DayTo ="#dateFormat(FORM.DRTO, 'dd')#">
-<cfset MonthFrom = "#dateFormat(FORM.DRFROM, 'mm')#">
-<cfset MonthTo ="#dateFormat(FORM.DRTO, 'mm')#">
-<cfset YearFrom = "#dateFormat(FORM.DRFROM, 'yyyy')#">
-<cfset YearTo ="#dateFormat(FORM.DRTO, 'yyyy')#">
-
-<cfset FORM.DRFROM = YearFrom&'-'&DayFrom&'-'&MonthFrom>
-<cfset FORM.DRTO = YearTo&'-'&DayTo&'-'&MonthTo>
 <!--- <cfdump  var="#FORM#"> --->
-
+<!--- <cfoutput>
+   DRFROM = #dateFormat("#FORM.DRFROM#", "yyyy-mm-dd")#
+   DRTO = #dateFormat("#FORM.DRTO#", "yyyy-mm-dd")#
+</cfoutput>
+ --->
 <cfquery name="q_search_storage" datasource="#Request.MTRDSN#" result="result_search_storage">
     select
     a.vaCREATOR, 
@@ -45,7 +40,7 @@
     </cfif>
     <cfif len(trim(FORM.DRFROM)) NEQ 0>
         <cfif len(trim(FORM.DRTO)) NEQ 0>         
-            and a.dtCREATIONDATE >= '#dateTimeFormat(FORM.DRFROM,'yyyy-mm-dd')# 00:00:00' AND a.dtCREATIONDATE <= '#dateTimeFormat(FORM.DRTO,'yyyy-mm-dd')# 23:59:59'
+            and a.dtCREATIONDATE >= '#dateFormat("#FORM.DRFROM#", "yyyy-mm-dd")# 00:00:00' AND a.dtCREATIONDATE <= '#FORM.DRTO# 23:59:59'
         </cfif>
     </cfif>
     group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID
