@@ -1,4 +1,10 @@
 <!--- <cfdump  var="#FORM#"> --->
+<cfset FORM.GUIDATEFROM=LSDateFormat(FORM.GUIDATEFROM,"yyyy-mm-dd","English (UK)")>
+<cfset FORM.GUIDATETO=LSDateFormat(FORM.GUIDATETO,"yyyy-mm-dd","English (UK)")>
+<!--- <cfoutput>
+    FORM.GUIDATEFROM = #FORM.GUIDATEFROM#
+    FORM.GUIDATETO = #FORM.GUIDATETO#
+</cfoutput> --->
 
 <cfquery name="q_search_storage" datasource="#Request.MTRDSN#" result="result_search_storage">
     select *, c.vaUSName
@@ -18,10 +24,10 @@
         and a.vaDESCRIPTION LIKE '%#FORM.DESCRIPTION#%'
     </cfif>
     <cfif len(trim(FORM.GUIDATEFROM)) NEQ 0>
-        and a.dtCREATIONDATE >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#FORM.GUIDATEFROM#">
+        and a.dtCREATIONDATE >= '#FORM.GUIDATEFROM# 00:00:00'
     </cfif>
     <cfif len(trim(FORM.GUIDATETO)) NEQ 0>
-        and a.dtCREATIONDATE <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#FORM.GUIDATETO#">
+        and a.dtCREATIONDATE <= '#FORM.GUIDATETO# 23:59:59'
     </cfif>
     <cfif len(trim(FORM.ITEMNAME)) NEQ 0>
         and a.vaITEMNAME LIKE '%#FORM.ITEMNAME#%'
