@@ -204,11 +204,11 @@ BY          ON          REMARKS
 															No
 														</label>
 													<cfelse>
-														<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1" CHECKED>
+														<input class="form-check-input" type="radio" name="classified" id="classifiedYes" value="1">
 														<label class="form-check-label" for="classified">
 															Yes
 														</label>
-														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0">
+														<input class="form-check-input" type="radio" name="classified" id="classifiedNo" value="0" CHECKED> 
 														<label class="form-check-label" for="classified">
 															No
 														</label>
