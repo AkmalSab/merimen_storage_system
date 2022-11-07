@@ -20,8 +20,9 @@
     select 1 from FOBJB3020 where iLBLDEFID = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
 </cfquery>
 qry_labelidcheck
-<cfdump  var="#qry_labelidcheck#">
+<cfdump  var="#qry_labelidcheck.recordcount#">
 <cfdump  var="#session#">
+
 <cftry>
     <!--- update label definition --->
     <cfif qry_labelidcheck.recordcount gt 0> 
@@ -29,10 +30,10 @@ qry_labelidcheck
             update FOBJB3020 set  
             SIPRIVATE    =<cfqueryparam value="#StructKeyExists(form,'ISPRIVATE')?1:0#" CFSQLType = "cf_sql_smallint" null="no"> 
 
-        <cfif allowCreateLabel>
-            ,IDOMAINID   =<cfqueryparam value="#form.thedom#" CFSQLType = "cf_sql_integer" null="no">                        
-            ,ILOCID      =<cfqueryparam value="#form.theloc#" CFSQLType = "cf_sql_integer" null="no">                         
-        </cfif>
+            <cfif allowCreateLabel>
+                ,IDOMAINID   =<cfqueryparam value="#form.thedom#" CFSQLType = "cf_sql_integer" null="no">                        
+                ,ILOCID      =<cfqueryparam value="#form.theloc#" CFSQLType = "cf_sql_integer" null="no">                         
+            </cfif>
 
             ,BCOCREATE   =<cfqueryparam value="#form.CREATORVAL#" CFSQLType = "cf_sql_integer" null="no">                        
             ,BCOREAD     =<cfqueryparam value="#form.READERVAL#" CFSQLType = "cf_sql_integer" null="no">                         
@@ -45,9 +46,7 @@ qry_labelidcheck
             ,vaLBLDESC_LOCALLANG   =<cfif form.LOCALEDESC is "">NULL<CFELSE><cfqueryparam value="#form.LOCALEDESC#" CFSQLType = "cf_sql_varchar" ></CFIF>
             where     
             ILBLDEFID = <cfqueryparam value="#form.LABELID#" CFSQLType = "cf_sql_integer" null="no">
-        </cfquery>
-        qry_labeldef2
-        <cfdump  var="#qry_labeldef2#">
+        </cfquery>        
 
         <cfif rslt_labeldef2.recordcount gt 0>
             <cfset attributes.labelid = form.labelid>
@@ -89,6 +88,7 @@ qry_labelidcheck
             </cfif>
         </cfif>
     </CFIF>
+    
     <cfcatch type="database">
         <cftransaction action="rollback">
         <CFTHROW TYPE="EX_DBERROR" Message="AN ERROR HAPPENED IN INSERT/ UPDATE LABEL">

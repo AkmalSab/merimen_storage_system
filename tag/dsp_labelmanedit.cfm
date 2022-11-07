@@ -305,7 +305,6 @@ todo: fuzzy search capability
             , {code:'WS'     , val:4}
             ]
     }
-
     function Labels (data) {
         var self = this
         this.data = data
@@ -327,7 +326,6 @@ todo: fuzzy search capability
                 var owners = self.filtOwnership()
                 var activeonly = self.filtIsActive()
                 var thename = self.filtName()
-
                 var flag = (claimtypes>0? (item.CLMTYPE&claimtypes)==claimtypes :true)
                         && (owners.length>0? owners.indexOf(item.COMPANY.toString())>-1 :true)
                         && (activeonly? item.ISACTIVE==0 :true)
@@ -336,7 +334,6 @@ todo: fuzzy search capability
             })
             return temp
         })
-
         // this is hardcoded since there're not many coutries supported 
         this.cname = function (code) {
             return Number(code)==0?'All':code
@@ -360,6 +357,5 @@ todo: fuzzy search capability
     }
     var l = new Labels(ds)
     ko.applyBindings(l,document.getElementById('mainpad'))
-
 </script>
-</cfoutput>  
+</cfoutput>

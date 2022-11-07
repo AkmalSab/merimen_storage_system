@@ -24,16 +24,27 @@
   SELECT TOP (1000) * from SEC0023; --list of category for permission group
   SELECT TOP (1000) * from SEC0003_CO;
   SELECT TOP (1000) * from fCSI('7000,7004');
-  SELECT * from FOBJ3020 WHERE IDOMAINID = 1; 
-  SELECT * from FOBJB3022;
-  SELECT TOP (1000) * from FOBJB3020 where iLBLDEFID = 1111 --list of label definition;
-  SELECT TOP (1000) * from FOBJB3022 where iLBLDEFID = 1111 order by iGCOID asc --list of Label-Company Linkage;
-  select icoid,ilocid,igcoid,vaconame from sec0005 where icoid = 0
-  select igcoid 
-        from FOBJB3022 
-        where 
-            iLBLDEFID = 9999
-            and iGCOID = 1
+  SELECT TOP (1000) * from FOBJ3020 WHERE IDOMAINID = 901; --list of label for each domain-object (transaction)
+  SELECT TOP (1000) * from FOBJB3020 where IDOMAINID = 901; --list of label definition;
+  SELECT TOP (1000) * from FOBJB3022 where iGCOID = 1 --list of Label-Company Linkage;
+    
+SELECT e.*
+FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+ON a.iOBJID = b.IFILEID
+LEFT JOIN SEC0001 c WITH (NOLOCK)
+ON a.vaCREATOR = c.iUSID
+LEFT JOIN FOBJ3020 d WITH (NOLOCK)
+ON a.iSTRGID = d.IOBJID
+LEFT JOIN FOBJB3020 e WITH (NOLOCK)
+ON d.ILBLDEFID = e.ILBLDEFID
+WHERE a.iSTRGID = 10
+ORDER BY iSTRGID
+
+SELECT *
+FROM FOBJB3020 WITH (NOLOCK)
+WHERE IDOMAINID = 901
+
+
 
   SP_HELP FOBJB3022
 
@@ -71,6 +82,7 @@ order by a.vagrpname
   SELECT TOP (1000) * from fdoc3004;
   SELECT TOP (1000) * from fdoc3005; --file location
   SELECT TOP (1000) * from fdoc3006; --file folder
+  sp_help FDOC3006
   SELECT TOP (1000) * from fdoc3007;
   SELECT TOP (1000) * from fdoc3008;
   SELECT TOP (1000) * from fdoc3009;
@@ -81,7 +93,6 @@ order by a.vagrpname
   SELECT TOP (1000) * from [STRG_DATA] order by iSTRGID asc;
   SELECT TOP (1000) * from SYS0001;
   SELECT TOP (1000) * from SYS0009;
-
 
 SELECT TOP 1 COTYPE=1,iUSID,vaUSID,iCOID 
 FROM SEC0001 WITH (NOLOCK) 
@@ -146,3 +157,12 @@ from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK)
 on a.vaCREATOR = b.iUSID 
 where 0=0 and a.dtCREATIONDATE >= '2022-01-11 00:00:00' AND a.dtCREATIONDATE <= '2022-02-11 23:59:59' 
 group by a.vaCREATOR, b.vaUSName, a.iSTRGTYPEID order by a.vaCREATOR
+
+select * 
+from STRG_DATA a 
+left join FOBJ3020 b WITH (NOLOCK)
+on a.iSTRGID = b.IOBJID
+left join FOBJB3020 c WITH (NOLOCK)
+on b.ILBLDEFID = c.ILBLDEFID
+where 0=0
+and b.ILBLDEFID = 1 
