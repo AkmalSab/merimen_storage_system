@@ -99,9 +99,7 @@ BY          ON          REMARKS
 			<!--- Tabs --->
 
 			<!--- form searching --->
-		<cfoutput>
 			<form id="searchForm" name="searchForm" action="#" method="#">
-		</cfoutput>
 				<!--- Search criteria line 1 --->
 				<div class="row mt-3">
 					<div class="col-12 col-md-6 col-lg-4">
@@ -182,11 +180,24 @@ BY          ON          REMARKS
 						<input type="button" class="col-12 btn btn-secondary" value="Search" onclick="searchStorage()"/>
 					</div>
 					<div class="mt-sm-2 mt-md-0 col-12 col-md-6 col-lg-4">
-						<input type="reset" class="col-12 btn btn-warning" value="Reset"/>
+						<input type="reset" class="col-12 btn btn-warning" value="Reset" onclick="clearForm(this.form);"/>
 					</div>
 				</div>
 			</form>
 			<!--- form searching --->
+
+			<script>
+				function clearForm(searchForm) {
+					var frm_elements = searchForm.elements; 
+					for(i=0; i<frm_elements.length; i++)
+					{
+						console.log(frm_elements[i].type)
+						if (frm_elements[i].checked)
+							frm_elements[i].checked = false;
+						else if(frm_elements[i].type != 'button' && frm_elements[i].type != 'reset') frm_elements[i].value = '';
+					}	
+				}				
+			</script>
 
 			<!--- Query to fetch main storage data --->
 			<cfif ArrayContains(SESSION.VARS.PERMISSION,"7004")>
