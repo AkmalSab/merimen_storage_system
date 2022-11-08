@@ -11,7 +11,7 @@
 <cfquery name="q_last_id" datasource="#Request.MTRDSN#">
     SELECT TOP 1 ITAID
     FROM [FOBJ3010] WITH (NOLOCK)
-    WHERE IDOMAINID = 901
+    WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
     ORDER BY ITAID DESC
 </cfquery>
 

@@ -57,8 +57,8 @@ BY          ON          REMARKS
     <cfquery name="q_user_group_select_all" datasource="#Request.MTRDSN#">
         select a.igrpid,a.icoid,a.vagrpname,a.vagrpdesc,a.dtcrton 
 		from fsec4001 a WITH (NOLOCK) 
-		where a.icoid = 1
-		and a.sistatus = 0  
+		where a.icoid = <cfqueryparam cfsqltype="cf_sql_integer" value="1">
+		and a.sistatus = <cfqueryparam cfsqltype="cf_sql_integer" value="0">
     </cfquery>
     <!--- Query to fetch user group list --->
 

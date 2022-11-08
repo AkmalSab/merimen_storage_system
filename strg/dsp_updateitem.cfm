@@ -29,7 +29,7 @@ BY          ON          REMARKS
 		<cfquery name="q_main_storage_select_specific" datasource="#Request.MTRDSN#">
 			SELECT *
 			FROM STRG_DATA WITH (NOLOCK)
-			WHERE iSTRGID = #URL.id#
+			WHERE iSTRGID = <cfqueryparam value="#URL.id#" cfsqltype="cf_sql_integer">
 		</cfquery>
 		<!--- <cfdump  var="#q_main_storage_select_specific#"> --->
 
@@ -43,8 +43,8 @@ BY          ON          REMARKS
 		<!--- query to fetch current item's label --->
 		<cfquery name="q_select_specific_label" datasource="#Request.MTRDSN#">
 			SELECT b.*
-			FROM FOBJ3020 a 
-			RIGHT JOIN FOBJB3020 b on a.iLBLDEFID = b.iLBLDEFID
+			FROM FOBJ3020 a WITH (NOLOCK)
+			RIGHT JOIN FOBJB3020 b WITH (NOLOCK) on a.iLBLDEFID = b.iLBLDEFID
 			where b.iDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer"> 
 			and a.iOBJID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
 		</cfquery>
@@ -88,8 +88,8 @@ BY          ON          REMARKS
 	<!--- Query to fetch main storage audit --->
     <cfquery name="q_storage_audit_select_all" datasource="#Request.MTRDSN#">
         SELECT * FROM [FOBJ3010] WITH (NOLOCK)
-		WHERE IDOMAINID = 901
-		AND IOBJID = #URL.ID#	
+		WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer"> 
+		AND IOBJID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
 		ORDER BY ITAID DESC
     </cfquery>	
     <!--- Query to fetch main storage audit --->

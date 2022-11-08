@@ -1,13 +1,10 @@
 <!--- If the form has submitted --->
 <cfif structKeyExists(FORM, "ItemName")>
 
-    
-
     <!--- Default value for FNEXFILE input type file --->
     <cfparam name="form.FNEXFILE" default="">
     <cfparam  name="fileid" default="0">
     
-
     <!--- If the form has key FNEXFILE which is input type file  --->
     <cfif len(trim(form.FNEXFILE))>
         <!--- Upload file to local folder --->
@@ -72,12 +69,17 @@
         <cfloop list="#form.TAGS#" index="item">
             <cfoutput>
                 <cfquery name="q_insert_tags" datasource="#request.mtrdsn#">
-                    insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) values (#item#,901,#id#,GETDATE())
+                    insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) 
+                    values (
+                        <cfqueryparam value="#item#" cfsqltype="cf_sql_integer">,
+                        <cfqueryparam value="901" cfsqltype="cf_sql_integer">,
+                        <cfqueryparam value="#id#" cfsqltype="cf_sql_integer">,
+                        <cfqueryparam value="#GETDATE()#" cfsqltype="cf_sql_timestamp">                        
+                    )
                 </cfquery>
             </cfoutput>
         </cfloop>
-    </cfif> 
-    
+    </cfif>   
 
     <!--- Redirect to home --->
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">

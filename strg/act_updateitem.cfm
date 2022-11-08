@@ -65,7 +65,7 @@
             <cfquery name="q_last_id" datasource="#Request.MTRDSN#">
                 SELECT TOP 1 ITAID
                 FROM [FOBJ3010] WITH (NOLOCK)
-                WHERE IDOMAINID = 901
+                WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
                 ORDER BY ITAID DESC
             </cfquery>
 
@@ -90,7 +90,9 @@
         </cfif>		
         <!--- Delete existing label --->
         <cfquery name="q_delete_tags" datasource="#request.mtrdsn#">
-            delete from FOBJ3020 where IDOMAINID = 901 and IOBJID = #id#
+            delete from FOBJ3020 
+            where IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer"> 
+            and IOBJID = <cfqueryparam value="#id#" cfsqltype="cf_sql_integer">
         </cfquery>
 
         <!--- Insert into labels transaction table (FOBJ3020) --->
@@ -99,13 +101,21 @@
             <cfloop list="#form.TAGS#" index="item">
                 <cfoutput>
                     <cfquery name="q_insert_tags" datasource="#request.mtrdsn#">
-                        insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) values (#item#,901,#id#,GETDATE())
+                        insert into FOBJ3020 (ILBLDEFID, IDOMAINID, IOBJID, dtCRTON) 
+                        values (
+                            <cfqueryparam value="#item#" cfsqltype="cf_sql_integer">,
+                            <cfqueryparam value="901" cfsqltype="cf_sql_integer">,
+                            <cfqueryparam value="#id#" cfsqltype="cf_sql_integer">,
+                            <cfqueryparam value="#GETDATE()#" cfsqltype="cf_sql_timestamp">
+                        )
                     </cfquery>
                 </cfoutput>
             </cfloop>
             <cfelse>
             <cfquery name="q_delete_tags" datasource="#request.mtrdsn#">
-                delete from FOBJ3020 where IDOMAINID = 901 and IOBJID = #id#
+                delete from FOBJ3020 
+                where IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer"> 
+                and IOBJID = <cfqueryparam value="#id#" cfsqltype="cf_sql_integer">
             </cfquery>  
         </cfif>
     <cflocation  url="#request.webroot#index.cfm?fusebox=MTRroot&fuseaction=dsp_home&#request.mtoken#">

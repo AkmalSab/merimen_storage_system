@@ -4,7 +4,7 @@
 		<cfquery name="q_main_storage_select_specific" datasource="#Request.MTRDSN#">
 			SELECT *
 			FROM STRG_DATA WITH (NOLOCK)
-			WHERE iSTRGID = #URL.id#
+			WHERE iSTRGID = <cfqueryparam cfsqltype="cf_sql_integer" value="#URL.id#">
 		</cfquery>
 <!--- <cfdump  var="#q_main_storage_select_specific#"> --->
 	</cfif>
