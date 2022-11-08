@@ -46,7 +46,7 @@ BY          ON          REMARKS
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCMAIN">
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCAL">
 	<CFMODULE TEMPLATE="#request.apppath#services/CustomTags/SVCaddfile.cfm" FNAME="SVCCSS">
-	<script>AddOnloadCode("MrmPreprocessForm()");</script>
+	
 	<!--- END IMPORT MERIMEN FRAMEWORK --->
 
 	<html lang="en">
@@ -133,7 +133,6 @@ BY          ON          REMARKS
 				) as Total_counters
 				from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK)
 				on a.vaCREATOR = b.iUSID
-				where 0=0
 				group by a.vaCREATOR, b.vaUSName,  a.iSTRGTYPEID
 			</cfquery>
 			<!--- Query to fetch main storage data --->
