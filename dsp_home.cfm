@@ -114,6 +114,7 @@ BY          ON          REMARKS
 					<div class="col-12 col-md-6 col-lg-4">
 						<label for="ItemName" class="form-label">Item Name:</label>
 						<input type="text" class="form-control" id="ItemName" name="ItemName" placeholder="">
+						<cfoutput><input type="hidden" class="form-control" id="USID" name="USID" value="#SESSION.VARS.USID#"></cfoutput>
 					</div>
 					<div class="col-12 col-md-6 col-lg-4">
 						<label for="Description" class="form-label">Description:</label>
@@ -191,10 +192,10 @@ BY          ON          REMARKS
 					var frm_elements = searchForm.elements; 
 					for(i=0; i<frm_elements.length; i++)
 					{
-						console.log(frm_elements[i].type)
+						// console.log(frm_elements[i].id)
 						if (frm_elements[i].checked)
 							frm_elements[i].checked = false;
-						else if(frm_elements[i].type != 'button' && frm_elements[i].type != 'reset') frm_elements[i].value = '';
+						else if(frm_elements[i].type != 'button' && frm_elements[i].type != 'reset' && frm_elements[i].id != 'USID') frm_elements[i].value = '';
 					}	
 				}				
 			</script>
