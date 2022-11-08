@@ -51,13 +51,13 @@ BY          ON          REMARKS
     <cfquery name="q_storage_type_select_all" datasource="#Request.MTRDSN#">
         SELECT *
         FROM STRGY_TYPE WITH (NOLOCK)
-        ORDER BY iSTRGTYPEID;
+        ORDER BY iSTRGTYPEID DESC;
     </cfquery>
     <!--- Query to fetch main storage data --->
 	<!--- Query to fetch storage creator --->
 	<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
 		select distinct iUSID, vaUSName
-		from SEC0001 a join STRG_DATA b
+		from SEC0001 a WITH (NOLOCK) inner join STRG_DATA b WITH (NOLOCK)
 		on a.iUSID = b.vaCREATOR;
 	</cfquery>
 	<!--- Query to fetch storage creator --->
@@ -65,7 +65,7 @@ BY          ON          REMARKS
 	<cfquery name="q_select_all_label" datasource="#Request.MTRDSN#">
 		SELECT *
 		FROM FOBJB3020 WITH (NOLOCK)
-		WHERE IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
+		WHERE IDOMAINID = <cfqueryparam cfsqltype="cf_sql_integer" value="901">
 	</cfquery>
 	<!--- Query to fetch labels --->
 
@@ -202,31 +202,24 @@ BY          ON          REMARKS
 			<!--- Query to fetch main storage data --->
 			<cfif ArrayContains(SESSION.VARS.PERMISSION,"7004")>
 				<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
-					/* SELECT *
-					FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
-					ON a.iOBJID = b.IFILEID
-					WHERE iCLASSIFIED in (0,1)
-					and vaCREATOR = #SESSION.VARS.USID#
-					ORDER BY iSTRGID; */
-
 					SELECT *, c.vaUSName
-					FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+					FROM STRG_DATA a WITH (NOLOCK) LEFT JOIN FDOC3006 b WITH (NOLOCK)
 					ON a.iOBJID = b.IFILEID
 					LEFT JOIN SEC0001 c WITH (NOLOCK)
 					ON a.vaCREATOR = c.iUSID
-					WHERE iCLASSIFIED in (0,1)
-					or vaCREATOR = 1
-					ORDER BY iSTRGID;
+					WHERE iCLASSIFIED in (<cfqueryparam cfsqltype="cf_sql_integer" list="yes" value="0,1">)
+					or vaCREATOR = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">
+					ORDER BY iSTRGID DESC;
 				</cfquery>
 				<cfelse>
 					<cfquery name="q_main_storage_select_all" datasource="#Request.MTRDSN#">
 						SELECT *, c.vaUSName
-						FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
+						FROM STRG_DATA a WITH (NOLOCK) LEFT JOIN FDOC3006 b WITH (NOLOCK)
 						ON a.iOBJID = b.IFILEID
 						LEFT JOIN SEC0001 c WITH (NOLOCK)
 						ON a.vaCREATOR = c.iUSID
-						WHERE iCLASSIFIED = 0 or vaCREATOR = #SESSION.VARS.USID#
-						ORDER BY iSTRGID;
+						WHERE iCLASSIFIED = <cfqueryparam cfsqltype="cf_sql_integer" value="0"> or vaCREATOR = <cfqueryparam cfsqltype="cf_sql_integer" value="#SESSION.VARS.USID#">
+						ORDER BY iSTRGID DESC;
 					</cfquery>
 			</cfif>
 			
@@ -241,7 +234,7 @@ BY          ON          REMARKS
 							<tr>
 								<th scope="col">Created On</th>
 								<th scope="col">Item Name</th>
-								<th scope="col">Storage Type</th>
+								<th scope="col">Type</th>
 								<th scope="col">Description</th>
 								<th scope="col">User Name</th>
 								<th scope="col">Tags</th>
@@ -270,15 +263,13 @@ BY          ON          REMARKS
 									<td>
 										<cfquery name="q_select_labels_for_specific_item" datasource="#Request.MTRDSN#">
 											SELECT e.*
-											FROM STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK)
-											ON a.iOBJID = b.IFILEID
-											LEFT JOIN SEC0001 c WITH (NOLOCK)
-											ON a.vaCREATOR = c.iUSID
+											FROM STRG_DATA a WITH (NOLOCK)
 											LEFT JOIN FOBJ3020 d WITH (NOLOCK)
 											ON a.iSTRGID = d.IOBJID
 											LEFT JOIN FOBJB3020 e WITH (NOLOCK)
 											ON d.ILBLDEFID = e.ILBLDEFID
-											WHERE a.iSTRGID = <cfqueryparam value="#ISTRGID#" cfsqltype="cf_sql_integer">
+											WHERE a.iSTRGID = <cfqueryparam value="#ISTRGID#" cfsqltype="cf_sql_integer"> 
+											AND  d.IDOMAINID = <cfqueryparam value="901" cfsqltype="cf_sql_integer">
 											ORDER BY iSTRGID
 										</cfquery>
 										<cfloop query="q_select_labels_for_specific_item">
@@ -287,9 +278,9 @@ BY          ON          REMARKS
 									</td>
 									<td>#IRATING#</td>
 									<cfif ICLASSIFIED EQ 0>
-										<td>Anyone</td>
+										<td>No</td>
 										<cfelse>
-											<td>Only authorized users</td>
+											<td>Yes</td>
 									</cfif>			
 									<td>#VASTATUS#</td>
 									<cfif ArrayContains(SESSION.VARS.PERMISSION,"7005")>
