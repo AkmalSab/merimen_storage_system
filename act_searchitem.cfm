@@ -1,20 +1,17 @@
 <!--- <cfdump  var="#FORM#"> --->
 <cfset FORM.GUIDATEFROM=LSDateFormat(FORM.GUIDATEFROM,"yyyy-mm-dd","English (UK)")>
 <cfset FORM.GUIDATETO=LSDateFormat(FORM.GUIDATETO,"yyyy-mm-dd","English (UK)")>
-<!--- <cfoutput>
-    FORM.GUIDATEFROM = #FORM.GUIDATEFROM#
-    FORM.GUIDATETO = #FORM.GUIDATETO#
-</cfoutput> --->
 
 <cfquery name="q_search_storage" datasource="#Request.MTRDSN#" result="result_search_storage">
     select *, c.vaUSName
-    from STRG_DATA a LEFT JOIN FDOC3006 b WITH (NOLOCK) ON a.iOBJID = b.IFILEID
+    from STRG_DATA a WITH (NOLOCK) 
+    LEFT JOIN FDOC3006 b WITH (NOLOCK) ON a.iOBJID = b.IFILEID
     LEFT JOIN SEC0001 c WITH (NOLOCK) ON a.vaCREATOR = c.iUSID
     <cfif len(trim(FORM.TAGS)) NEQ 0>
-        left join FOBJ3020 d WITH (NOLOCK)
-        on a.iSTRGID = d.IOBJID
-        left join FOBJB3020 e WITH (NOLOCK)
-        on d.ILBLDEFID = e.ILBLDEFID
+        LEFT JOIN FOBJ3020 d WITH (NOLOCK)
+        ON a.iSTRGID = d.IOBJID
+        LEFT JOIN FOBJB3020 e WITH (NOLOCK)
+        ON d.ILBLDEFID = e.ILBLDEFID
     </cfif>
     where 0=0
     <cfif len(trim(FORM.CREATOR)) NEQ 0>
