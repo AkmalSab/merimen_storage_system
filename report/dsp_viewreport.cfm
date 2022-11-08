@@ -63,7 +63,7 @@ BY          ON          REMARKS
 		<!--- Query to fetch storage creator --->
 		<cfquery name="q_creator_select_all" datasource="#Request.MTRDSN#">
 			select distinct iUSID, vaUSName
-			from SEC0001 a join STRG_DATA b
+			from SEC0001 a WITH (NOLOCK) inner join STRG_DATA b WITH (NOLOCK)
 			on a.iUSID = b.vaCREATOR;
 		</cfquery>
 		<!--- Query to fetch storage creator --->
@@ -131,7 +131,7 @@ BY          ON          REMARKS
 					from STRG_DATA
 					where vaCREATOR = a.vaCREATOR
 				) as Total_counters
-				from STRG_DATA a JOIN SEC0001 b WITH (NOLOCK)
+				from STRG_DATA a WITH (NOLOCK) inner JOIN SEC0001 b WITH (NOLOCK)
 				on a.vaCREATOR = b.iUSID
 				group by a.vaCREATOR, b.vaUSName,  a.iSTRGTYPEID
 			</cfquery>
