@@ -21,16 +21,16 @@
         and a.vaCREATOR = <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.CREATOR#">
     </cfif>
     <cfif len(trim(FORM.DESCRIPTION)) NEQ 0>
-        and a.vaDESCRIPTION LIKE '%#FORM.DESCRIPTION#%'
+        and a.vaDESCRIPTION LIKE <cfqueryparam cfsqltype="cf_sql_nvarchar" value="%#FORM.DESCRIPTION#%">
     </cfif>
     <cfif len(trim(FORM.GUIDATEFROM)) NEQ 0>
-        and a.dtCREATIONDATE >= '#FORM.GUIDATEFROM# 00:00:00'
+        and a.dtCREATIONDATE >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#FORM.GUIDATEFROM#">
     </cfif>
     <cfif len(trim(FORM.GUIDATETO)) NEQ 0>
-        and a.dtCREATIONDATE <= '#FORM.GUIDATETO# 23:59:59'
+        and a.dtCREATIONDATE <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d', 1, FORM.GUIDATETO)#">
     </cfif>
     <cfif len(trim(FORM.ITEMNAME)) NEQ 0>
-        and a.vaITEMNAME LIKE '%#FORM.ITEMNAME#%'
+        and a.vaITEMNAME LIKE <cfqueryparam cfsqltype="cf_sql_nvarchar" value="%#FORM.ITEMNAME#%">
     </cfif>
     <cfif len(trim(FORM.RATING)) NEQ 0>
         and a.iRATING = <cfqueryparam cfsqltype="cf_sql_integer" value="#FORM.RATING#">
